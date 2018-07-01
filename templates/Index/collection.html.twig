@@ -1,0 +1,84 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ entity.title }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/Responsive-2.2.0/css/responsive.bootstrap.min.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/responsive.bootstrap.min.js') }}"></script>	<script src="{{ asset('js/datatables.extension.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function ()
+		{
+			$('table.index_directories').DataTable({
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				}, 
+				"bFilter": true,
+				"bInfo": false,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('collection_poem_datatables', {'collectionId' : entity.id }) }}",
+				"autoWidth": false,
+				"sDom":
+				"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-12'i>>" +
+				"<'row'<'col-sm-12'p>>"
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_title %}{{ entity.title }}{% endblock %}
+{% block meta_tag_description %}{{ entity.title }} est un recueil de poésies écrit par {{ entity.biography.title }} et publiée {{ (entity.releasedDate is not empty) ? "en "~entity.releasedDate : "à une date inconnue"}}.{% endblock %}
+
+{% block main_content %}
+	<p class="center">{{ ("photo/collection/"~entity.image)|max_size_image() }}</p>
+	<br>
+	<div>
+		{% set biography = entity.biography %}
+		<table class="show">
+			<tr>
+				<th><span class="bold underline">{{ 'collection.field.Author'|trans }} :</span></th>
+				<td><a href="{{ path('author', { 'id' : biography.id, 'slug' : biography.slug }) }}" alt="">{{ biography.title }}</a></td>
+			</tr>
+			<tr>
+				<th><span class="bold underline">{{ 'collection.field.PublicationDate'|trans }} :</span></th>
+				<td>{{ entity.releasedDate }}</td>
+			</tr>
+		</table>
+		<br>
+		{{ entity.text|raw }}
+	</div>
+	<table class="hidden_print">
+		<tbody>
+			<tr>
+				<td class="socialNetwork">
+					<a href="{{ path('collection_pdf', {'collectionId' : entity.id, 'biographyId' : biography.id}) }}" class="btn btn-default"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<hr>
+	<h3>{{ 'collection.field.PoemsInThisCollection'|trans }}</h3>
+		<table class="index_directories table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'collection.table.Title'|trans }}</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<hr>
+	{% if entity.widgetProduct|raw is not null %}
+		<h3>{{ 'collection.field.BuyThisCollection'|trans }}</h3>
+		<div class="center-iframe">{{ entity.widgetProduct|raw }}</div>
+	{% endif %}
+{% endblock %}

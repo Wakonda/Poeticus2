@@ -1,0 +1,43 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Collection'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Collection'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="admin_show">
+		<tr>
+			<th>{{ "admin.collection.Title"|trans }}</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.collection.Text"|trans }}</th>
+			<td>{{ entity.text|raw }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.collection.PublicationDate"|trans }}</th>
+			<td>{{ entity.releasedDate }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.collection.Image"|trans }}</th>
+			<td><p class="center">{{ ("photo/collection/"~entity.image)|max_size_image() }}</p></td>
+		</tr>
+		<tr>
+			<th>{{ "admin.collection.Biography"|trans }}</th>
+			<td>{{ entity.biography.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.collection.ProductCode"|trans }}</th>
+			<td>{{ entity.widgetProduct|raw }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('collectionadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('collectionadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

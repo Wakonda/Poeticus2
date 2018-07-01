@@ -1,0 +1,182 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}Membre - {{ entity.username }}{% endblock %}
+{% block main_title %}{{ entity.username }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/Responsive-2.2.0/css/responsive.bootstrap.min.css') }}" media="screen" />
+{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/responsive.bootstrap.min.js') }}"></script>	<script src="{{ asset('js/datatables.extension.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/noty-2.3.4/js/noty/packaged/jquery.noty.packaged.min.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function ()
+		{
+			oTablePoem = $('table.poems_user_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('poem_user_datatables', { 'username' : entity.username }) }}",
+				"autoWidth": false,
+				"sDom":
+				"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-12'i>>" +
+				"<'row'<'col-sm-12'p>>"
+			});
+			
+			$(document).on("click", ".delete_poem", function(event)
+			{
+				var id = $(this).data("id");
+				event.preventDefault();
+				var n = noty({
+					layout: 'center',
+					type: 'confirm',
+					killer: true,
+					text: 'Êtes-vous sûr de vouloir supprimer cette poésie ?',
+					animation: {
+						open: {height: 'toggle'}, // jQuery animate function property object
+						close: {height: 'toggle'}, // jQuery animate function property object
+						easing: 'swing', // easing
+						speed: 500 // opening & closing animation speed
+					},
+					buttons: [
+					{
+						addClass: 'btn btn-primary', text: 'Oui', onClick: function($noty) {
+						$.ajax(
+						{
+							type: "GET",
+							url: "{{ path('poemuser_delete') }}?id=" + id,
+							cache: false,
+							success: function(data)
+							{
+								oTablePoem.ajax.reload();
+							}
+						});
+						$noty.close();
+					  }
+					},
+					{
+						addClass: 'btn btn-danger', text: 'Annuler', onClick: function($noty) {
+							$noty.close();
+						}
+					}
+				  ]
+				});
+			});
+
+			$('table.comments_user_datatables').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('poem_comment_datatables', { 'username' : entity.username }) }}",
+				"autoWidth": false,
+				"sDom":
+				"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-12'i>>" +
+				"<'row'<'col-sm-12'p>>"
+			});
+			
+			$('table.votes_user_datatables').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('poem_vote_datatables', { 'username' : entity.username }) }}",
+				"autoWidth": false,
+				"sDom":
+				"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-12'i>>" +
+				"<'row'<'col-sm-12'p>>"
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+	{% for message in app.session.getFlashBag.get('new_password') %}
+		<div class="success">{{ message }}</div>
+	{% endfor %}
+	
+	<p class="center">
+	{% if entity.avatar is null %}
+		<img src="{{ entity.gravatar }}" alt="" id="gravatar" />
+	{% else %}
+		{{ ("photo/user/"~entity.avatar)|max_size_image() }}
+	{% endif %}
+	</p>
+	<table id="generic_info">
+		<tr>
+			<th>{{ 'user.myProfile.Login'|trans }}</th>
+			<td>{{ entity.username }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'user.myProfile.Country'|trans }}</th>
+			<td><span>{{ entity.country.title }} <img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" alt="" /></span></td>
+		</tr>
+		<tr>
+			<th>{{ 'user.myProfile.Description'|trans }}</th>
+			<td>{{ entity.presentation|raw }}</td>
+		</tr>
+	</table>
+	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyPoems'|trans }}</h2>
+	<hr class="show_user_separator">
+	<table class="poems_user_datatables table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'user.myProfile.Title'|trans }}</th>
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") and entity.username == app.user.username %}
+				<th>{{ 'user.myProfile.State'|trans }}</th>
+				<th>{{ 'user.myProfile.Action'|trans }}</th>
+			{% endif %}
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyComments'|trans }}</h2>
+	<hr class="show_user_separator">
+	<table class="comments_user_datatables table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'user.myProfile.Poem'|trans }}</th>
+			<th>{{ 'user.myProfile.PublicationDate'|trans }}</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyVotes'|trans }}</h2>
+	<hr class="show_user_separator">
+	<table class="votes_user_datatables table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'user.myProfile.Poem'|trans }}</th>
+			<th>{{ 'user.myProfile.Vote'|trans }}</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+{% endblock %}

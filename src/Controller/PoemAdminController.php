@@ -1,0 +1,717 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Poem;
+use App\Entity\User;
+use App\Entity\Language;
+use App\Entity\Biography;
+use App\Entity\Collection;
+use App\Entity\PoeticForm;
+use App\Form\Type\PoemType;
+use App\Form\Type\PoemFastType;
+use App\Form\Type\PoemFastMultipleType;
+use App\Service\GenericFunction;
+
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+use Abraham\TwitterOAuth\TwitterOAuth;
+
+require __DIR__.'/../../Vendor/simple_html_dom.php';
+
+class PoemAdminController extends Controller
+{
+	public function indexAction(Request $request)
+	{
+		return $this->render('Poem/index.html.twig');
+	}
+
+	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+		
+		$entities = $entityManager->getRepository(Poem::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
+		$iTotal = $entityManager->getRepository(Poem::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+		
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$row[] = $entity->getId();
+			$row[] = $entity->getTitle();
+			$row[] = $entity->getLanguage()->getTitle();
+			
+			$show = $this->generateUrl('poemadmin_show', array('id' => $entity->getId()));
+			$edit = $this->generateUrl('poemadmin_edit', array('id' => $entity->getId()));
+			
+			$row[] = '<a href="'.$show.'" alt="Show">'.$translator->trans('admin.index.Read').'</a> - <a href="'.$edit.'" alt="Edit">'.$translator->trans('admin.index.Update').'</a>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
+    public function newAction(Request $request, $biographyId, $collectionId)
+    {
+		$entity = new Poem();
+		
+		$entityManager = $this->getDoctrine()->getManager();
+		$language = $entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
+		
+		$entity->setLanguage($language);
+
+		if(!empty($biographyId))
+			$entity->setBiography($biographyId);
+
+		if(!empty($collectionId))
+			$entity->setCollection($collectionId);
+
+        $form = $this->genericCreateForm($request->getLocale(), $entity);
+
+		return $this->render('Poem/new.html.twig', array('form' => $form->createView()));
+    }
+
+	public function createAction(Request $request, TranslatorInterface $translator)
+	{
+		$entity = new Poem();
+        $form = $this->genericCreateForm($request->getLocale(), $entity);
+		$form->handleRequest($request);
+
+		$this->checkForDoubloon($entity, $form);
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$poeticForm = $entity->getPoeticForm();
+		
+		if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
+			if($entity->getPhoto() == null)
+				$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+		else {
+			if($entity->getText() == null)
+				$form->get("text")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+		
+		$userForms = $entityManager->getRepository(User::class)->findAllForChoice($request->getLocale());
+
+		if(($entity->isBiography() and $entity->getBiography() == null) or ($entity->isUser() and $entity->getUser() == null))
+			$form->get($entity->getAuthorType())->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+
+		if($form->isValid())
+		{
+			if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+				$entity->getPhoto()->move("photo/poem/", $image);
+				$entity->setPhoto($image);
+			}
+
+			$entity->setState(0);
+			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
+			$entityManager->persist($entity);
+			$entityManager->flush();
+
+			$redirect = $this->generateUrl('poemadmin_show', array('id' => $entity->getId()));
+
+			return $this->redirect($redirect);
+		}
+		
+		return $this->render('Poem/new.html.twig', array('form' => $form->createView()));
+	}
+	
+	public function showAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+	
+		return $this->render('Poem/show.html.twig', array('entity' => $entity));
+	}
+	
+	public function editAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+		$form = $this->genericCreateForm($request->getLocale(), $entity);
+
+		return $this->render('Poem/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+
+	public function updateAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+		$form = $this->genericCreateForm($request->getLocale(), $entity);
+		$form->handleRequest($request);
+		
+		$this->checkForDoubloon($entity, $form);
+		
+		if(($entity->isBiography() and $entity->getBiography() == null) or ($entity->isUser() and $entity->getUser() == null))
+			$form->get($entity->getAuthorType())->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		
+		if($form->isValid())
+		{
+			if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE and !is_null($entity->getPhoto())) {
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+				$entity->getPhoto()->move("photo/poem/", $image);
+				$entity->setPhoto($image);
+			}
+
+			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
+			$entityManager->persist($entity);
+			$entityManager->flush();
+
+			return $this->redirect($this->generateUrl('poemadmin_show', array('id' => $entity->getId())));
+		}
+	
+		return $this->render('Poem/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+	
+	public function newFastAction(Request $request, $biographyId, $collectionId)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = new Poem();
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+		
+		if(!empty($biographyId))
+		{
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($biographyId));
+			$entity->setLanguage($entityManager->getRepository(Language::class)->find($entity->getBiography()->getLanguage()->getId()));
+		}
+		if(!empty($collectionId))
+			$entity->setCollection($entityManager->getRepository(Collection::class)->find($collectionId));
+		
+		$form = $this->createForm(PoemFastType::class, $entity, array("locale" => $request->getLocale()));
+	
+		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+
+	public function addFastAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = new Poem();
+		
+		$form = $this->createForm(PoemFastType::class, $entity, array("locale" => $request->getLocale()));
+		$form->handleRequest($request);
+		
+		$req = $request->request->get($form->getName());
+
+		if(!empty($req["url"]) and filter_var($req["url"], FILTER_VALIDATE_URL))
+		{
+			$url = $req["url"];
+			$url_array = parse_url($url);
+
+			$gf = new GenericFunction();
+			
+			if(!empty($ipProxy = $form->get('ipProxy')->getData()))
+				$html = $gf->getContentURL($url, $ipProxy);
+			else
+				$html = $gf->getContentURL($url);
+
+			$dom = new \simple_html_dom();
+			$dom->load($html);
+
+			$entity->setAuthorType("biography");
+			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
+			$poemArray = array();
+
+			switch(base64_encode($url_array['host']))
+			{
+				case 'cG9lc2llLndlYm5ldC5mcg==':
+					$title = $dom->find('h1'); 
+					$text = $dom->find('p[class=last]'); 
+
+					$title = html_entity_decode($title[0]->plaintext);
+					$title = (preg_match('!!u', $title)) ? $title : utf8_encode($title);
+
+					$subPoemArray = array();
+					$subPoemArray['title'] = $title;
+					$subPoemArray['text'] = str_replace(' class="last"', '', $text[0]->outertext);
+					$poemArray[] = $subPoemArray;
+					break;
+				case 'd3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=':
+					$title_node = $dom->find('article h1');
+					$title_str = $title_node[0]->plaintext;
+					$title_array = explode(":", $title_str);
+					$title = trim($title_array[1]);
+
+					$text_node = $dom->find('div.postpoetique p');
+					$text_init = strip_tags($text_node[0]->plaintext, "<br><br /><br/>");
+					$text_array = explode("\n", $text_init);
+					$text = "";
+					
+					foreach($text_array as $line) {
+						$text = $text."<br>".trim($line);
+					}
+					$text = preg_replace('/^(<br>)+/', '', $text);
+					
+					$subPoemArray = array();
+					$subPoemArray['title'] = $title;
+					$subPoemArray['text'] = $text;
+					$poemArray[] = $subPoemArray;
+					break;
+				case 'd3d3LnBvZXRpY2EuZnI=':
+					$title = current($dom->find("h1.entry-title"))->innertext;
+					
+					$text = $dom->find("main article div.entry-content");
+					$text = $text[1]->innertext;
+					
+					$text = str_replace("<p>", "", $text);
+					$text = str_replace("<br />", "<br>", $text);
+					$text = trim($text);
+
+					$text = explode("</p>", $text);
+					array_pop($text);
+					array_pop($text);
+					$text = implode("<br><br>", $text);
+					
+					$subPoemArray = array();
+					$subPoemArray['title'] = $title;
+					$subPoemArray['text'] = $text;
+					$poemArray[] = $subPoemArray;
+					break;
+				case 'd3d3LnRvdXRlbGFwb2VzaWUuY29t':
+					$title = trim(current(explode("<br>", current($dom->find('h1.ipsType_pagetitle'))->innertext)));			
+					$text = current($dom->find('div.poemeanthologie'))->innertext;
+					$text =preg_replace('#</?span[^>]*>#is', '', $text);
+
+					$subPoemArray = array();
+					$subPoemArray['title'] = utf8_encode($title);
+					$subPoemArray['text'] = utf8_encode($text);
+					$poemArray[] = $subPoemArray;
+					break;
+				case 'd3d3LnVuaGFpa3UuY29t':
+					foreach($dom->find('ul#chunkLast > li') as $li)
+					{
+						$text = current($li->find("div#texte"));
+						
+						if(!empty($text))
+						{
+							$titleArray = preg_split(":(<br ?/?>):", $text->innertext);
+							
+							$subPoemArray = array();
+							$subPoemArray['title'] = $titleArray[0];
+							$subPoemArray['text'] = $text->innertext;
+							$poemArray[] = $subPoemArray;
+						}
+					}
+					break;
+				case 'd3d3LmNpdGFkb3IucHQ=':
+					$dom = new \DOMDocument();
+					libxml_use_internal_errors(true); 
+					$dom->loadHTML($html);
+					libxml_clear_errors();
+
+					$xpath = new \DOMXpath($dom);
+
+					$div = $xpath->query("//div[@class='panel panel-default']/div[@class='panel-body']/div")->item(0);
+					
+					$subPoemArray = [];
+					$subPoemArray['title'] = $xpath->query("//div[@class='panel panel-default']/div[@class='panel-body']/h2")->item(0)->textContent;
+
+					$html="";
+					foreach($div->childNodes as $node) {
+						$html .= str_replace("&nbsp;", '', $dom->saveHTML($node));
+					}
+
+					$htmlArray = preg_split('/<i[^>]*>([\s\S]*?)<\/i[^>]*>/', $html);
+
+					array_pop($htmlArray);
+					$content = $htmlArray[0];
+
+					$content = preg_replace('/<font[^>]*>([\s\S]*?)<\/font[^>]*>/', '', $content);
+
+					// Remove <br> at the end of string
+					$content = preg_replace('[^([\n\r\s]*<br( \/)?>[\n\r\s]*)*|([\n\r\s]*<br( \/)?>[\n\r\s]*)*$]', '', $content);
+
+					$content = str_replace(chr(150), "-", utf8_decode($content));// Replace "en dash" by simple "dash"
+					$content = str_replace(chr(151), '-', $content);// Replace "em dash" by simple "dash"
+					$content = str_replace("\xc2\xa0", '', utf8_encode($content));// Remove nbsp
+				
+					$subPoemArray['text'] = $content;
+				
+					/*$html = file_get_html($url);
+					
+					$divPanelDefault = $html->find("div.panel-default", 0);
+					$div = $divPanelDefault->find("div.panel-body", 0);
+					
+					
+					$subPoemArray['title'] = $div->find("h2", 0)->plaintext;
+					$content = $div->find("div", 0)->innertext;
+
+					$content = preg_replace('/<font[^>]*>([\s\S]*?)<\/font[^>]*>/', '', $content);
+					$content = preg_replace('/<i[^>]*>([\s\S]*?)<\/i[^>]*>/', '', $content);
+					
+					// Remove <br> at the end of string
+					$content = preg_replace('[^([\n\r\s]*<br( \/)?>[\n\r\s]*)*|([\n\r\s]*<br( \/)?>[\n\r\s]*)*$]', '', $content);
+
+					$content = str_replace(chr(150), "-", $content);// Replace "en dash" by simple "dash"
+					$content = str_replace(chr(151), '-', $content);// Replace "em dash" by simple "dash"
+					$content = utf8_encode($content); 
+
+					$subPoemArray['text'] = $content;*/
+					
+					$poemArray[] = $subPoemArray;
+					break;
+			}
+		}
+		
+		$numberDoubloons = 0;
+		$numberAdded = 0;
+
+		if($form->isValid())
+		{
+			foreach($poemArray as $poem)
+			{
+				$entityPoem = clone $entity;
+				$entityPoem->setTitle($poem['title']);
+				$entityPoem->setText($poem['text']);
+				$entityPoem->setState(0);
+
+				if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
+					$numberDoubloons++;
+				else
+				{
+					$entityManager->persist($entityPoem);
+					$entityManager->flush();
+					$id = $entity->getId();
+					$numberAdded++;
+				}
+			}
+			if(!empty($id))
+				$redirect = $this->generateUrl('poemadmin_show', array('id' => $id));
+			else
+				$redirect = $this->generateUrl('poemadmin_index');
+
+			return $this->redirect($redirect);
+		}
+	
+		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+	
+	public function newFastMultipleAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+
+		$entity = new Poem();
+		$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+
+		$form = $this->createForm(PoemFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
+
+		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale()));
+	}
+	
+	public function addFastMultipleAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = new Poem();
+		
+		$form = $this->createForm(PoemFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
+		
+		$form->handleRequest($request);
+		$req = $request->request->get($form->getName());
+			
+		if(!empty($req["url"]) and filter_var($req["url"], FILTER_VALIDATE_URL))
+		{
+			$url = $req["url"];
+			$url_array = parse_url($url);
+			
+			$authorizedURLs = ['d3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=', 'd3d3LnBlbnNpZXJpcGFyb2xlLml0'];
+			
+			if(!in_array(base64_encode($url_array['host']), $authorizedURLs))
+				$form->get("url")->addError(new FormError('URL inconnue'));
+		}
+
+		if($form->isValid())
+		{
+			$entity->setAuthorType("biography");
+			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
+			$number = $req['number'];
+			$i = 0;
+			$gf = new GenericFunction();
+			
+			if(!empty($ipProxy = $form->get('ipProxy')->getData()))
+				$html = $gf->getContentURL($url, $ipProxy);
+			else
+				$html = $gf->getContentURL($url);
+
+			$dom = new \simple_html_dom();
+			$dom->load($html);
+
+			switch(base64_encode($url_array['host']))
+			{
+				case 'd3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=':
+					foreach($dom->find('div.poemes-auteurs') as $div)
+					{					
+						$entityPoem = clone $entity;
+						$a = current($div->find("a"));die("ok");
+						$content = $dom->file_get_html($a->href);
+						$title_node = $content->find('article h1');
+						$title_str = $title_node[0]->plaintext;
+						$title_array = explode(":", $title_str);
+						$title = trim($title_array[1]);
+
+						$text_node = $content->find('div.postpoetique p');
+						$text_init = strip_tags($text_node[0]->plaintext, "<br><br /><br/>");
+						$text_array = explode("\n", $text_init);
+						$text = "";
+						
+						foreach($text_array as $line) {
+							$text = $text."<br>".trim($line);
+						}
+						$text = preg_replace('/^(<br>)+/', '', $text);
+						
+						$entityPoem->setTitle($title);
+						$entityPoem->setText($text);
+						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('fr')->getId());
+						
+						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
+							continue;
+						
+						if($number == $i)
+							break;
+	
+						$i++;
+
+						$entityManager->persist($entity);
+						$entityManager->flush();
+						$id = $entity->getId();
+					}
+					break;
+				case 'd3d3LnBlbnNpZXJpcGFyb2xlLml0':
+					foreach($dom->find('article') as $article)
+					{
+						$title = $article->find("h2", 0)->plaintext;
+						$blockquote = $article->find('blockquote', 0);
+						$a = $blockquote->find('a', 0);
+						
+						$content = $a->plaintext;
+						$content = utf8_encode(str_replace(chr(150), '-', $content)); // Replace "en dash" by simple "dash"
+						$content = str_replace("\n", "<br>", $content);
+						$entityPoem = clone $entity;
+						$entityPoem->setTitle($title);
+						$entityPoem->setText($content);
+						$entityPoem->setState(0);
+						
+						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('it')->getId());
+						
+						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
+							continue;
+						
+						if($number == $i)
+							break;
+	
+						$i++;
+
+						$entityManager->persist($entityPoem);
+						$entityManager->flush();
+						$id = $entity->getId();
+					}
+				break;
+			}
+			
+			if(isset($id))
+				$redirect = $this->generateUrl('poemadmin_show', array('id' => $id));
+			else
+				$redirect = $this->generateUrl('poemadmin_index');
+
+			return $this->redirect($redirect);
+		}
+		
+		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale()));
+	}
+	
+	public function listSelectedBiographyAction(Request $request)
+	{
+		$id = $request->request->get("id");
+
+		if($id != "")
+		{
+			$entityManager = $this->getDoctrine()->getManager();
+			$entity =  $entityManager->getRepository(Biography::class)->find($id);
+
+			$collections = $entityManager->getRepository(Collection::class)->findAllByAuthor($id);
+			$collectionArray = array();
+			
+			foreach($collections as $collection)
+			{
+				$collectionArray[] = array("id" => $collection->getId(), "title" => $collection->getTitle(), "releaseDate" => $collection->getReleasedDate());
+			}
+
+			$country = $entity->getCountry();
+
+			$countryText = (empty($country)) ? null : array('title' => $country->getTitle(), 'flag' => $country->getFlag());
+				
+			$finalArray = array("collections" => $collectionArray, "country" => $countryText);
+		}
+		else
+			$finalArray = array("collections" => "", "country" => "");
+		
+		$response = new Response(json_encode($finalArray));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
+	public function listSelectedCollectionAction(Request $request)
+	{
+		$id = $request->request->get("id");
+		
+		if($id != "")
+		{
+			$entityManager = $this->getDoctrine()->getManager();
+			$entity = $entityManager->getRepository(Collection::class)->find($id);
+			$finalArray = array("releasedDate" => $entity->getReleasedDate());
+		}
+		else
+			$finalArray = array("releasedDate" => null);
+			
+		$response = new Response(json_encode($finalArray));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
+	public function selectPoeticFormAction(Request $request)
+	{
+		$id = $request->request->get("id");
+		
+		if($id != "")
+		{
+			$entityManager = $this->getDoctrine()->getManager();
+			$entity = $entityManager->getRepository(PoeticForm::class)->find($id);
+			$finalArray = array("typeContentPoem" => $entity->getTypeContentPoem());
+		}
+		else
+			$finalArray = array("typeContentPoem" => "");
+			
+		$response = new Response(json_encode($finalArray));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+	
+	public function getBiographiesByAjaxAction(Request $request)
+	{
+		$locale = $request->query->get("locale");
+		$entityManager = $this->getDoctrine()->getManager();
+		$rsp = new Response();
+		$rsp->headers->set('Content-Type', 'application/json');
+		
+		if($request->query->has("pkey_val")) {
+			$pkeyVal = $request->query->has("pkey_val");
+			
+			if(empty($pkeyVal))
+			{
+				$rsp->setContent([]);
+				return $rsp;
+			}
+
+			$parameters = array("pkey_val" => $request->query->get("pkey_val"));
+			$response =  $entityManager->getRepository(Biography::class)->getDatasCombobox($parameters, $locale);
+
+			$resObj = new \stdClass();
+			$resObj->id = $response["id"];
+			$resObj->name = $response["title"];
+
+			$rsp->setContent(json_encode($resObj));
+			return $rsp;
+		}
+
+		$parameters = array(
+		  'db_table'     => $request->query->get('db_table'),
+		  'page_num'     => $request->query->get('page_num'),
+		  'per_page'     => $request->query->get('per_page'),
+		  'and_or'       => $request->query->get('and_or'),
+		  'order_by'     => $request->query->get('order_by'),
+		  'search_field' => $request->query->get('search_field'),
+		  'q_word'       => $request->query->get('q_word')
+		);
+
+		$parameters['offset']  = ($parameters['page_num'] - 1) * $parameters['per_page'];
+
+		$response =  $entityManager->getRepository(Biography::class)->getDatasCombobox($parameters, $locale);
+		$count =  $entityManager->getRepository(Biography::class)->getDatasCombobox($parameters, $locale, true);
+
+		$results = array();
+
+		foreach($response as $res) {
+			$obj = new \stdClass();
+			$obj->id = $res['id'];
+			$obj->name = $res['title'];
+			
+			$results[] = $obj;
+		}
+
+		$resObj = new \stdClass();
+		$resObj->result = $results;
+		$resObj->cnt_whole = $count;
+
+		$rsp->setContent(json_encode($resObj));
+		return $rsp;
+	}
+
+	public function twitterAction(Request $request, SessionInterface $session, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+
+		$consumer_key = "e4yhUO4SYqVcjS5g7itJeBcln";
+		$consumer_secret = "U5xMbhBXs4aGeXF2AqFjdIIGTbIVIbjgzZSNEPawgGNNvbbtMB";
+		$access_token = "706490944305102848-tx27engIyYshExc76IZNgPkqc1aBafc";
+		$access_token_secret = "vjna9QCsQxfjYx5Q0TLj0ha9nQs3b5ClvIUkQtwDdpJjS";
+
+		$connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
+
+		$statues = $connection->post("statuses/update", ["status" => $request->request->get("twitter_area")." ".$this->generateUrl("read", array("id" => $id, 'slug' => $entity->getSlug()), UrlGeneratorInterface::ABSOLUTE_URL)]);
+	
+		$session->getFlashBag()->add('message', 'Twitter envoyé avec succès');
+	
+		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
+	}
+
+	private function genericCreateForm($locale, $entity)
+	{
+		return $this->createForm(PoemType::class, $entity, array('locale' => $locale));
+	}
+
+	private function checkForDoubloon($entity, $form)
+	{
+		if($entity->getTitle() != null)
+		{
+		$entityManager = $this->getDoctrine()->getManager();
+			$checkForDoubloon = $entityManager->getRepository(Poem::class)->checkForDoubloon($entity);
+
+			if($checkForDoubloon > 0)
+				$form->get("title")->addError(new FormError('Cette entrée existe déjà !'));
+		}
+	}
+}

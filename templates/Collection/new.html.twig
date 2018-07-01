@@ -1,0 +1,51 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Collection'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Collection'|trans }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.js') }}"></script>
+	<script src="{{ asset('js/combobox.js') }}"></script>
+	{% import "Index/macro.html.twig" as macro %}
+	{{ macro.redactor() }}
+	<script type="text/javascript">
+		$(function()
+		{
+			$("input#{{ form.vars['id'] }}_unknownReleasedDate").click(function()
+			{
+				if($(this).is(":checked"))
+					$("#{{ form.vars['id'] }}_releasedDate").val("");
+			});
+			$("input#{{ form.vars['id'] }}_unknownReleasedDate").click();
+			
+			$("input#{{ form.vars['id'] }}_releasedDate").keyup(function()
+			{
+				if($(this).val() != "")
+					$("input#{{ form.vars['id'] }}_unknownReleasedDate").prop('checked', false);
+				else
+					$("input#{{ form.vars['id'] }}_unknownReleasedDate").prop('checked', true);
+			});
+			$("input#{{ form.vars['id'] }}_releasedDate").keyup();
+			
+			$("select#{{ form.language.vars.id }}").change(function() {
+				var input = $(".container_{{ form.vars['id'] }}_biography > .input-group > input[type='hidden']");
+				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
+				$(".container_{{ form.vars['id'] }}_biography").parent().append(input[0]);
+				$(".container_{{ form.vars['id'] }}_biography").remove();
+				setComboboxNew('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.vars['id'] }}_biography");
+			});
+			
+			$("select#{{ form.language.vars.id }}").change();
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+{% form_theme form 'Form/fields.html.twig' %}
+
+{{ form_start(form, {'method' : 'post', 'action' : path('collectionadmin_create'), 'attr': {'novalidate': 'novalidate'} }) }}
+	{% include "Collection/_form.html.twig" with {'form' : form} %}
+{% endblock %}

@@ -1,0 +1,163 @@
+<?php
+
+namespace App\Twig;
+
+use App\Service\Captcha;
+use App\Service\Gravatar;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+
+class PoeticusExtension extends AbstractExtension
+{
+	private $em;
+	
+	public function __construct(EntityManagerInterface $em)
+	{
+		$this->em = $em;
+	}
+
+    public function getFilters() {
+        return array(
+			new TwigFilter('html_entity_decode', array($this, 'htmlEntityDecodeFilter')),
+			new TwigFilter('toString', array($this, 'toStringFilter')),
+			new TwigFilter('text_month', array($this, 'textMonthFilter')),
+			new TwigFilter('max_size_image', array($this, 'maxSizeImageFilter'), array('is_safe' => array('html'))),
+			new TwigFilter('date_letter', array($this, 'dateLetterFilter'), array('is_safe' => array('html'))),
+			new TwigFilter('remove_control_characters', array($this, 'removeControlCharactersFilter'))
+        );
+    }
+	
+	public function getFunctions() {
+		return array(
+			new TwigFunction('captcha', array($this, 'generateCaptcha')),
+			new TwigFunction('gravatar', array($this, 'generateGravatar')),
+			new TwigFunction('number_version', array($this, 'getCurrentVersion')),
+			new TwigFunction('code_by_language', array($this, 'getCodeByLanguage')),
+			new TwigFunction('minify_file', array($this, 'minifyFile')),
+			new TwigFunction('count_unread_messages', array($this, 'countUnreadMessagesFunction'))
+		);
+	}
+
+    public function toStringFilter($arraySubEntity, $element) {
+		if(!is_null($arraySubEntity) and array_key_exists ($element, $arraySubEntity))
+			return $arraySubEntity[$element];
+
+        return "";
+    }
+
+    public function htmlEntityDecodeFilter($str) {
+        return html_entity_decode($str);
+    }
+
+	public function textMonthFilter($month, $year)
+	{
+		$locale = $this->app['generic_function']->getLocaleTwigRenderController();
+		$arrayMonth = $this->formatDateByLocale();
+		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].$year : "");
+	}
+	
+	public function maxSizeImageFilter($img, array $options = [], $isPDF = false)
+	{
+		$basePath = ($isPDF) ? '' : '/';
+		
+		if(!file_exists($img))
+			return '<img src="'.$basePath.'photo/640px-Starry_Night_Over_the_Rhone.jpg" alt="" style="max-width: 400px" />';
+		
+		$imageSize = getimagesize($img);
+
+		$width = $imageSize[0];
+		$height = $imageSize[1];
+		
+		$max_width = 500;
+				
+		if($width > $max_width)
+		{
+			$height = ($max_width * $height) / $width;
+			$width = $max_width;
+		}
+
+		return '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" />';
+	}
+	
+	public function dateLetterFilter($date, $locale)
+	{
+		if(is_string($date))
+			$date = new \DateTime($date);
+
+		$arrayMonth = $this->formatDateByLocale();
+		$month = $arrayMonth[$locale]["months"][$date->format("n") - 1];
+		$day = ($date->format("j") == 1) ? $date->format("j").((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $date->format("j");
+		
+		return $day.$arrayMonth[$locale]["separator"].$month.$arrayMonth[$locale]["separator"].$date->format("Y");
+	}
+
+	public function removeControlCharactersFilter($string)
+	{
+		return preg_replace("/[^a-zA-Z0-9 .\-_;!:?äÄöÖüÜß<>='\"]/", "", $string);
+	}
+	
+	public function generateCaptcha($request)
+	{
+		$captcha = new Captcha($request->getSession());
+
+		$wordOrNumberRand = rand(1, 2);
+		$length = rand(3, 7);
+
+		if($wordOrNumberRand == 1)
+			$word = $captcha->wordRandom($length);
+		else
+			$word = $captcha->numberRandom($length);
+		
+		return $captcha->generate($word);
+	}
+
+	public function generateGravatar()
+	{
+		$gr = new Gravatar();
+
+		return $gr->getURLGravatar();
+	}
+	
+	public function getCurrentVersion()
+	{
+		return $this->em->getRepository("App\Entity\Version")->getCurrentVersion();
+	}
+	
+	public function getCodeByLanguage($locale)
+	{
+		switch($locale)
+		{
+			case "it":
+				return "it";
+			case "pt":
+				return "pt_PT";
+			default:
+				return "fr_FR";
+		}
+	}
+	
+	private function formatDateByLocale()
+	{
+		$arrayMonth = array();
+		$arrayMonth['fr'] = array("sup" => "er", "separator" => " ", "months" => array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"));
+		$arrayMonth['it'] = array("sup" => "°", "separator" => " ", "months" => array("gennaio", "febbraio", "marzo", "aprile", "maggio", "guigno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"));
+		$arrayMonth['pt'] = array("sup" => null, "separator" => " de ", "months" => array("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"));
+	
+		return $arrayMonth;
+	}
+
+	public function countUnreadMessagesFunction()
+	{
+		return $this->em->getRepository("App\Entity\Contact")->countUnreadMessages();
+	}
+	
+	public function minifyFile($file)
+	{
+		$mn = new \App\Service\MinifyFile($file);
+		return $mn->save();
+	}
+}

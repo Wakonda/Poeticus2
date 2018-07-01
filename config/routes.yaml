@@ -1,0 +1,613 @@
+index:
+    path: /
+    controller: App\Controller\IndexController::indexAction
+
+change_language:
+    path: /change_language/{locale}
+    controller: App\Controller\IndexController::changeLanguageAction
+
+index_search:
+    path: /search
+    controller: App\Controller\IndexController::indexSearchAction
+
+index_search_datatables:
+    path: /result_search/{search}
+    controller: App\Controller\IndexController::indexSearchDatatablesAction
+
+store:
+    path: /store/{page}
+    controller: App\Controller\IndexController::storeAction
+    defaults:
+        page: 1
+
+read:
+    path: /read/{id}/{slug}
+    controller: App\Controller\IndexController::readAction
+    defaults:
+        slug: null
+
+read_pdf:
+    path: /read_pdf/{id}/{slug}
+    controller: App\Controller\IndexController::readPDFAction
+    defaults:
+        slug: null
+
+last_poem:
+    path: /last_poem
+    controller: App\Controller\IndexController::lastPoemAction
+
+author:
+    path: /author/{id}/{slug}
+    controller: App\Controller\IndexController::authorAction
+    defaults:
+        slug: null
+
+author_poem_datatables:
+    path: /author_poem_datatables/{authorId}
+    controller: App\Controller\IndexController::authorDatatablesAction
+
+byauthors:
+    path: /byauthors
+    controller: App\Controller\IndexController::byAuthorsAction
+
+byauthors_datatables:
+    path: /byauthors_datatables
+    controller: App\Controller\IndexController::byAuthorsDatatablesAction
+
+collection:
+    path: /collection/{id}/{slug}
+    controller: App\Controller\IndexController::collectionAction
+    defaults:
+        slug: null
+
+collection_poem_datatables:
+    path: /collection_poem_datatables/{collectionId}
+    controller: App\Controller\IndexController::collectionDatatablesAction
+
+collection_pdf:
+    path: /collection_pdf/{collectionId}/{biographyId}
+    controller: App\Controller\IndexController::readCollectionPDFAction
+
+bycollections:
+    path: /bycollections
+    controller: App\Controller\IndexController::byCollectionsAction
+
+bycollections_datatables:
+    path: /bycollections_datatables
+    controller: App\Controller\IndexController::byCollectionsDatatablesAction
+
+poeticform:
+    path: /poeticform/{id}/{slug}
+    controller: App\Controller\IndexController::poeticFormAction
+    defaults:
+        slug: null
+
+poeticform_poem_datatables:
+    path: /poeticform_poem_datatables/{poeticformId}
+    controller: App\Controller\IndexController::poeticformDatatablesAction
+
+bypoeticforms:
+    path: /bypoeticforms
+    controller: App\Controller\IndexController::byPoeticFormsAction
+
+bypoeticforms_datatables:
+    path: /bypoeticforms_datatables
+    controller: App\Controller\IndexController::byPoeticFormsDatatablesAction
+
+country:
+    path: /country/{id}/{slug}
+    controller: App\Controller\IndexController::countryAction
+    defaults:
+        slug: null
+
+bycountries:
+    path: /bycountries
+    controller: App\Controller\IndexController::byCountriesAction
+
+bycountries_datatables:
+    path: /bycountries_datatables
+    controller: App\Controller\IndexController::byCountriesDatatablesAction
+
+bypoemusers:
+    path: /bypoemusers
+    controller: App\Controller\IndexController::byPoemUsersAction
+
+bypoemusers_datatables:
+    path: /bypoemusers_datatables
+    controller: App\Controller\IndexController::byPoemUsersDatatablesAction
+
+country_poem_datatables:
+    path: /country_poem_datatables/{countryId}
+    controller: App\Controller\IndexController::countryDatatablesAction
+
+page_display:
+    path: /page/{name}
+    controller: App\Controller\IndexController::pageAction
+
+version:
+    path: /version
+    controller: App\Controller\IndexController::versionAction
+
+admin:
+    path: /admin
+    controller: App\Controller\AdminController::indexAction
+
+stat_poem:
+    path: /stat_poem
+    controller: App\Controller\IndexController::statPoemAction
+    
+# SEND POEM
+send_poem:
+    path: send_poem/index/{poemId}
+    controller: App\Controller\SendPoemController::indexAction
+    requirements:
+        poemId: \d+
+
+send_poem_go:
+    path: send_poem/send/{poemId}
+    controller: App\Controller\SendPoemController::sendAction
+    requirements:
+        poemId: \d+
+
+# SITEMAP
+sitemap:
+    path: /sitemap.xml
+    controller: App\Controller\SiteMapController::sitemapAction
+
+generate_sitemap:
+    path: /generate_sitemap
+    controller: App\Controller\SiteMapController::generateAction
+
+# CAPTCHA
+captcha:
+    path: /captcha
+    controller: App\Controller\IndexController::reloadCaptchaAction
+
+# GRAVATAR
+gravatar:
+    path: /gravatar
+    controller: App\Controller\IndexController::reloadGravatarAction
+
+    
+# COMMENT
+comment:
+    path: /comment/{poemId}
+    controller: App\Controller\CommentController::indexAction
+    requirements:
+        poemId: \d+
+
+comment_create:
+    path: comment/create/{poemId}
+    controller: App\Controller\CommentController::createAction
+    requirements:
+        poemId: \d+
+
+comment_load:
+    path: comment/load/{poemId}
+    controller: App\Controller\CommentController::loadCommentAction
+    requirements:
+        poemId: \d+
+    
+# POEMVOTE
+vote_poem:
+    path: /vote_poem/{idPoem}
+    controller: App\Controller\PoemVoteController::voteAction
+
+# ADMIN AJAX
+list_selected_biography:
+    path: /list_selected_biography
+    controller: App\Controller\PoemAdminController::listSelectedBiographyAction
+
+list_selected_collection:
+    path: /list_selected_collection'
+    controller: App\Controller\PoemAdminController::listSelectedCollectionAction
+
+select_poeticform:
+    path: /select_poeticform
+    controller: App\Controller\PoemAdminController::selectPoeticFormAction
+
+poem_user_datatables:
+    path: /user/poem_user_datatables/{username}
+    controller: App\Controller\UserController::poemsUserDatatablesAction
+
+poem_vote_datatables:
+    path: /user/poem_vote_datatables/{username}
+    controller: App\Controller\UserController::votesUserDatatablesAction
+
+poem_comment_datatables:
+    path: /user/poem_comment_datatables/{username}
+    controller: App\Controller\UserController::commentsUserDatatablesAction
+
+get_countries_by_language:
+    path: /get_countries_by_language
+    controller: App\Controller\CountryAdminController::getCountriesByLanguageAction
+
+get_poeticforms_by_language:
+    path: /get_poeticforms_by_language
+    controller: App\Controller\PoeticFormAdminController::getPoeticFormsByLanguageAction
+
+# USER
+login:
+    path: /user/login
+    controller: App\Controller\UserController::loginAction
+
+logout:
+    path: /logout
+
+list:
+    path: /user/list
+    controller: App\Controller\UserController::listAction
+
+user_show:
+    path: /user/show/{username}
+    controller: App\Controller\UserController::showAction
+    defaults:
+        username: null
+
+user_new:
+    path: /user/new
+    controller: App\Controller\UserController::newAction
+
+user_create:
+    path: /user/create
+    controller: App\Controller\UserController::createAction
+
+user_edit:
+    path: /user/edit/{id}
+    controller: App\Controller\UserController::editAction
+    defaults:
+        id: false
+
+user_update:
+    path: /user/update/{id}
+    controller: App\Controller\UserController::updateAction
+    defaults:
+        id: false
+
+user_udpatepassword:
+    path: /user/updatepassword
+    controller: App\Controller\UserController:updatePasswordAction
+
+user_updatepasswordsave:
+    path: /user/updatepasswordsave
+    controller: App\Controller\UserController:updatePasswordSaveAction
+
+user_forgottenpassword:
+    path: /user/forgottenpassword
+    controller: App\Controller\UserController:forgottenPasswordAction
+
+user_forgottenpasswordsend:
+    path: /user/forgottenpasswordsend
+    controller: App\Controller\UserController:forgottenPasswordSendAction
+
+# POEM USER
+poemuser_new:
+    path: /poemuser/new
+    controller: App\Controller\IndexController::poemUserNewAction
+
+poemuser_create:
+    path: /poemuser/create
+    controller: App\Controller\IndexController::poemUserCreateAction
+
+poemuser_edit:
+    path: /poemuser/edit/{id}
+    controller: App\Controller\IndexController::poemUserEditAction
+
+poemuser_update:
+    path: /poemuser/update/{id}
+    controller: App\Controller\IndexController::poemUserUpdateAction
+
+poemuser_delete:
+    path: /poemuser/delete
+    controller: App\Controller\IndexController::poemUserDeleteAction
+
+# CONTACT
+contact:
+    path: /contact
+    controller: App\Controller\ContactController::indexAction
+
+contact_send:
+    path: /contact_send
+    controller: App\Controller\ContactController::sendAction
+
+# ADMIN POETIC FORM
+poeticformadmin_index:
+    path: /admin/poeticform/index
+    controller: App\Controller\PoeticFormAdminController::indexAction
+
+poeticformadmin_indexdatatables:
+    path: /admin/poeticform/indexdatatables
+    controller: App\Controller\PoeticFormAdminController::indexDatatablesAction
+
+poeticformadmin_new:
+    path: /admin/poeticform/new
+    controller: App\Controller\PoeticFormAdminController::newAction
+
+poeticformadmin_create:
+    path: /admin/poeticform/create
+    controller: App\Controller\PoeticFormAdminController::createAction
+
+poeticformadmin_show:
+    path: /admin/poeticform/show/{id}
+    controller: App\Controller\PoeticFormAdminController::showAction
+
+poeticformadmin_edit:
+    path: /admin/poeticform/edit/{id}
+    controller: App\Controller\PoeticFormAdminController::editAction
+
+poeticformadmin_update:
+    path: /admin/poeticform/upate/{id}
+    controller: App\Controller\PoeticFormAdminController::updateAction
+    
+# ADMIN COUNTRY
+countryadmin_index:
+    path: /admin/country/index
+    controller: App\Controller\CountryAdminController::indexAction
+
+countryadmin_indexdatatables:
+    path: /admin/country/indexdatatables
+    controller: App\Controller\CountryAdminController::indexDatatablesAction
+
+countryadmin_new:
+    path: /admin/country/new
+    controller: App\Controller\CountryAdminController::newAction
+
+countryadmin_create:
+    path: /admin/country/create
+    controller: App\Controller\CountryAdminController::createAction
+
+countryadmin_show:
+    path: /admin/country/show/{id}
+    controller: App\Controller\CountryAdminController::showAction
+
+countryadmin_edit:
+    path: /admin/country/edit/{id}
+    controller: App\Controller\CountryAdminController::editAction
+
+countryadmin_update:
+    path: /admin/country/upate/{id}
+    controller: App\Controller\CountryAdminController::updateAction
+    
+# ADMIN BIOGRAPHY
+biographyadmin_index:
+    path: /admin/biography/index
+    controller: App\Controller\BiographyAdminController::indexAction
+
+biographyadmin_indexdatatables:
+    path: /admin/biography/indexdatatables
+    controller: App\Controller\BiographyAdminController::indexDatatablesAction
+
+biographyadmin_new:
+    path: /admin/biography/new
+    controller: App\Controller\BiographyAdminController::newAction
+
+biographyadmin_create:
+    path: /admin/biography/create
+    controller: App\Controller\BiographyAdminController::createAction
+
+biographyadmin_show:
+    path: /admin/biography/show/{id}
+    controller: App\Controller\BiographyAdminController::showAction
+
+biographyadmin_edit:
+    path: /admin/biography/edit/{id}
+    controller: App\Controller\BiographyAdminController::editAction
+
+biographyadmin_update:
+    path: /admin/biography/upate/{id}
+    controller: App\Controller\BiographyAdminController::updateAction
+
+# ADMIN PAGE
+pageadmin_index:
+    path: /admin/page/index
+    controller: App\Controller\PageAdminController::indexAction
+
+pageadmin_indexdatatables:
+    path: /admin/page/indexdatatables
+    controller: App\Controller\PageAdminController:indexDatatablesAction
+
+pageadmin_new:
+    path: /admin/page/new
+    controller: App\Controller\PageAdminController::newAction
+
+pageadmin_create:
+    path: /admin/page/create
+    controller: App\Controller\PageAdminController::createAction
+
+pageadmin_show:
+    path: /admin/page/show/{id}
+    controller: App\Controller\PageAdminController::showAction
+
+pageadmin_edit:
+    path: /admin/page/edit/{id}
+    controller: App\Controller\PageAdminController::editAction
+
+pageadmin_update:
+    path: /admin/page/upate/{id}
+    controller: App\Controller\PageAdminController::updateAction
+
+pageadmin_upload_image_mce:
+    path: /admin/page/upload_image_mce
+    controller: App\Controller\PageAdminController::uploadImageMCEAction
+
+# ADMIN COLLECTION
+collectionadmin_index:
+    path: /admin/collection/index
+    controller: App\Controller\CollectionAdminController::indexAction
+
+collectionadmin_indexdatatables:
+    path: /admin/collection/indexdatatables
+    controller: App\Controller\CollectionAdminController::indexDatatablesAction
+
+collectionadmin_new:
+    path: /admin/collection/new
+    controller: App\Controller\CollectionAdminController::newAction
+
+collectionadmin_create:
+    path: /admin/collection/create
+    controller: App\Controller\CollectionAdminController::createAction
+
+collectionadmin_show:
+    path: /admin/collection/show/{id}
+    controller: App\Controller\CollectionAdminController::showAction
+
+collectionadmin_edit:
+    path: /admin/collection/edit/{id}
+    controller: App\Controller\CollectionAdminController::editAction
+
+collectionadmin_update:
+    path: /admin/collection/upate/{id}
+    controller: App\Controller\CollectionAdminController::updateAction
+
+# ADMIN VERSION
+versionadmin_index:
+    path: /admin/version/index
+    controller: App\Controller\VersionAdminController::indexAction
+
+versionadmin_indexdatatables:
+    path: /admin/version/indexdatatables
+    controller: App\Controller\VersionAdminController::indexDatatablesAction
+
+versionadmin_new:
+    path: /admin/version/new
+    controller: App\Controller\VersionAdminController::newAction
+
+versionadmin_create:
+    path: /admin/version/create
+    controller: App\Controller\VersionAdminController::createAction
+
+versionadmin_show:
+    path: /admin/version/show/{id}
+    controller: App\Controller\VersionAdminController::showAction
+
+versionadmin_edit:
+    path: /admin/version/edit/{id}
+    controller: App\Controller\VersionAdminController::editAction
+
+versionadmin_update:
+    path: /admin/version/upate/{id}
+    controller: App\Controller\VersionAdminController::updateAction
+
+# ADMIN POEM
+poemadmin_index:
+    path: /admin/poem/index
+    controller: App\Controller\PoemAdminController::indexAction
+
+poemadmin_indexdatatables:
+    path: /admin/poem/indexdatatables
+    controller: App\Controller\PoemAdminController::indexDatatablesAction
+
+poemadmin_new:
+    path: /admin/poem/new/{biographyId}/{collectionId}
+    controller: App\Controller\PoemAdminController::newAction
+    requirements:
+        biographyId: \d+
+        collectionId: \d+
+    defaults:
+        biographyId: null
+        collectionId: null
+
+poemadmin_create:
+    path: /admin/poem/create
+    controller: App\Controller\PoemAdminController::createAction
+
+poemadmin_show:
+    path: /admin/poem/show/{id}
+    controller: App\Controller\PoemAdminController::showAction
+
+poemadmin_edit:
+    path: /admin/poem/edit/{id}
+    controller: App\Controller\PoemAdminController::editAction
+
+poemadmin_update:
+    path: /admin/poem/upate/{id}
+    controller: App\Controller\PoemAdminController::updateAction
+
+poemadmin_newfast:
+    path: /admin/poem/newfast/{biographyId}/{collectionId}
+    controller: App\Controller\PoemAdminController::newFastAction
+    requirements:
+        biographyId: \d+
+        collectionId: \d+
+    defaults:
+        biographyId: null
+        collectionId: null
+
+poemadmin_addfast:
+    path: /admin/poem/addfast
+    controller: App\Controller\PoemAdminController::addFastAction
+
+poemadmin_newfastmultiple:
+    path: /admin/poem/newfastmultiple
+    controller: App\Controller\PoemAdminController::newFastMultipleAction
+
+poemadmin_addfastmultiple:
+    path: /admin/poem/addfastmultiple
+    controller: App\Controller\PoemAdminController::addFastMultipleAction
+
+poemadmin_getbiographiesbyajax:
+    path: /admin/poem/get_biographies
+    controller: App\Controller\PoemAdminController::getBiographiesByAjaxAction
+
+poemadmin_twitter:
+    path: /admin/poem/twitter/{id}
+    controller: App\Controller\PoemAdminController::twitterAction
+
+# ADMIN STORE
+storeadmin_index:
+    path: /admin/store/index
+    controller: App\Controller\StoreAdminController::indexAction
+
+storeadmin_indexdatatables:
+    path: /admin/store/indexdatatables
+    controller: App\Controller\StoreAdminController::indexDatatablesAction
+
+storeadmin_new:
+    path: /admin/store/new
+    controller: App\Controller\StoreAdminController::newAction
+
+storeadmin_create:
+    path: /admin/store/create
+    controller: App\Controller\StoreAdminController::createAction
+
+storeadmin_show:
+    path: /admin/store/show/{id}
+    controller: App\Controller\StoreAdminController::showAction
+
+storeadmin_edit:
+    path: /admin/store/edit/{id}
+    controller: App\Controller\StoreAdminController::editAction
+
+storeadmin_update:
+    path: /admin/store/upate/{id}
+    controller: App\Controller\StoreAdminController::updateAction
+
+# ADMIN CONTACT FORM
+contactadmin_index:
+    path: /admin/contact/index
+    controller: App\Controller\ContactAdminController::indexAction
+
+contactadmin_indexdatatables:
+    path: /admin/contact/indexdatatables
+    controller: App\Controller\ContactAdminController::indexDatatablesAction
+
+contactadmin_show:
+    path: /admin/contact/show/{id}
+    controller: App\Controller\ContactAdminController::showAction
+    
+# ADMIN USER
+useradmin_index:
+    path: /admin/user/index
+    controller: App\Controller\UserControllerAdminController::indexAction
+
+useradmin_indexdatatables:
+    path: /admin/user/indexdatatables
+    controller: App\Controller\UserControllerAdminController::indexDatatablesAction
+
+useradmin_show:
+    path: /admin/user/show/{id}
+    controller: App\Controller\UserControllerAdminController::showAction
+
+useradmin_enabled:
+    path: /admin/user/enabled/{id}/{state}
+    controller: App\Controller\UserControlleradmin:enabledAction

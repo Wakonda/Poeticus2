@@ -1,0 +1,290 @@
+menu:
+    top:
+        MainPage: "Pagina principale"
+        Authors: "Autori"
+        Collections: "Collezioni"
+        Countries: "Paesi"
+        PoeticForms: "Forme poetiche"
+        YourPoems: "Le vostre poesie"
+        Store: "Bottega"
+    left:
+        RecentPoems: "Poesie recenti"
+        Publicity: "Pubblicità"
+        Statistics: "Statistica"
+        MemberArea: "Zona membri"
+        Languages: "In altre lingue"
+        LogIn: "Entra"
+        CreateAccount: "Registrati"
+        NumberOfPublishedPoems: "Numero di poesie pubblicate"
+        TotalAuthors: "Totale Autori"
+        NumberOfBooks: "Numero di libri"
+        MyProfile: "Il mio profilo"
+        ChangeMyPassword: "Modificare la password"
+        EditProfile: "Modifica profilo"
+        WritePoetry: "Scrivere poesie"
+        LogOut: "Esci"
+        Admin: "Admin"
+    footer:
+        About: "A proposito"
+        ContactUs: "Contattaci"
+        Version: "Versione"
+main:
+    index:
+        WonderfulWorldOfPoem: "Il<small> Magico Mondo </small> della Poesia"
+        WelcomeTo: "Benvenuti a Poéticus"
+        Search: "Cercare la poesia"
+        PoemRandomly: "Poesia a case"
+        NoPoem: "Alcuna poesia"
+    field:
+        Title: "Titolo"
+        Keywords: "Parola chiave"
+        Author: "Autore"
+        Country: "Paese"
+        Collection: "Raccolta"
+        PoeticForm: "Forma poetica"
+        ChooseAnOption: "Seleziona una delle opzioni"
+        Search: "Cercare"
+        YourPoems: "Le vostre poesie"
+        GreatWriters: "Grandi scrittori"
+biography:
+    index:
+        ByAuthors: "Per autore"
+        HisPoems: "Le sue poesie"
+    field:
+        BirthDate: "Data di nascita"
+        DeathDate: "Data de decesso"
+        Nationality: "Nazionalità"
+    table:
+        Number: "Numero"
+        Author: "Autore"
+        Title: "Titolo"
+        Collection: "Raccolta"
+collection:
+    index:
+        ByCollections: "Per collezioni"
+    field:
+        Author: "Autore"
+        PublicationDate: "Data di pubblicazione"
+        PoemsInThisCollection: "Poesie in questa raccolta"
+        BuyThisCollection: "Compra questo libro"
+    table:
+        Number: "Numero"
+        Author: "Autore"
+        Collection: "Raccolta"
+        Title: "Titolo"
+country:
+    index:
+        ByCountries: "Per paese"
+    table:
+        Number: "Numero"
+        Author: "Autore"
+        Country: "Paese"
+        Title: "Titolo"
+poeticForm:
+    index:
+        ByPoeticForms: "Per forme poetiche"
+    table:
+        PoeticForm: "Forma poetica"
+        Number: "Numero"
+        Title: "Titolo"
+yourPoems:
+    index:
+        YourPoems: "Le vostre poesie"
+    table:
+        Author: "Autore"
+        Title: "Titolo"
+    field:
+        WritePoetry: "Scrivere una poesia"
+        EditPoetry: "Modificare una poesia"
+        Title: "Titolo"
+        Text: "Testo"
+        Draft: "Bozza"
+        Save: "Registrare"
+user:
+    login:
+        Pseudo: "Nome utente"
+        Password: "Password"
+        RememberMe: "Mantienimi collegato"
+        LogIn: "Entra"
+        LogOut: "Esci"
+        ForgottenPassword: "Hai dimenticato la password?"
+        PasswordOrUserForgotten: "La password inserita non è corretta. Riprovare."
+        YouAreLoggedInAs: "Sei già connesso come"
+    createAccount:
+        CreateAccount: "Registrati"
+        Pseudo: "Nome utente"
+        Password: "Password"
+        PasswordValidation: "Conferma password"
+        Email: "Indirizzo di posta elettronica"
+        Avatar: "Avatar"
+        Description: "Presentazione"
+        Country: "Paese"
+        Captcha: "Inserisci il testo che vedi sull'immagine"
+        CreateSave: "Crea la tua utenza"
+        OR: "O"
+        SelectFile: "Selezionare un file"
+        UseGravatar: "Utilizza un gravatar"
+        PasswordsMustMatch: "Le password devono corrispondere"
+    myProfile:
+        MyPoems: "Mie poesie"
+        MyComments: "Miei commenti"
+        MyVotes: "Miei voti"
+        Login: "Nome utente"
+        Country: "Paese"
+        Description: "Presentazione"
+        Title: "Titolo"
+        Action: "Azione"
+        Edit: "Modificare"
+        Delete: "Eliminare"
+        State: "Stato"
+        Poem: "Poesia"
+        PublicationDate: "Data di pubblicazione"
+        Vote: "Voto"
+forgottenPassword:
+    index:
+        ResetPassword: "Reimposta password"
+        NewPasswordSend: "Compila uno dei campi per ricevere una password temporanea tramite email."
+    field:
+        EmailUsername: "Indirizzo email o Nome utente"
+        Captcha: "Inserisci il testo che vedi sull'immagine"
+        Send: "Reimposta password"
+contact:
+    field:
+        ContactUs: "Contattateci!"
+        Message: "Menssaggio"
+        Email: "Email"
+        Subject: "Oggetto"
+        Send: "Inviare"
+comment:
+    index:
+        Comments: "Commenti"
+    field:
+        Message: "Messaggio"
+        Send: "Inviare"
+        YouMustBeLoggedInToWriteAComment: "Devi essere registrato per scrivere un commento"
+send:
+    index:
+        PoemAutomaticallyAddedPost: "La poesia verrà automaticamente aggiunto al tuo messaggio"
+        SendPoemFriend: "Invia questa poesia ad un amico"
+        Infos: "Informazioni"
+vote:
+    index:
+        Votes: "Votazioni"
+    field:
+        Error: "Errore"
+        YouMustBeLoggedInToVote: "Devi essere registrato per votare!"
+        YouHaveAlreadyVotedForThisPoem: "Hai già votato per questa poesia"
+version:
+    index:
+        Version: "Versione"
+        ReleaseDate: "Data di rilascio"
+        Read: "Leggere"
+poem:
+    state:
+        Published: "Pubblicato"
+        Deleted: "Soppresso"
+        Draft: "Bozza"
+    browsing:
+        Previous: "Precedente"
+        Next: "Seguente"
+admin:
+    index:
+        Biography: "Biografia"
+        Contact: "Contatto"
+        PoeticForm: "Forma poetica"
+        Member: "Membro"
+        Page: "Pagina"
+        Country: "Paese"
+        Poem: "Poesia"
+        Collection: "Raccolta"
+        Version: "Versione"
+        Store: "Bottega"
+        Create: "Creare"
+        Read: "Leggere"
+        Update: "Modificare"
+        Add: "Aggiungere"
+        QuicklyCreation: "Rapida creazione"
+        GenerateSitemap: "Generare la mappa del sito"
+        Yes: "Si"
+        No: "Non"
+        CurrentImage: "Foto attuale"
+        CurrentFile: "File attuale"
+        UnreadMessages: "Messaggi non letti"
+    table:
+        Title: "Titolo"
+        Action: "Azione"
+        Subject: "Oggetto"
+        ReadQuestion: "Letti?"
+        Pseudo: "Nome utente"
+        ReleaseDate: "Data di uscita"
+        VersionNumber: "Numero di versione"
+    main:
+        Save: "Registrare"
+    form:
+        Language: "Lingua"
+        Slug: "Slug"
+    poem:
+        Title: "Titolo"
+        PoeticForm: "Forma poetica"
+        Text: "Testo"
+        AuthorKind: "Tipo d'autore"
+        Biography: "Biografia"
+        User: "Utente"
+        Country: "Paese"
+        Collection: "Raccolta"
+        PublicationDate: "Data di pubblicazione"
+        UnknownDate: "Data sconosciuta"
+        Image: "Immagine"
+        RapidCreation: "Rapida creazione"
+        ForSameBiography: "per il stesso autore"
+        ForSameCollection: "per la stessa collezione"
+        Number: "Quantità"
+    biography:
+        Title: "Titolo"
+        Text: "Testo"
+        BirthDate: "Data di nascita"
+        DeathDate: "Data del decesso"
+        Image: "Immagine"
+        Nationality: "Nazionalità"
+        Country: "Paese"
+    poeticForm:
+        Title: "Titolo"
+        Text: "Testo"
+        Image: "Immagine"
+        KindOfContent: "Tipo di contenuto"
+    country:
+        Title: "Titolo"
+        InternationalName: "Denominazione internazionale"
+        Flag: "Bandiera"
+    collection:
+        Title: "Titolo"
+        Text: "Testo"
+        PublicationDate: "Data di pubblicazione"
+        Image: "Immagine"
+        Biography: "Biografia"
+        ProductCode: "Codice del prodotto"
+        UnknownDate: "Data sconosciuta"
+    contact:
+        Message: "Menssaggio"
+        Email: "Email"
+        DateOfDispatch: "Data di spedizione"
+    member:
+        Pseudo: "Nome utente"
+        Roles: "Ruoli"
+        Email: "Email"
+        Activated: "Attivato"
+        Activate: "Attivare"
+        Desactivate: "Disattivare"
+    page:
+        Title: "Titolo"
+        Text: "Testo"
+        InternationalName: "Denominazione internazionale"
+        Image: "Immagine"
+    version:
+        VersionNumber: "Numero di versione"
+        ReleaseDate: "Data di uscita"
+        File: "File"
+    store:
+        Title: "Titolo"
+        ProductCode: "Codice del prodotto"
+        Tag: "Tag"

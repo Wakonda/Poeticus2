@@ -1,0 +1,28 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'yourPoems.field.EditPoetry'|trans }}{% endblock %}
+{% block main_title %}{{ 'yourPoems.field.EditPoetry'|trans }}{% endblock %}
+
+{% block script_additional %}
+{% endblock %}
+
+{% block main_content %}
+{% form_theme form with['Form/fields.html.twig'] %}
+{{ form_start(form, {'method' : 'post', 'action' : path('poemuser_update', { 'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
+	<table class="form_grid">
+		<tr>
+			<th>{{ form_label(form.title) }}</th>
+			<td><div class="errors">{{ form_errors(form.title) }}</div>{{ form_widget(form.title, {'attr':{'class':'full_width'}}) }}</td>
+		</tr>
+		<tr>
+			<th>{{ form_label(form.text) }}</th>
+			<td><div class="errors">{{ form_errors(form.text) }}</div>{{ form_widget(form.text, { 'attr' : { 'class' : 'text' }}) }}</td>
+		</tr>
+	</table>
+	<hr />
+	{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+	{{ form_widget(form.draft, {'icon': 'fa-inbox'}) }}
+	{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{% endblock %}

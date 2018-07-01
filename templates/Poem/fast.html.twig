@@ -1,0 +1,154 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Poem'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Poem'|trans }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.css') }}" media="screen" />
+{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.js') }}"></script>
+	<script src="{{ asset('js/combobox.js') }}"></script>
+	<script type="text/javascript">
+		$(function()
+		{
+			$("input#{{form.unknownReleasedDate.vars.id }}").click(function()
+			{
+				if($(this).is(":checked"))
+					$("#{{form.releasedDate.vars.id }}").val("");
+			});
+			$("input#{{form.unknownReleasedDate.vars.id }}").click();
+			
+			$("input#{{form.releasedDate.vars.id }}").keyup(function()
+			{
+				if($(this).val() != "")
+					$("input#{{ form.unknownReleasedDate.vars.id }}").prop('checked', false);
+				else
+					$("input#{{ form.unknownReleasedDate.vars.id }}").prop('checked', true);
+			});
+			$("input#{{ form.releasedDate.vars.id }}").keyup();
+			
+			function changeBiography(val)
+			{
+				$.ajax({
+					type: "POST",
+					url: "{{ path('list_selected_biography') }}",
+					data: { "id" : val },
+					success: function(data)
+					{
+						if(data.country != "")
+							$("td.poem-country").html('<img src="{{ asset('photo/country/') }}' + data.country.flag +'" class="flag" />' + ' ' + data.country.title);
+						else
+							$("td.poem-country").html("-");
+
+						var collectionId = "{{ entity.collection }}";
+						var collections = data.collections;
+
+						$("#{{ form.collection.vars.id }} option").remove();
+						$("#{{ form.collection.vars.id }}").append('<option value="">{{ 'main.field.ChooseAnOption'|trans }}</option>');
+						
+						if(collections.length > 0)
+						{
+							$.each(collections, function(index, element)
+							{
+								$("#{{ form.collection.vars.id }}").append('<option '+ ((element.id == collectionId) ? "selected" : "") +' value="'+ element.id +'">'+ element.title +'</option>');
+							});
+						}
+					}
+				});
+			}
+			
+			changeBiography($("#{{ form.biography.vars.id }}").val());
+			
+			$("#{{ form.collection.vars.id }}").change(function()
+			{
+				$.ajax({
+					type: "POST",
+					url: "{{ path('list_selected_collection') }}",
+					data: { "id" : $(this).val() },
+					success: function(data)
+					{
+						$("#{{ form.releasedDate.vars.id }}").val(data.releasedDate);
+
+						if(data.releasedDate != null)
+							$('input#{{ form.unknownReleasedDate.vars.id }}').prop('checked', false);
+						else
+							$('input#{{ form.unknownReleasedDate.vars.id }}').prop('checked', true);
+					}
+				});
+			});
+			
+			$("#{{ form.collection.vars.id }}").change();
+			
+			$("select#{{ form.language.vars.id }}").change(function() {
+				var input = $(".container_{{ form.biography.vars.id }} > .input-group > input[type='hidden']");
+				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
+				$(".container_{{ form.biography.vars.id }}").parent().append(input[0]);
+				$(".container_{{ form.biography.vars.id }}").remove();
+				setComboboxNew('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.biography.vars.id }}", changeBiography);
+			
+				$.ajax({
+					type: "GET",
+					url: "{{ path('get_poeticforms_by_language') }}",
+					data: { "locale" : $(this).val() },
+					success: function(data)
+					{
+						$("select#{{ form.poetic_form.vars.id }}").empty();
+						$("select#{{ form.poetic_form.vars.id }}").append('<option value="" selected="selected">{{ 'main.field.ChooseAnOption'|trans }}</option>');
+						
+						for (var i = 0; i < data.length; i++) {
+							$("select#{{ form.poetic_form.vars.id }}").append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
+						}
+					}
+				});
+			});
+			
+			$("select#{{ form.language.vars.id }}").change();
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+
+	{% form_theme form 'Form/fields.html.twig' %}
+	<form action="{{ path('poemadmin_addfast') }}" method="post" novalidate>
+		<table class="form_grid">
+			<tr>
+				<th>{{ form_label(form.ipProxy) }}</th>
+				<td><div class="errors">{{ form_errors(form.ipProxy) }}</div>{{ form_widget(form.ipProxy, {'attr':{'class':'full_width form-control'}}) }}</td>
+			</tr>
+			<tr>
+				<th>{{ form_label(form.language) }}</th>
+				<td><div class="errors">{{ form_errors(form.language) }}</div>{{ form_widget(form.language, {'attr':{'class':'full_width form-control'}}) }}</td>
+			</tr>
+			<tr>
+				<th>{{ form_label(form.poetic_form) }}</th>
+				<td><div class="errors">{{ form_errors(form.poetic_form) }}</div>{{ form_widget(form.poetic_form, {'attr':{'class':'full_width form-control'}}) }}</td>
+			</tr>
+			<tr>
+				<th>{{ form_label(form.url) }}</th>
+				<td><div class="errors">{{ form_errors(form.url) }}</div>{{ form_widget(form.url, {'attr':{'class':'full_width form-control'}}) }}</td>
+			</tr>
+			<tr class="biography_row">
+				<th>{{ form_label(form.biography) }}</th>
+				<td><div class="errors">{{ form_errors(form.biography) }}</div>{{ form_widget(form.biography, {'attr':{'class':'full_width combobox'}}) }}</td>
+			</tr>
+			<tr>
+				<th>{{ 'admin.poem.Country'|trans }}</th>
+				<td class="poem-country">-</td>
+			</tr>
+			<tr>
+				<th>{{ form_label(form.collection) }}</th>
+				<td><div class="errors">{{ form_errors(form.collection) }}</div>{{ form_widget(form.collection, {'attr':{'class':'full_width form-control'}}) }}</td>
+			</tr>
+			<tr>
+				<th>{{ form_label(form.releasedDate) }}</th>
+				<td><div class="errors">{{ form_errors(form.releasedDate) }}</div>{{ form_widget(form.releasedDate, {'attr':{'class':'year form-control'}}) }} {{ form_widget(form.unknownReleasedDate) }} {{ form_label(form.unknownReleasedDate) }}</td>
+			</tr>
+		</table>
+		<hr />
+		{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+		{{ form_rest(form) }}
+	</form>
+{% endblock %}

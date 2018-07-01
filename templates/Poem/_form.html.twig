@@ -1,0 +1,49 @@
+<table class="form_grid">
+	<tr>
+		<th>{{ form_label(form.title) }}</th>
+		<td><div class="errors">{{ form_errors(form.title) }}</div>{{ form_widget(form.title, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.language) }}</th>
+		<td><div class="errors">{{ form_errors(form.language) }}</div>{{ form_widget(form.language, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.poetic_form) }}</th>
+		<td><div class="errors">{{ form_errors(form.poetic_form) }}</div>{{ form_widget(form.poetic_form, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr id="photo_container">
+		<th>{{ form_label(form.photo) }}</th>
+		<td><div class="errors">{{ form_errors(form.photo) }}</div>{{ form_widget(form.photo) }}</td>
+	</tr>
+	<tr id="text_container">
+		<th>{{ form_label(form.text) }}</th>
+		<td><div class="errors">{{ form_errors(form.text) }}</div>{{ form_widget(form.text, { 'attr' : { 'class' : 'text form-control redactor' }}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.author_type) }}</th>
+		<td><div class="errors">{{ form_errors(form.author_type) }}</div>{{ form_widget(form.author_type, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr class="user_row">
+		<th>{{ form_label(form.user) }}</th>
+		<td><div class="errors">{{ form_errors(form.user) }}</div>{{ form_widget(form.user, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr class="biography_row">
+		<th>{{ form_label(form.biography) }}</th>
+		<td><div class="errors">{{ form_errors(form.biography) }}</div>{{ form_widget(form.biography, {'attr':{'class':'full_width combobox'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ 'admin.poem.Country'|trans }}</th>
+		<td class="poem-country">-</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.collection) }}</th>
+		<td><div class="errors">{{ form_errors(form.collection) }}</div>{{ form_widget(form.collection, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.released_date) }}</th>
+		<td><div class="errors">{{ form_errors(form.released_date) }}</div>{{ form_widget(form.released_date, {'attr':{'class':'year form-control'}}) }} {{ form_widget(form.unknown_released_date) }} {{ form_label(form.unknown_released_date) }}</td>
+	</tr>
+</table>
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

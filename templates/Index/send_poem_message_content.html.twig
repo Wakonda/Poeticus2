@@ -1,0 +1,23 @@
+{% set senderName = "Une personne" %}
+
+{% if data.firstName is not null %}
+	{% set senderName = data.firstName %}
+	
+	{% if data.lastName is not null %}
+		{% set senderName = senderName ~ " " ~ data.lastName %}
+	{% endif %}
+{% endif %}
+
+{% set authorPoem = (entity.isBiography()) ? entity.biography.title : entity.user.username %}
+
+<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) vous a envoyé ce poème écrit par <b>{{ authorPoem }}</b> et intitulé <u><i>{{ entity.title }}</i></u>.</p>
+
+{{ data.message|raw }}
+
+<hr>
+
+{{ entity.text|raw }}
+
+<hr>
+
+<p>Ce poème a été envoyé depuis <a href="{{ url('read', { 'id': entity.id, 'slug': entity.slug }) }}" alt="Poéticus">Poéticus</a></p>

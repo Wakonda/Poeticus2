@@ -1,0 +1,34 @@
+{% import "Index/macro.html.twig" as macro %}
+<table class="form_grid">
+	<tr>
+		<th>{{ form_label(form.title) }}</th>
+		<td><div class="errors">{{ form_errors(form.title) }}</div>{{ form_widget(form.title, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.text) }}</th>
+		<td><div class="errors">{{ form_errors(form.text) }}</div>{{ form_widget(form.text) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.releasedDate) }}</th>
+		<td><div class="errors">{{ form_errors(form.releasedDate) }}</div>{{ form_widget(form.releasedDate, {'attr':{'class':'year form-control'}}) }} {{ form_widget(form.unknownReleasedDate) }} {{ form_label(form.unknownReleasedDate) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.image) }}</th>
+		<td><div class="errors">{{ form_errors(form.image) }}</div>{% if entity.image is defined %}{{ macro.currentImage("photo/collection/", entity.image) }}{% endif %}{{ form_widget(form.image) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.language) }}</th>
+		<td><div class="errors">{{ form_errors(form.language) }}</div>{{ form_widget(form.language, {'attr':{'class':'full_width form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.biography) }}</th>
+		<td><div class="errors">{{ form_errors(form.biography) }}</div>{{ form_widget(form.biography, {'attr':{'class':'full_width combobox'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.widgetProduct) }}</th>
+		<td><div class="errors">{{ form_errors(form.widgetProduct) }}</div>{{ form_widget(form.widgetProduct, {'attr':{'class':'text form-control'}}) }}</td>
+	</tr>
+</table>
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

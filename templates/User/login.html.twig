@@ -1,0 +1,40 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'user.login.LogIn'|trans }}{% endblock %}
+{% block main_title %}{{ 'user.login.LogIn'|trans }}{% endblock %}
+
+{% block main_content %}
+	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+		{{ 'user.login.YouAreLoggedInAs'|trans }} {{ app.user.username }}
+		<a href="{{ path('logout') }}">{{ 'user.login.LogOut'|trans }}</a>
+	{% else %}
+		<form action="{{ path('login') }}" method="post" novalidate>
+			{% if error %}
+				<p class="error">{{ 'user.login.PasswordOrUserForgotten'|trans }}</p>
+			{% endif %}
+			{% for message in app.session.getFlashBag.get('confirm_login') %}
+				<div class="success">{{ message }}</div>
+			{% endfor %}
+			
+			{% for message in app.session.getFlashBag.get('expired_login') %}
+				<div class="error">{{ message }}</div>
+			{% endfor %}
+
+			<table class="form_grid">
+				<tr>
+					<th><label for="username" class="required">{{ 'user.login.Pseudo'|trans }}</label></th>
+					<td><input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" /></td>
+				</tr>
+				<tr>
+					<th><label for="password" class="required">{{ 'user.login.Password'|trans }}</label></th>
+					<td><input type="password" id="password" name="_password" value="" class="form-control" /></td>
+				</tr>
+			</table>
+			<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+			<label for="remember_me">{{ 'user.login.RememberMe'|trans }}</label>
+			<br>
+			<button type="submit" class="btn btn-info"><i class="fa fa-sign-in"></i> {{ 'user.login.LogIn'|trans }}</button>
+			<a href="{{ path('user_forgottenpassword') }}" alt="">{{ 'user.login.ForgottenPassword'|trans }}</a>
+		</form>
+	{% endif %}
+{% endblock %}

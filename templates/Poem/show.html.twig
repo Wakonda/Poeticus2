@@ -1,0 +1,96 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Poem'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Poem'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="admin_show">
+		<tr>
+			<th>{{ "admin.poem.Title"|trans }}</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.Text"|trans }}</th>
+			<td>
+			{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('Poeticus\\Entity\\PoeticForm::IMAGETYPE') %}
+				{{ ("photo/poem/"~entity.photo)|max_size_image() }}
+			{% else %}
+				{{ entity.text|raw }}
+			{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.PublicationDate"|trans }}</th>
+			<td>{{ entity.releasedDate }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.PoeticForm"|trans }}</th>
+			<td>{{ entity.poeticform }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.Biography"|trans }}</th>
+			<td>{{ entity.biography }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.Country"|trans }}</th>
+			<td>{{ entity.country.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.poem.Collection"|trans }}</th>
+			<td>{{ entity.collection }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<div class="panel panel-default sub_block">
+		<div class="panel-heading" role="tab" id="headingTwitter">
+			<p class="panel-title">
+			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter
+			</a>
+			</p>
+		</div>
+		<div id="collapseTwitter" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwitter" aria-expanded="true" style="">
+			<div class="panel-body">
+				<form action="{{ path('poemadmin_twitter', {'id': entity.id}) }}" method="post">
+					<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title|raw }} #{{ entity.biography|replace({'-': '', ' ':''}) }} </textarea>
+					<br>
+					<input value="Tweeter" id="tweet" type="submit" class="btn btn-default">
+				</form>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<a href="{{ path('poemadmin_edit', { 'id' : entity.id }) }}">
+		<i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}
+	</a> - 
+	<a href="{{ path('poemadmin_new') }}">
+		<i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}
+	</a> | 
+	<a href="{{ path('poemadmin_new', {'biographyId' : entity.biography.id}) }}">
+		{{ 'admin.poem.ForSameBiography'|trans }}
+	</a>
+	{% if entity.collection is not null %}
+		| <a href="{{ path('poemadmin_new', {'biographyId' : entity.biography.id, 'collectionId' : entity.collection.id }) }}">
+			{{ 'admin.poem.ForSameCollection'|trans }}
+		</a>
+	{% endif %} - 
+	<a href="{{ path('poemadmin_newfast') }}" alt="">
+		<i class="fa fa-paper-plane"></i> {{ "admin.poem.RapidCreation"|trans }}
+	</a> | 
+	<a href="{{ path('poemadmin_newfast', {'biographyId' : entity.biography.id}) }}">
+		{{ 'admin.poem.ForSameBiography'|trans }}
+	</a>
+	{% if entity.collection is not null %}
+		| <a href="{{ path('poemadmin_newfast', {'biographyId' : entity.biography.id, 'collectionId' : entity.collection.id }) }}">
+			{{ 'admin.poem.ForSameCollection'|trans }}
+		</a>
+	{% endif %}
+{% endblock %}

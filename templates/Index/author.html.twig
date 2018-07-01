@@ -1,0 +1,88 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ entity.title }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/DataTables-1.10.16/css/dataTables.bootstrap.min.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/Responsive-2.2.0/css/responsive.bootstrap.min.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/DataTables-1.10.16/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.0/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/datatables.extension.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function ()
+		{
+			$('table.index_directories').DataTable({
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				}, 
+				"bFilter": true,
+				"bInfo": false,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('author_poem_datatables', {'authorId' : entity.id }) }}",
+				"autoWidth": false,
+				"sDom":
+				"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-12'i>>" +
+				"<'row'<'col-sm-12'p>>"
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_title %}{{ entity.title }}{% endblock %}
+
+{% block main_content %}
+	<p class="center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>
+	<br>
+	{{ entity.text|raw }}
+	<table class="show">
+		{% if entity.dayBirth is not null or entity.monthBirth is not null or entity.yearBirth is not null %}
+			<tr>
+			<th><span class="bold">{{ 'biography.field.BirthDate'|trans }} : </span></th>
+			<td>
+			{% if entity.dayBirth is not null and entity.monthBirth is not null and entity.yearBirth is not null %}
+				{{ (entity.yearBirth~"-"~entity.monthBirth~"-"~entity.dayBirth)|date_letter(app.request.locale) }}
+			{% elseif entity.monthBirth is not null and entity.yearBirth is not null %}
+				{{ entity.monthBirth|text_month(entity.yearBirth) }}
+			{% else %}
+				{{ entity.yearBirth }}
+			{% endif %}
+			</td>
+			</tr>
+		{% endif %}
+		{% if entity.dayDeath is not null or entity.monthDeath is not null or entity.yearDeath is not null %}
+			<tr>
+			<th><span class="bold">{{ 'biography.field.DeathDate'|trans }} : </span></th>
+			<td>
+			{% if entity.dayDeath is not null and entity.monthDeath is not null and entity.yearDeath is not null %}
+				{{ (entity.dayDeath~"-"~entity.monthDeath~"-"~entity.yearDeath)|date_letter(app.request.locale) }}
+			{% elseif entity.monthDeath is not null and entity.yearDeath is not null %}
+				{{ entity.monthDeath|text_month(entity.yearDeath) }}
+			{% else %}
+				{{ entity.yearDeath }}
+			{% endif %}
+			</td>
+			</tr>
+		{% endif %}
+		<tr><th><span class="bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country|toString('title') }}</td></tr>
+	</table>
+	<hr>
+	<h3>{{ 'biography.index.HisPoems'|trans }}</h3>
+		<table class="index_directories table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'biography.table.Title'|trans }}</th>
+			<th class="phone">{{ 'biography.table.Collection'|trans }}</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+{% endblock %}

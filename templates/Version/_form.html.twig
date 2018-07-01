@@ -1,0 +1,17 @@
+<table class="form_grid">
+	<tr>
+		<th>{{ form_label(form.versionNumber) }}</th>
+		<td><div class="errors">{{ form_errors(form.versionNumber) }}</div>{{ form_widget(form.versionNumber, {'attr':{'class':'form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.releaseDate) }}</th>
+		<td><div class="errors">{{ form_errors(form.releaseDate) }}</div>{{ form_widget(form.releaseDate, {'attr':{'class':'form-control'}}) }}</td>
+	</tr>
+	<tr>
+		<th>{{ form_label(form.file) }}</th>
+		<td><div class="errors">{{ form_errors(form.file) }}</div>{% if entity.file is defined %}<p><span class="bold underline">{{ 'admin.index.CurrentFile'|trans }} :</span> {{ entity.file }}</p>{% endif %}{{ form_widget(form.file) }}</td>
+	</tr>
+</table>
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

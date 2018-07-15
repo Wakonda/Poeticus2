@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 
-use Poeticus\Entity\Contact;
+use App\Entity\Contact;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Poeticus\Form\Type\ContactType;
+use App\Form\Type\ContactType;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 

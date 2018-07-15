@@ -19,6 +19,8 @@ use App\Entity\Language;
 use App\Entity\Country;
 use App\Entity\PoeticForm;
 use App\Entity\Collection;
+use App\Entity\Page;
+use App\Entity\Version;
 
 use App\Form\Type\PoemUserType;
 use App\Form\Type\IndexSearchType;
@@ -705,15 +707,15 @@ class IndexController extends Controller
 	public function versionAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entities = $entityManager->getRepository(Version::class)->findOneBy(["language" => $request->getLocale()]);
-		
+		$language = $entityManager->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$entities = $entityManager->getRepository(Version::class)->findBy(["language" => $language]);
+
 		return $this->render('Index/version.html.twig', array('entities' => $entities));
 	}
 
 	// Create User Poem
 	public function poemUserNewAction(Request $request)
 	{
-		$entity = new Poem();
 		$form = $this->createForm(PoemUserType::class, null);
 
 		return $this->render("Index/poemUserNew.html.twig", array("form" => $form->createView()));

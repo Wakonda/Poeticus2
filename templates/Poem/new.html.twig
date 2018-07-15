@@ -72,10 +72,10 @@
 							{
 								$("#{{ form.collection.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 							});
-							{#{% set collection = app.request.attributes.get("collectionId") %}
+							{% set collection = app.request.attributes.get("collectionId") %}
 							{% if collection is not null %}
 								$("#{{ form.collection.vars.id }}").val("{{ collection }}");
-							{% endif %}#}
+							{% endif %}
 						}
 					}
 				});

@@ -18,7 +18,7 @@
 				{% for entity in entities %}
 				<tr>
 					<td>{{ entity.versionNumber }}</td>
-					<td>{{ entity.releaseDate|date_letter }}</td>
+					<td>{{ entity.releaseDate|date_letter(app.request.locale) }}</td>
 					<td>
 						{% if entity.file is not empty %}
 							<a href="{{ asset('photo/version/'~ entity.file) }}">Lire</a>

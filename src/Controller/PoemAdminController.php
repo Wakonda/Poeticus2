@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-require __DIR__.'/../../Vendor/simple_html_dom.php';
+require __DIR__.'/../../vendor/simple_html_dom.php';
 
 class PoemAdminController extends Controller
 {
@@ -92,10 +92,10 @@ class PoemAdminController extends Controller
 		$entity->setLanguage($language);
 
 		if(!empty($biographyId))
-			$entity->setBiography($biographyId);
-
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($biographyId));
+		
 		if(!empty($collectionId))
-			$entity->setCollection($collectionId);
+			$entity->setCollection($entityManager->getRepository(Collection::class)->find($collectionId));
 
         $form = $this->genericCreateForm($request->getLocale(), $entity);
 
@@ -137,7 +137,7 @@ class PoemAdminController extends Controller
 			}
 
 			$entity->setState(0);
-			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
+			$entity->setCountry($entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

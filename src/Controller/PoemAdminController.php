@@ -684,10 +684,10 @@ class PoemAdminController extends Controller
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
 
-		$consumer_key = "e4yhUO4SYqVcjS5g7itJeBcln";
-		$consumer_secret = "U5xMbhBXs4aGeXF2AqFjdIIGTbIVIbjgzZSNEPawgGNNvbbtMB";
-		$access_token = "706490944305102848-tx27engIyYshExc76IZNgPkqc1aBafc";
-		$access_token_secret = "vjna9QCsQxfjYx5Q0TLj0ha9nQs3b5ClvIUkQtwDdpJjS";
+		$consumer_key = getenv("TWITTER_CONSUMER_KEY");
+		$consumer_secret = getenv("TWITTER_CONSUMER_SECRET");
+		$access_token = getenv("TWITTER_ACCESS_TOKEN");
+		$access_token_secret = getenv("TWITTER_ACCESS_TOKEN_SECRET");
 
 		$connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 

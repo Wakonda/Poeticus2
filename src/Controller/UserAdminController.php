@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
-use Poeticus\Entity\User;
-use Poeticus\Form\Type\UserType;
+use App\Entity\User;
+use App\Form\Type\UserType;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class UserAdminController
+class UserAdminController extends Controller
 {
 	public function indexAction(Request $request)
 	{

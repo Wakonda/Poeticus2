@@ -598,15 +598,15 @@ contactadmin_show:
 # ADMIN USER
 useradmin_index:
     path: /admin/user/index
-    controller: App\Controller\UserControllerAdminController::indexAction
+    controller: App\Controller\UserAdminController::indexAction
 
 useradmin_indexdatatables:
     path: /admin/user/indexdatatables
-    controller: App\Controller\UserControllerAdminController::indexDatatablesAction
+    controller: App\Controller\UserAdminController::indexDatatablesAction
 
 useradmin_show:
     path: /admin/user/show/{id}
-    controller: App\Controller\UserControllerAdminController::showAction
+    controller: App\Controller\UserAdminController::showAction
 
 useradmin_enabled:
     path: /admin/user/enabled/{id}/{state}

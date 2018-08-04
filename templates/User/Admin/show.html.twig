@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<th>{{ "admin.member.Roles"|trans }}</th>
-			<td>{{ entity.roles }}</td>
+			<td>{{ entity.roles|join(", ") }}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.member.Email"|trans }}</th>
@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>{{ "admin.member.Activated"|trans }}</th>
-			<td>{{ entity.enabled == 1 ? '&#x2713;' : '&#x2718' }}</td>
+			<td>{{ entity.enabled == 1 ? '<span style="color: green;">&#x2713</span>' : '<span style="color: red;">&#x2718</span>' }}</td>
 		</tr>
 	</table>
 	<hr>

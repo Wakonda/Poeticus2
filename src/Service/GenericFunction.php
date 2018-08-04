@@ -50,6 +50,19 @@ class GenericFunction
 		
 		return $str;
 	}
+	
+	public function getContentDom($url, $ipProxy = null)
+	{
+		if(!empty($ipProxy))
+			$html = $this->getContentURL($url, $ipProxy);
+		else
+			$html = $this->getContentURL($url);
+
+		$dom = new \simple_html_dom();
+		$dom->load($html);
+		
+		return $dom;
+	}
 
 	public static function slugify($text, $max_size = null)
 	{

@@ -73,7 +73,7 @@ class UserRepository extends ServiceEntityRepository implements iRepository
 		}
 		if($count)
 		{
-			$qb->select("COUNT(*) AS count");
+			$qb->select("COUNT(u) AS count");
 		return $qb->getQuery()->getSingleScalarResult();
 		}
 		else

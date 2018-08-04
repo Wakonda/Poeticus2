@@ -249,15 +249,15 @@ class PoemAdminController extends Controller
 			switch(base64_encode($url_array['host']))
 			{
 				case 'cG9lc2llLndlYm5ldC5mcg==':
-					$title = $dom->find('h1'); 
-					$text = $dom->find('p[class=last]'); 
+					$title = $dom->find('h3[class=poem__title]'); 
+					$text = $dom->find('div[class=poem__content]'); 
 
 					$title = html_entity_decode($title[0]->plaintext);
 					$title = (preg_match('!!u', $title)) ? $title : utf8_encode($title);
 
 					$subPoemArray = array();
 					$subPoemArray['title'] = $title;
-					$subPoemArray['text'] = str_replace(' class="last"', '', $text[0]->outertext);
+					$subPoemArray['text'] = $text[0]->outertext;
 					$poemArray[] = $subPoemArray;
 					break;
 				case 'd3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=':
@@ -285,7 +285,7 @@ class PoemAdminController extends Controller
 					$title = current($dom->find("h1.entry-title"))->innertext;
 					
 					$text = $dom->find("main article div.entry-content");
-					$text = $text[1]->innertext;
+					$text = $text[0]->innertext;
 					
 					$text = str_replace("<p>", "", $text);
 					$text = str_replace("<br />", "<br>", $text);
@@ -475,8 +475,8 @@ class PoemAdminController extends Controller
 					foreach($dom->find('div.poemes-auteurs') as $div)
 					{					
 						$entityPoem = clone $entity;
-						$a = current($div->find("a"));die("ok");
-						$content = $dom->file_get_html($a->href);
+						$a = current($div->find("a"));
+						$content = $gf->getContentDom($a->href);
 						$title_node = $content->find('article h1');
 						$title_str = $title_node[0]->plaintext;
 						$title_array = explode(":", $title_str);
@@ -494,8 +494,9 @@ class PoemAdminController extends Controller
 						
 						$entityPoem->setTitle($title);
 						$entityPoem->setText($text);
-						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('fr')->getId());
-						
+						$entityPoem->setState(0);
+						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('fr'));
+					
 						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
 							continue;
 						
@@ -504,7 +505,7 @@ class PoemAdminController extends Controller
 	
 						$i++;
 
-						$entityManager->persist($entity);
+						$entityManager->persist($entityPoem);
 						$entityManager->flush();
 						$id = $entity->getId();
 					}
@@ -514,9 +515,8 @@ class PoemAdminController extends Controller
 					{
 						$title = $article->find("h2", 0)->plaintext;
 						$blockquote = $article->find('blockquote', 0);
-						$a = $blockquote->find('a', 0);
 						
-						$content = $a->plaintext;
+						$content = $blockquote->plaintext;
 						$content = utf8_encode(str_replace(chr(150), '-', $content)); // Replace "en dash" by simple "dash"
 						$content = str_replace("\n", "<br>", $content);
 						$entityPoem = clone $entity;

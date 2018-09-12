@@ -513,6 +513,8 @@ class PoemAdminController extends Controller
 				case 'd3d3LnBlbnNpZXJpcGFyb2xlLml0':
 					foreach($dom->find('article') as $article)
 					{
+						if(empty($article) || empty($article->find("h2", 0)))
+							continue;
 						$title = $article->find("h2", 0)->plaintext;
 						$blockquote = $article->find('blockquote', 0);
 						
@@ -524,7 +526,7 @@ class PoemAdminController extends Controller
 						$entityPoem->setText($content);
 						$entityPoem->setState(0);
 						
-						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('it')->getId());
+						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('it'));
 						
 						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
 							continue;

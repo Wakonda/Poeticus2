@@ -64,9 +64,16 @@
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.RecentPoems'|trans }}</h1>
 						{{ render(controller('App\\Controller\\IndexController::lastPoemAction')) }}
-						<span class="follow_on_twitter"><a href="https://twitter.com/poeticus12" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-size="large" data-dnt="true">Suivre @poeticus12</a>
+
+						<div class="social-media-icons">
+							<a class="facebook" href="https://www.facebook.com/Proverbius-1894996570590486" target="_blank"><i class="fa fa-facebook-square fa-3x"></i></a>
+							<a class="twitter" href="https://twitter.com/poeticus12" target="_blank"><i class="fa fa-twitter-square fa-3x" target="_blank"></i></a>
+							<a class="pinterest" href="http://pinterest.com/amatukamiproverbius/" target="_blank"><i class="fa fa-pinterest-square fa-3x" target="_blank"></i></a>
+							<a class="instagram" href="https://www.instagram.com/_proverbius/" target="_blank"><i class="fa fa-instagram fa-3x" target="_blank"></i></a> 
+						</div>
+						<h1>{{ 'menu.left.FollowUs'|trans }}</h1>
+						<span style="text-align: center" class="follow_on_twitter"><a href="https://twitter.com/poeticus12" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-size="large" data-dnt="true">Suivre @poeticus12</a>
 						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
-						<p><a href="http://pinterest.com/amatukamiproverbius/" style=" width: 158px; background-color: #BD081C;color: white;" class="btn btn-default text-left" target="_blank"><i class="fa fa-pinterest-p" aria-hidden="true"></i> &nbsp;&nbsp;Suivez-nous</a></p>
 					</nav>
 
 					<nav class="sidebar">
@@ -145,7 +152,7 @@
 
 			<!-- Footer Element Starts Here -->
 			<footer id="copyrights">
-				<p>© {{ ("2014" == "now"|date("Y")) ? "2014" : "2014 - " ~ "now"|date("Y") }} <a href="{{ path('page_display', {'name' : 'copyright'}) }}">Poéticus</a> by <a href="https://wakonda.guru">Wakonda.guru</a> - <a href="{{ path('page_display', {'name' : 'about'}) }}">{{ 'menu.footer.About'|trans }}</a> - <a href="{{ path('contact') }}">{{ 'menu.footer.ContactUs'|trans }}</a> - <a href="{{ path('version') }}">{{ 'menu.footer.Version'|trans }} {{ number_version() }}</a></p>
+				<p>© {{ ("2014" == "now"|date("Y")) ? "2014" : "2014 - " ~ "now"|date("Y") }} <a href="{{ path('page_display', {'name' : 'copyright'}) }}">Poéticus</a> by <a href="https://wakonda.guru">Wakonda.guru</a> - <a href="{{ path('page_display', {'name' : 'about'}) }}">{{ 'menu.footer.About'|trans }}</a> - <a href="{{ path('page_display', {'name' : 'privacyPolicy'}) }}">{{ 'menu.footer.PrivacyPolicy'|trans }}</a> - <a href="{{ path('contact') }}">{{ 'menu.footer.ContactUs'|trans }}</a> - <a href="{{ path('version') }}">{{ 'menu.footer.Version'|trans }} {{ number_version() }}</a></p>
 			</footer>
 			<!-- Footer Element Ends Here -->
 		</div>

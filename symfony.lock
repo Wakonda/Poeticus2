@@ -122,6 +122,9 @@
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
     },
+    "seregazhuk/pinterest-bot": {
+        "version": "v5.8.2"
+    },
     "spipu/html2pdf": {
         "version": "v5.1.0"
     },

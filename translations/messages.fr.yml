@@ -9,6 +9,7 @@ menu:
         Store: "Boutique"
     left:
         RecentPoems: "Dernières poésies"
+        FollowUs: "Suivez-nous"
         Publicity: "Publicité"
         Statistics: "Statistiques"
         MemberArea: "Espace membre"
@@ -28,6 +29,7 @@ menu:
         About: "À propos"
         ContactUs: "Contactez-nous"
         Version: "Version"
+        PrivacyPolicy: "Politique de confidentialité"
 main:
     index:
         WonderfulWorldOfPoem: "Le<small> Monde Magique </small> de la Poésie"

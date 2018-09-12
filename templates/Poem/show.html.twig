@@ -12,7 +12,7 @@
 		<tr>
 			<th>{{ "admin.poem.Text"|trans }}</th>
 			<td>
-			{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('Poeticus\\Entity\\PoeticForm::IMAGETYPE') %}
+			{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('App\\Entity\\PoeticForm::IMAGETYPE') %}
 				{{ ("photo/poem/"~entity.photo)|max_size_image() }}
 			{% else %}
 				{{ entity.text|raw }}

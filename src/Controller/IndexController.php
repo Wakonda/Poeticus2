@@ -699,7 +699,8 @@ class IndexController extends Controller
 	public function pageAction(Request $request, $name)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Page::class)->findOneBy(["internationalName" => $name]);
+		$language = $entityManager->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$entity = $entityManager->getRepository(Page::class)->findOneBy(["internationalName" => $name, "language" => $language]);
 		
 		return $this->render('Index/page.html.twig', array("entity" => $entity));
 	}

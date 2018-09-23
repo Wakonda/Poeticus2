@@ -15,8 +15,6 @@ class VersionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$locale = $options["locale"];
-		
         $builder
             ->add('versionNumber', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "Numéro de version"
@@ -28,16 +26,6 @@ class VersionType extends AbstractType
             ->add('save', SubmitType::class, array('label' => 'Sauvegarder', 'attr' => array('class' => 'btn btn-success')))
 			;
     }
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function configureOptions(OptionsResolver $resolver)
-	{
-		$resolver->setDefaults(array(
-			"locale" => null
-		));
-	}
 	
     public function getName()
     {

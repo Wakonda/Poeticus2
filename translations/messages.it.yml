@@ -89,6 +89,10 @@ poeticForm:
         PoeticForm: "Forma poetica"
         Number: "Numero"
         Title: "Titolo"
+store:
+    index:
+        Store: "Bottega"
+        Search: "Cercare"
 yourPoems:
     index:
         YourPoems: "Le vostre poesie"
@@ -164,6 +168,9 @@ comment:
         Message: "Messaggio"
         Send: "Inviare"
         YouMustBeLoggedInToWriteAComment: "Devi essere registrato per scrivere un commento"
+    list:
+        PreviousPage: "Pagina precedente"
+        NextPage: "Pagina seguente"
 send:
     index:
         PoemAutomaticallyAddedPost: "La poesia verrà automaticamente aggiunto al tuo messaggio"
@@ -176,11 +183,23 @@ vote:
         Error: "Errore"
         YouMustBeLoggedInToVote: "Devi essere registrato per votare!"
         YouHaveAlreadyVotedForThisPoem: "Hai già votato per questa poesia"
+error:
+    index:
+        Error: "Erro"
+        PageNotFound: "A página que você deseja acessar não existe!"
 version:
     index:
         Version: "Versione"
         ReleaseDate: "Data di rilascio"
         Read: "Leggere"
+search:
+    result:
+        Search: "Cerca"
+        SearchResults: "Risultato della ricerca"
+        Criteria: "Criteri :"
+        Title: "Titolo"
+        Country: "Paese"
+        Author: "Autore"
 poem:
     state:
         Published: "Pubblicato"

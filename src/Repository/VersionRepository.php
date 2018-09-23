@@ -65,8 +65,8 @@ class VersionRepository extends ServiceEntityRepository implements iRepository
 		   ->leftjoin("v.language", "la")
 		   ->where("v.versionNumber = :versionNumber")
 		   ->setParameter('versionNumber', $entity->getVersionNumber())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage());
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

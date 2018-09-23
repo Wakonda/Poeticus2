@@ -48,8 +48,11 @@ class StoreRepository extends ServiceEntityRepository implements iRepository
 		$qb = $this->createQueryBuilder("pa");
 
 		$qb->select("COUNT(pa) AS count")
+		   ->leftjoin("pa.language", "la")
 		   ->where("pa.title = :title")
-		   ->setParameter('title', $entity->getTitle());
+		   ->setParameter('title', $entity->getTitle())
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

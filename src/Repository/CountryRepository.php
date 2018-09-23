@@ -75,8 +75,8 @@ class CountryRepository extends ServiceEntityRepository implements iRepository
 		   ->leftjoin("co", "language", "la", "co.language_id = la.id")
 		   ->where("co.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage()->getId())
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage()->getId())
 		   ;
 
 		if($entity->getId() != null)

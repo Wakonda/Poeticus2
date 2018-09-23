@@ -82,8 +82,8 @@ class CollectionRepository extends ServiceEntityRepository implements iRepositor
 		   ->setParameter('slug', $entity->getSlug())
 		   ->andWhere("bo.id = :biographyId")
 		   ->setParameter("biographyId", $entity->getBiography())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage());
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

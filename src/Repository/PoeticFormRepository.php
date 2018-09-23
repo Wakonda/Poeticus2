@@ -75,8 +75,8 @@ class PoeticFormRepository extends ServiceEntityRepository implements iRepositor
 		   ->leftjoin("pf.language", "la")
 		   ->where("pf.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage());
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

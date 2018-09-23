@@ -8,7 +8,7 @@
 	{% if page <= 1 %}
 		Page précédente
 	{% else %}
-		<a href="#" alt="previous page" data-followpage="{{ page - 1 }}" class="page_action">Page précédente</a>
+		<a href="#" alt="previous page" data-followpage="{{ page - 1 }}" class="page_action">{{ 'comment.list.PreviousPage'|trans }}</a>
 	{% endif %}
 	</div>
 	
@@ -16,7 +16,7 @@
 	{% if page >= number_pages %}
 		Page suivante
 	{% else %}
-		<a href="#" alt="next page" data-followpage="{{ page + 1 }}" class="page_action">Page suivante</a>
+		<a href="#" alt="next page" data-followpage="{{ page + 1 }}" class="page_action">{{ 'comment.list.NextPage'|trans }}</a>
 	{% endif %}
 	</div>
 	

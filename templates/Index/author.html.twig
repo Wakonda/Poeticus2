@@ -73,7 +73,7 @@
 			</td>
 			</tr>
 		{% endif %}
-		<tr><th><span class="bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country|toString('title') }}</td></tr>
+		<tr><th><span class="bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
 	</table>
 	<hr>
 	<h3>{{ 'biography.index.HisPoems'|trans }}</h3>

@@ -499,8 +499,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		   ->leftjoin("pf.biography", "bo")
 		   ->andWhere("bo.id = :biographyId")
 		   ->setParameter("biographyId", $entity->getBiography())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage());
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

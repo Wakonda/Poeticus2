@@ -65,8 +65,8 @@ class PageRepository extends ServiceEntityRepository implements iRepository
 		   ->leftjoin("pa.language", "la")
 		   ->where("pa.title = :title")
 		   ->setParameter('title', $entity->getTitle())
-		   ->andWhere("la.id = :id")
-		   ->setParameter("id", $entity->getLanguage());
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
 
 		if($entity->getId() != null)
 		{

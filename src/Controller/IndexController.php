@@ -59,7 +59,7 @@ class IndexController extends Controller
 		unset($search["_token"]);
 
 		$criteria = array_filter(array_values($search));
-		$criteria = empty($criteria) ? "Aucun" : $criteria;
+		$criteria = empty($criteria) ? $translator->trans("search.result.None") : $criteria;
 
 		return $this->render('Index/resultIndexSearch.html.twig', ['search' => base64_encode(json_encode($search)), 'criteria' => $criteria]);
 	}

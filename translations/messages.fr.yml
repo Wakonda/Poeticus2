@@ -176,6 +176,14 @@ send:
         PoemAutomaticallyAddedPost: "La poésie sera automatiquement ajoutée à votre message"
         SendPoemFriend: "Envoyez cette poésie à un ami"
         Infos: "Infos"
+    field:
+        FirstName: "Prénom"
+        LastName: "Nom"
+        YourMail: "Votre email"
+        RecipientMail: "Email du destinataire"
+        Subject: "Sujet"
+        Message: "Message"
+        Send: "Envoyer"
 vote:
     index:
         Votes: "Votes"
@@ -200,6 +208,7 @@ search:
         Title: "Titre"
         Country: "Pays"
         Author: "Auteur"
+        None: "Aucun"
 poem:
     state:
         Published: "Publié"

@@ -25,7 +25,7 @@
 						tinyMCE.activeEditor.setContent('');
 						$('#send_poem_modal').modal('hide');
 						$('html, body').animate({scrollTop:$('h1').position().top}, 'slow');
-						$('#send_poem_result').html("Votre poème a été envoyé avec succès !");
+						$('#send_poem_result').html("{{ 'send.index.YourPoemHasBeenSentSuccessfully'|trans }}");
 						$('#send_poem_result').show();
 					}
 				}

@@ -176,6 +176,11 @@ send:
         PoemAutomaticallyAddedPost: "La poesia verrà automaticamente aggiunto al tuo messaggio"
         SendPoemFriend: "Invia questa poesia ad un amico"
         Infos: "Informazioni"
+        YourPoemHasBeenSentSuccessfully: "La tua poesia è stata inviata con successo!"
+        ThisPoemHasBeenSentSince: "Questa poesia è stata inviata dal"
+        HeSentYouThisPoemWrittenBy: "ho mandato questa poesia scritta da"
+        Somebody: "Qualcuno"
+        AndEntitled: "e diritto"
     field:
         FirstName: "Cognome"
         LastName: "Nome"
@@ -184,6 +189,7 @@ send:
         Subject: "Oggetto"
         Message: "Messaggio"
         Send: "Invia"
+        Close: "Chiudere"
 vote:
     index:
         Votes: "Votazioni"

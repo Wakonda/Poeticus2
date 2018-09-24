@@ -1,4 +1,4 @@
-{% set senderName = "Une personne" %}
+{% set senderName = "send.index.Somebody"|trans %}
 
 {% if data.firstName is not null %}
 	{% set senderName = data.firstName %}
@@ -10,7 +10,7 @@
 
 {% set authorPoem = (entity.isBiography()) ? entity.biography.title : entity.user.username %}
 
-<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) vous a envoyé ce poème écrit par <b>{{ authorPoem }}</b> et intitulé <u><i>{{ entity.title }}</i></u>.</p>
+<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) {{ "send.index.HeSentYouThisPoemWrittenBy"|trans }} <b>{{ authorPoem }}</b> {{ "send.index.AndEntitled"|trans }} <u><i>{{ entity.title }}</i></u>.</p>
 
 {{ data.message|raw }}
 
@@ -20,4 +20,4 @@
 
 <hr>
 
-<p>Ce poème a été envoyé depuis <a href="{{ url('read', { 'id': entity.id, 'slug': entity.slug }) }}" alt="Poéticus">Poéticus</a></p>
+<p>{{ 'send.index.ThisPoemHasBeenSentSince'|trans }} <a href="{{ url('read', { 'id': entity.id, 'slug': entity.slug }) }}" alt="Poéticus">Poéticus</a></p>

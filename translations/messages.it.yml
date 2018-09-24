@@ -176,7 +176,7 @@ send:
         PoemAutomaticallyAddedPost: "La poesia verrà automaticamente aggiunto al tuo messaggio"
         SendPoemFriend: "Invia questa poesia ad un amico"
         Infos: "Informazioni"
-        YourPoemHasBeenSentSuccessfully: "La tua poesia è stata inviata con successo!"
+        YourMessageHasBeenSentSuccessfully: "La tua poesia è stata inviata con successo!"
         ThisPoemHasBeenSentSince: "Questa poesia è stata inviata dal"
         HeSentYouThisPoemWrittenBy: "ho mandato questa poesia scritta da"
         Somebody: "Qualcuno"

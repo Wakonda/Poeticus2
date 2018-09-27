@@ -132,6 +132,7 @@ user:
         UseGravatar: "Use um gravatar"
         PasswordsMustMatch: "As palavras-passe têm de coincidir"
     myProfile:
+        User: "Utilizador"
         MyPoems: "Os meus poemas"
         MyComments: "Os meus comentários"
         MyVotes: "Meu voto"
@@ -154,6 +155,12 @@ forgottenPassword:
         EmailUsername: "E-mail ou Nome de utilizador(a)"
         Captcha: "Digite o texto que vê na imagem"
         Send: "Enviar uma nova palavra-chave por e-mail"
+editPassword:
+    index:
+        EditMyPassword: "Editar minha senha"
+    field:
+        NewPassword: "Nova senha"
+        PasswordValidation: "Senha (Validação)"
 contact:
     field:
         ContactUs: "Encontramo-nos!"

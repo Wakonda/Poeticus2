@@ -132,6 +132,7 @@ user:
         UseGravatar: "Utilisez un gravatar"
         PasswordsMustMatch: "Les mots de passe doivent correspondre"
     myProfile:
+        User: "Membre"
         MyPoems: "Mes poésies"
         MyComments: "Mes commentaires"
         MyVotes: "Mes votes"
@@ -154,6 +155,12 @@ forgottenPassword:
         EmailUsername: "Email ou nom d'utilisateur"
         Captcha: "Recopiez le mot contenu dans l'image"
         Send: "Réinitialiser le mot de passe"
+editPassword:
+    index:
+        EditMyPassword: "Modifier mon mot de passe"
+    field:
+        NewPassword: "Nouveau mot de passe"
+        PasswordValidation: "Mot de passe (Validation)"
 contact:
     field:
         ContactUs: "Contactez nous !"

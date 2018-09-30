@@ -132,6 +132,10 @@ user:
         UseGravatar: "Use um gravatar"
         CurrentGravatar: "Avatar atual :"
         PasswordsMustMatch: "As palavras-passe têm de coincidir"
+    confirmation:
+        Title: "Confirmação"
+        Text: "Sua conta foi criada. No entanto, para efetuar login, você deve ativar sua conta. Para fazer isso, clique no link que você recebeu por email."
+        Email: "<p>Olá %username%,</p><p>Agradecemos sua inscrição no <b>Poéticus</b>. Para poder fazer o login, e assim desfrutar de todos os recursos do site, clique no link de confirmação abaixo.</p><p><a href='%urlLogin%' alt=''>Clique aqui para ativar sua conta</a></p><p><b><u>Aviso: </u></b>este link irá expirar <i>%expiredAt%</i></p><p>Vejo você em breve em Poéticus ...</p><p>A equipe do Poéticus <a href='%urlIndex%' alt=''><b>Poéticus</b></a></p>"
     editAccount:
         Title: "Modificar meu perfil"
     listUsers:
@@ -165,6 +169,7 @@ forgottenPassword:
     confirmation:
         Title: "Confirmação - Senha esquecida"
         EmailSent: "Um email foi enviado para você. Você encontrará o procedimento para poder reconectar em"
+        Email: "<p>Olá %entity.username%,</p><p>Se você receber este e-mail, esqueceu sua senha. Para remediar a situação, geramos uma provisória:</p><p><b><u>Senha temporária:</u></b> <i>%temporaryPassword%</i></p><p><b><u>Attention :</u></b> Aviso: esta senha é temporária. Como resultado, pedimos que você o modifique assim que <a href='%urlLogin%'>fizer login na sua conta</a>.</p><p>Atenciosamente,</p><p>A equipe do <a href='%urlIndex%'><b>Poéticus</b></a></p>"
 editPassword:
     index:
         EditMyPassword: "Editar minha senha"

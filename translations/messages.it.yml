@@ -132,6 +132,10 @@ user:
         UseGravatar: "Utilizza un gravatar"
         CurrentGravatar: "Avatar corrente:"
         PasswordsMustMatch: "Le password devono corrispondere"
+    confirmation:
+        Title: "Conferma"
+        Text: "Il tuo account è stato creato. Tuttavia, per accedere, è necessario attivare il proprio account. Per fare ciò, clicca sul link che hai ricevuto via email."
+        Email: "<p>Ciao %username%,</p><p>Vi ringraziamo per la vostra registrazione su <b>Poéticus</b>. Per essere in grado di accedere e quindi godere di tutte le funzionalità del sito, fare clic sul link di conferma qui sotto.</p><p><a href='%urlLogin%' alt=''>Clicca qui per attivare il tuo account</a></p><p><b><u>Attenzione: </u></b>questo link scadrà <i>%expiredAt%</i></p><p>A presto su Poéticus ...</p><p>La squadra di Poéticus <a href='%urlIndex%' alt=''><b>Poéticus</b></a></p>"
     editAccount:
         Title: "Modifica il mio profilo"
     listUsers:
@@ -165,6 +169,7 @@ forgottenPassword:
     confirmation:
         Title: "Conferma - Password dimenticata"
         EmailSent: "Ti è stata inviata un'email. Troverai la procedura per poter riconnetterti sul"
+        Email: "<p>Ciao %entity.username%,</p><p>Se ricevi questa email, hai dimenticato la password. Per rimediare alla situazione, abbiamo generato un provvisorio:</p><p><b><u>Password temporanea:</u></b> <i>%temporaryPassword%</i></p><p><b><u>Avvertenza:</u></b> Questa password è temporanea. Di conseguenza, ti invitiamo a modificarlo non appena <a href='%urlLogin%'>accedi al tuo account</a>.</p><p>Cordiali saluti,</p><p>La squadra di <a href='%urlIndex%'><b>Poéticus</b></a></p>"
 editPassword:
     index:
         EditMyPassword: " Modifica la mia password"

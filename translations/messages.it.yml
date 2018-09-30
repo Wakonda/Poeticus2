@@ -130,7 +130,14 @@ user:
         OR: "O"
         SelectFile: "Selezionare un file"
         UseGravatar: "Utilizza un gravatar"
+        CurrentGravatar: "Avatar corrente:"
         PasswordsMustMatch: "Le password devono corrispondere"
+    editAccount:
+        Title: "Modifica il mio profilo"
+    listUsers:
+        ListUsers: "Lista dei membri"
+        Pseudo: "Nome utente"
+        Action: "Azione"
     myProfile:
         User: "Utente"
         MyPoems: "Mie poesie"
@@ -155,6 +162,9 @@ forgottenPassword:
         EmailUsername: "Indirizzo email o Nome utente"
         Captcha: "Inserisci il testo che vedi sull'immagine"
         Send: "Reimposta password"
+    confirmation:
+        Title: "Conferma - Password dimenticata"
+        EmailSent: "Ti è stata inviata un'email. Troverai la procedura per poter riconnetterti sul"
 editPassword:
     index:
         EditMyPassword: " Modifica la mia password"

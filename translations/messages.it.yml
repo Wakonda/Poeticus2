@@ -25,6 +25,7 @@ menu:
         WritePoetry: "Scrivere poesie"
         LogOut: "Esci"
         Admin: "Admin"
+        HelpUs: "Ci aiuti"
     footer:
         About: "A proposito"
         ContactUs: "Contattaci"

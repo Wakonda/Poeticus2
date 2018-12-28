@@ -73,8 +73,10 @@
 			</td>
 			</tr>
 		{% endif %}
-		<tr><th><span class="bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
-	</table>
+
+		{% if entity.country is not empty %}
+			<tr><th><span class="bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
+		{% endif %}	</table>
 	<hr>
 	<h3>{{ 'biography.index.HisPoems'|trans }}</h3>
 		<table class="index_directories table table-striped table-bordered dt-responsive">

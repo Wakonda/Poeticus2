@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\GenericFunction;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,11 +26,6 @@ class Store
 	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $text;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    protected $tag;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Biography")
@@ -50,7 +46,12 @@ class Store
      * @ORM\Column(type="string", length=255)
      */
     protected $photo;
-	
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $slug;
+
 	private $partnerId = "activiparano-21";
 	
 	public function getExternalStoreLink()
@@ -76,16 +77,7 @@ class Store
     public function setTitle($title)
     {
         $this->title = $title;
-    }
-
-    public function getTag()
-    {
-        return $this->tag;
-    }
-
-    public function setTag($tag)
-    {
-        $this->tag = $tag;
+		$this->setSlug();
     }
 
 	public function getLanguage()
@@ -166,5 +158,16 @@ class Store
     public function setPhoto($photo)
     {
         $this->photo = $photo;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = GenericFunction::slugify($this->title);
     }
 }

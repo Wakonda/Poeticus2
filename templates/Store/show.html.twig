@@ -29,6 +29,10 @@
 			<th>{{ "admin.form.Language"|trans }}</th>
 			<td>{{ entity.language.title }}</td>
 		</tr>
+		<tr>
+			<th>{{ 'admin.form.Slug'|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
 	</table>
 	<hr>
 	<a href="{{ path('storeadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('storeadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>

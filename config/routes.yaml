@@ -21,8 +21,10 @@ store:
         page: 1
 
 read_store:
-    path: /read_store/{id}
+    path: /read_store/{id}/{slug}
     controller: App\Controller\IndexController::readStoreAction
+    defaults:
+        slug: null
 
 read:
     path: /read/{id}/{slug}

@@ -161,6 +161,7 @@ class IndexController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Biography::class)->find($id);
+		$stores = $entityManager->getRepository(Store::class)->findBy(["biography" => $entity, "stores" => $stores]);
 
 		return $this->render('Index/author.html.twig', array('entity' => $entity));
 	}

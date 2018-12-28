@@ -94,6 +94,9 @@ store:
     index:
         Store: "Bottega"
         Search: "Cercare"
+    author:
+        Title: "Titolo"
+        Action: "Azione"
 yourPoems:
     index:
         YourPoems: "Le vostre poesie"

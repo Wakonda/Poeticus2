@@ -94,6 +94,9 @@ store:
     index:
         Store: "Loja"
         Search: "Procurar"
+    author:
+        Title: "Título"
+        Action: "Acção"
 yourPoems:
     index:
         YourPoems: "Seus poemas"

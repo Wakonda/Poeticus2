@@ -23,11 +23,11 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.biography.Image'|trans }}</th>
-			<td><p class="center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p></td>
+			<td>{% if entity.photo is not empty %}<p class="center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ 'admin.biography.Nationality'|trans }}</th>
-			<td>{{ entity.country.title }}</td>
+			<td>{% if entity.country is not empty %}{{ entity.country.title }}{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.form.Language"|trans }}</th>

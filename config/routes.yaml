@@ -20,6 +20,10 @@ store:
     defaults:
         page: 1
 
+read_store:
+    path: /read_store/{id}
+    controller: App\Controller\IndexController::readStoreAction
+
 read:
     path: /read/{id}/{slug}
     controller: App\Controller\IndexController::readAction

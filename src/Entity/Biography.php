@@ -28,7 +28,7 @@ class Biography
     protected $slug;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $text;
 	
@@ -63,7 +63,7 @@ class Biography
     protected $yearDeath;
 	
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $photo;
 

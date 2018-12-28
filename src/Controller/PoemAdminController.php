@@ -535,7 +535,7 @@ class PoemAdminController extends Controller
 							break;
 	
 						$i++;
-
+// 
 						$entityManager->persist($entityPoem);
 						$entityManager->flush();
 						$id = $entity->getId();

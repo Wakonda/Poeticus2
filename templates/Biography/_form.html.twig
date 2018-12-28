@@ -38,7 +38,7 @@
 	</tr>
 	<tr>
 		<th>{{ form_label(form.photo) }}</th>
-		<td><div class="errors">{{ form_errors(form.photo) }}</div>{% if entity.photo is defined %}{{ macro.currentImage("photo/biography/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}</td>
+		<td><div class="errors">{{ form_errors(form.photo) }}</div>{% if entity.photo is defined and entity.photo is not empty %}{{ macro.currentImage("photo/biography/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}</td>
 	</tr>
 	<tr>
 		<th>{{ form_label(form.language) }}</th>

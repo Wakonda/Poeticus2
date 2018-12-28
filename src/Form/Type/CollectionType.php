@@ -66,11 +66,6 @@ class CollectionType extends AbstractType
 			
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
 			;
-		
-		$builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
-			// die(var_dump($event->getData()));
-		});
-
     }
 
 	/**

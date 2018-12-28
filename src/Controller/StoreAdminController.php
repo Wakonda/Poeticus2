@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Store;
 use App\Entity\Language;
+use App\Entity\Biography;
 use App\Form\Type\StoreType;
 use App\Service\GenericFunction;
 use Symfony\Component\Form\FormError;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class StoreAdminController extends Controller
 {
@@ -79,7 +81,7 @@ class StoreAdminController extends Controller
 		return $this->render('Store/new.html.twig', array('form' => $form->createView()));
     }
 	
-	public function createAction(Request $request)
+	public function createAction(Request $request, TranslatorInterface $translator)
 	{
 		$entity = new Store();
         $form = $this->genericCreateForm($request->getLocale(), $entity);
@@ -87,9 +89,25 @@ class StoreAdminController extends Controller
 		
 		$this->checkForDoubloon($entity, $form);
 
+		if($entity->getPhoto() == null)
+			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		
 		if($form->isValid())
 		{
+			$gf = new GenericFunction();
+			$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+			$entity->getPhoto()->move("photo/store/", $image);
+			$entity->setPhoto($image);
 			$entityManager = $this->getDoctrine()->getManager();
+			
+			if(empty($entity->getBiography())) {
+				$biography = new Biography();
+				$biography->setTitle($form->get("newBiography")->getData());
+				$biography->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $entity->getLanguage()->getAbbreviation()]));
+				$entityManager->persist($biography);
+				$entity->setBiography($biography);
+			}
+
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -129,7 +147,27 @@ class StoreAdminController extends Controller
 		
 		if($form->isValid())
 		{
+			if(!is_null($entity->getPhoto()))
+			{
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+				$entity->getPhoto()->move("photo/store/", $image);
+			}
+			else
+				$image = $currentImage;
+
+			$entity->setPhoto($image);
+
 			$entityManager = $this->getDoctrine()->getManager();
+			
+			if(empty($entity->getBiography())) {
+				$biography = new Biography();
+				$biography->setTitle($form->get("newBiography")->getData());
+				$biography->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $entity->getLanguage()->getAbbreviation()]));
+				$entityManager->persist($biography);
+				$entity->setBiography($biography);
+			}
+			
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

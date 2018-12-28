@@ -346,4 +346,6 @@ admin:
     store:
         Title: "Título"
         ProductCode: "Código do produto"
-        Tag: "Tag"
+        Text: "Texto"
+        Image: "Imagem"
+        Biography: "Biografia"

@@ -33,7 +33,7 @@ function setComboboxNew(path, table, field, func)
 	if($(field).val() != "")
 		options.init_record = $(field).val();
 		
-	$('.combobox').ajaxComboBox(
+	return $('.combobox').ajaxComboBox(
 		path,
 		options
 	).bind('selectElement', { 'func' : func }, function(e, is_enter_key) {

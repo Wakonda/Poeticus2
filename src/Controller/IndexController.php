@@ -857,7 +857,7 @@ class IndexController extends Controller
 		$nbMessageByPage = 12;
 		
 		$entities = $em->getRepository(Store::class)->getProducts($nbMessageByPage, $page, $query, $request->getLocale());
-		$totalEntities = $em->getRepository(Store::class)->countEntities($query, $request->getLocale());
+		$totalEntities = $em->getRepository(Store::class)->getProducts(0, 0, $query, $request->getLocale(), true);
 		
 		$links = $pagination->setPagination(['url' => 'store'], $page, $totalEntities, $nbMessageByPage);
 
@@ -868,6 +868,16 @@ class IndexController extends Controller
 			'links' => $links
 		));
     }
+	
+	public function readStoreAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Store::class)->find($id);
+		
+		return $this->render('Index/readStore.html.twig', [
+			'entity' => $entity
+		]);
+	}
 
 	private function createFormIndexSearch($locale, $entity)
 	{

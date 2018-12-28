@@ -40,7 +40,7 @@
 {% block main_title %}{{ entity.title }}{% endblock %}
 
 {% block main_content %}
-	<p class="center">{{ ("photo/poeticform/"~entity.image)|max_size_image() }}</p>
+	<p class="text-center">{{ ("photo/poeticform/"~entity.image)|max_size_image() }}</p>
 	<div>
 		{{ entity.text|raw }}
 	</div>

@@ -67,7 +67,7 @@ collection:
         ByCollections: "Par recueils"
     field:
         Author: "Auteur"
-        PublicationDate: "Date de pubblication"
+        PublicationDate: "Date de publication"
         PoemsInThisCollection: "Poésies contenues dans ce recueil"
         BuyThisCollection: "Acheter ce recueil"
     table:
@@ -321,7 +321,7 @@ admin:
     collection:
         Title: "Titre"
         Text: "Texte"
-        PublicationDate: "Date de pubblication"
+        PublicationDate: "Date de publication"
         Image: "Image"
         Biography: "Biographie"
         ProductCode: "Code produit"

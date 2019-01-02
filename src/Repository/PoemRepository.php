@@ -219,7 +219,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('bp.title LIKE "'.$search.'"');
+			$qb->andWhere('bp.title LIKE :search')
+			   ->setParameter("search", $search);
 		}
 		if($count)
 		{
@@ -257,7 +258,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('co.title LIKE "'.$search.'"');
+			$qb->andWhere('co.title LIKE :search')
+			   ->setParameter("search", $search);
 		}
 		if($count)
 		{
@@ -331,7 +333,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('co.title LIKE "'.$search.'"');
+			$qb->andWhere('co.title LIKE :search')
+			   ->setParameter("search", $search);
 		}
 		if($count)
 		{
@@ -402,7 +405,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('co.title LIKE "'.$search.'"');
+			$qb->andWhere('co.title LIKE :search')
+			   ->setParameter("search", $search);;
 		}
 		if($count)
 		{
@@ -440,7 +444,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('pf.title LIKE "'.$search.'"');
+			$qb->andWhere('pf.title LIKE :search')
+			   ->setParameter("search", $search);
 		}
 		if($count)
 		{

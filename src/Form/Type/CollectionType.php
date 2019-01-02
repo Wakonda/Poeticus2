@@ -33,7 +33,7 @@ class CollectionType extends AbstractType
                 'constraints' => new Assert\NotBlank(), "label" => "admin.collection.Title"
             ))
 			->add('text', TextareaType::class, array(
-                'constraints' => new Assert\NotBlank(), "label" => "admin.collection.Text", 'attr' => array('class' => 'redactor')
+                "required" => false, "label" => "admin.collection.Text", 'attr' => array('class' => 'redactor')
             ))
 			->add('image', FileType::class, array('data_class' => null, "label" => "admin.collection.Image", "required" => true
             ))

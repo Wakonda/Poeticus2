@@ -27,6 +27,7 @@ use App\Form\Type\IndexSearchType;
 
 use App\Service\Gravatar;
 use App\Service\Pagination;
+use App\Service\GenericFunction;
 
 class IndexController extends Controller
 {
@@ -269,15 +270,19 @@ class IndexController extends Controller
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => array()
 		);
+		
+		$gf = new GenericFunction();
 
 		foreach($entities as $entity)
 		{
 			if(!empty($entity['id']))
 			{
+				$img = $gf->adaptImageSize("photo/biography/".$entity["photo"]);
 				$row = array();
 				$show = $this->generateUrl('author', array('id' => $entity['id'], 'slug' => $entity['slug']));
 				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['author'].'</a>';
-				$row[] = $entity['number_poems_by_author'];
+				$row[] = "<img src='".$img."' alt='".$entity['author']."'>";
+				$row[] = '<span class="badge">'.$entity['number_poems_by_author'].'</span>';
 
 				$output['aaData'][] = $row;
 			}
@@ -387,7 +392,7 @@ class IndexController extends Controller
 			else
 				$row[] = "-";
 
-			$row[] = $entity['number_poems_by_poeticform'];
+			$row[] = '<span class="badge">'.$entity['number_poems_by_poeticform'].'</span>';
 
 			$output['aaData'][] = $row;
 		}
@@ -503,7 +508,7 @@ class IndexController extends Controller
 			else
 				$row[] = "-";
 
-			$row[] = $entity['number_poems_by_collection'];
+			$row[] = '<span class="badge">'.$entity['number_poems_by_collection'].'</span>';
 
 			$output['aaData'][] = $row;
 		}
@@ -630,7 +635,7 @@ class IndexController extends Controller
 			$show = $this->generateUrl('country', array('id' => $entity['country_id'], 'slug' => $entity['country_slug']));
 			$row[] = '<a href="'.$show.'" alt="Show"><img src="'.$request->getBaseUrl().'/photo/country/'.$entity['flag'].'" class="flag" /> '.$entity['country_title'].'</a>';
 
-			$row[] = $entity['number_poems_by_country'];
+			$row[] = '<span class="badge">'.$entity['number_poems_by_country'].'</span>';
 
 			$output['aaData'][] = $row;
 		}

@@ -62,6 +62,7 @@ biography:
         Author: "Auteur"
         Title: "Titre"
         Collection: "Recueil"
+        Photo: "Photo"
 collection:
     index:
         ByCollections: "Par recueils"

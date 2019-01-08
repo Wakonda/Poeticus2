@@ -62,6 +62,7 @@ biography:
         Author: "Autor"
         Title: "Título"
         Collection: "Colectânea"
+        Photo: "Foto"
 collection:
     index:
         ByCollections: "Por coleções"

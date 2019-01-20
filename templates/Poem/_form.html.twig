@@ -1,49 +1,70 @@
-<table class="form_grid">
-	<tr>
-		<th>{{ form_label(form.title) }}</th>
-		<td><div class="errors">{{ form_errors(form.title) }}</div>{{ form_widget(form.title, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr>
-		<th>{{ form_label(form.language) }}</th>
-		<td><div class="errors">{{ form_errors(form.language) }}</div>{{ form_widget(form.language, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr>
-		<th>{{ form_label(form.poetic_form) }}</th>
-		<td><div class="errors">{{ form_errors(form.poetic_form) }}</div>{{ form_widget(form.poetic_form, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr id="photo_container">
-		<th>{{ form_label(form.photo) }}</th>
-		<td><div class="errors">{{ form_errors(form.photo) }}</div>{{ form_widget(form.photo) }}</td>
-	</tr>
-	<tr id="text_container">
-		<th>{{ form_label(form.text) }}</th>
-		<td><div class="errors">{{ form_errors(form.text) }}</div>{{ form_widget(form.text, { 'attr' : { 'class' : 'text form-control redactor' }}) }}</td>
-	</tr>
-	<tr>
-		<th>{{ form_label(form.author_type) }}</th>
-		<td><div class="errors">{{ form_errors(form.author_type) }}</div>{{ form_widget(form.author_type, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr class="user_row">
-		<th>{{ form_label(form.user) }}</th>
-		<td><div class="errors">{{ form_errors(form.user) }}</div>{{ form_widget(form.user, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr class="biography_row">
-		<th>{{ form_label(form.biography) }}</th>
-		<td><div class="errors">{{ form_errors(form.biography) }}</div>{{ form_widget(form.biography, {'attr':{'class':'full_width combobox'}}) }}</td>
-	</tr>
-	<tr>
-		<th>{{ 'admin.poem.Country'|trans }}</th>
-		<td class="poem-country">-</td>
-	</tr>
-	<tr>
-		<th>{{ form_label(form.collection) }}</th>
-		<td><div class="errors">{{ form_errors(form.collection) }}</div>{{ form_widget(form.collection, {'attr':{'class':'full_width form-control'}}) }}</td>
-	</tr>
-	<tr>
-		<th>{{ form_label(form.released_date) }}</th>
-		<td><div class="errors">{{ form_errors(form.released_date) }}</div>{{ form_widget(form.released_date, {'attr':{'class':'year form-control'}}) }} {{ form_widget(form.unknown_released_date) }} {{ form_label(form.unknown_released_date) }}</td>
-	</tr>
-</table>
+<div class="form-group row">
+	{{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.language, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.language) }}{{ form_widget(form.language, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.poetic_form, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.poetic_form) }}{{ form_widget(form.poetic_form, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div id="photo_container" class="form-group row">
+	{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+	</div>
+</div>
+<div id="text_container" class="form-group row">
+	{{ form_label(form.text, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.author_type, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.author_type) }}{{ form_widget(form.author_type, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row user_row">
+	{{ form_label(form.user, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.user) }}{{ form_widget(form.user, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row biography_row">
+	{{ form_label(form.biography, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.biography) }}{{ form_widget(form.biography, {'attr':{'class':'combobox form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	<div class="col-sm-2 col-form-label">{{ 'admin.poem.Country'|trans }}</div>
+	<div class="col-sm-10 poem-country">-</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.collection, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.collection) }}{{ form_widget(form.collection, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.released_date, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-2">
+		{{ form_errors(form.released_date) }}{{ form_widget(form.released_date, {'attr':{'class':'year form-control'}}) }}
+	</div>
+	<div class="col-sm-4">
+		{{ form_widget(form.unknown_released_date) }} {{ form_label(form.unknown_released_date) }}
+	</div>
+</div>
 <hr />
 {{ form_widget(form.save, {'icon': 'fa-save'}) }}
 {{ form_rest(form) }}

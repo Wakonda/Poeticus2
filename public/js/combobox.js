@@ -5,7 +5,7 @@ function setComboboxEdit(path, table, field, val, func)
 		{
 			lang: 'fr',
 			db_table: table,
-			per_page: 20,
+			per_page: 10,
 			navi_num: 10,
 			no_image: true,
 			select_only: true,
@@ -24,7 +24,7 @@ function setComboboxNew(path, table, field, func)
 	var options = {
 		lang: 'fr',
 		db_table: table,
-		per_page: 20,
+		per_page: 10,
 		navi_num: 10,
 		no_image: true,
 		bind_to: 'selectElement'

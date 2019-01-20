@@ -19,14 +19,14 @@
 			{
 				if($(this).val() == "user")
 				{
-					$("tr.user_row").show();
-					$("tr.biography_row").hide();
+					$("div.user_row").show();
+					$("div.biography_row").hide();
 					$("select#{{ form.biography.vars.id }}").val("");
 				}
 				else
 				{
-					$("tr.user_row").hide();
-					$("tr.biography_row").show();
+					$("div.user_row").hide();
+					$("div.biography_row").show();
 					$("select#{{ form.user.vars.id }}").val("");
 				}
 			});
@@ -61,9 +61,9 @@
 					success: function(data)
 					{
 						if(data.country != "")
-							$("td.poem-country").html('<img src="{{ asset('photo/country/') }}'+ data.country.flag +'" class="flag" />' + ' ' + data.country.title);
+							$("div.poem-country").html('<img src="{{ asset('photo/country/') }}'+ data.country.flag +'" class="flag" />' + ' ' + data.country.title);
 						else
-							$("td.poem-country").html("-");
+							$("div.poem-country").html("-");
 					
 						var collections = data.collections;
 						$("#{{ form.collection.vars.id }} option").remove();

@@ -282,7 +282,7 @@ class IndexController extends Controller
 				$show = $this->generateUrl('author', array('id' => $entity['id'], 'slug' => $entity['slug']));
 				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['author'].'</a>';
 				$row[] = "<img src='".$img."' alt='".$entity['author']."'>";
-				$row[] = '<span class="badge">'.$entity['number_poems_by_author'].'</span>';
+				$row[] = '<span class="badge badge-secondary">'.$entity['number_poems_by_author'].'</span>';
 
 				$output['aaData'][] = $row;
 			}
@@ -392,7 +392,7 @@ class IndexController extends Controller
 			else
 				$row[] = "-";
 
-			$row[] = '<span class="badge">'.$entity['number_poems_by_poeticform'].'</span>';
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_poems_by_poeticform'].'</span>';
 
 			$output['aaData'][] = $row;
 		}
@@ -508,7 +508,7 @@ class IndexController extends Controller
 			else
 				$row[] = "-";
 
-			$row[] = '<span class="badge">'.$entity['number_poems_by_collection'].'</span>';
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_poems_by_collection'].'</span>';
 
 			$output['aaData'][] = $row;
 		}
@@ -635,7 +635,7 @@ class IndexController extends Controller
 			$show = $this->generateUrl('country', array('id' => $entity['country_id'], 'slug' => $entity['country_slug']));
 			$row[] = '<a href="'.$show.'" alt="Show"><img src="'.$request->getBaseUrl().'/photo/country/'.$entity['flag'].'" class="flag" /> '.$entity['country_title'].'</a>';
 
-			$row[] = '<span class="badge">'.$entity['number_poems_by_country'].'</span>';
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_poems_by_country'].'</span>';
 
 			$output['aaData'][] = $row;
 		}

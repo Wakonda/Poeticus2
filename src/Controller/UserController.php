@@ -395,7 +395,7 @@ class UserController extends Controller
 
 			if ($authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED') and $tokenStorage->getToken()->getUser()->getUsername() == $username) {
 				$row[] = '<div class="state_poem '.$entity->getStateRealName().'">'.$translator->trans($entity->getStateString()).'</div>';
-				$row[] = '<a href="'.$this->generateUrl('poemuser_edit', array("id" => $entity->getId())).'" alt=""><span class="glyphicon glyphicon-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="glyphicon glyphicon-remove">'.$translator->trans('user.myProfile.Delete').'</span></a>';
+				$row[] = '<a href="'.$this->generateUrl('poemuser_edit', array("id" => $entity->getId())).'" alt=""><span class="fa fa-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="fa fa-times">'.$translator->trans('user.myProfile.Delete').'</span></a>';
 			}
 			
 			$output['aaData'][] = $row;

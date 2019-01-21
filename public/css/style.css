@@ -415,22 +415,6 @@ button[type="submit"]
 	text-decoration: underline;
 }
 
-.italic {
-	font-style: italic;
-}
-
-.bold {
-	font-weight: bold;
-}
-
-.right {
-	float: right;
-}
-
-.displayNone {
-	display: none;
-}
-
 article#contents header h1 img#flag_title
 {
 	border: none !important;

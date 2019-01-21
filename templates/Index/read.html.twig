@@ -115,7 +115,7 @@
 {% endblock %}
 
 {% block main_content %}
-	<div class="displayNone alert alert-success" id="send_poem_result"></div>
+	<div class="d-none alert alert-success" id="send_poem_result"></div>
 	<div id="main_poem_text">
 		{{ entity.text|raw }}
 	</div>
@@ -130,7 +130,7 @@
 	<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" alt="" height="8" /></a>
 	{% if entity.collection is not null %}
 		-
-		<a class="underline italic" href="{{ path('collection', {'id' : entity.collection.id, 'slug' : entity.slug }) }}" alt="">{{ entity.collection.title }}</a>
+		<a class="underline font-italic" href="{{ path('collection', {'id' : entity.collection.id, 'slug' : entity.slug }) }}" alt="">{{ entity.collection.title }}</a>
 	{% endif %}
 
 	{% if entity.poeticform is not null %}

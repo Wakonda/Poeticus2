@@ -588,27 +588,27 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 	public function browsingPoemShow($params, $poemId)
 	{
 		// Previous
-		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Poem p2 WHERE p2.id < '.$poemId.')';
+		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Poem p2 WHERE p2.id < :poemId AND p2.'.$params["field"].' = :biographyId)';
 		$qb_previous = $this->createQueryBuilder("p");
 		
 		$qb_previous->select("p.id, p.title, p.slug")
 		   ->where('p.'.$params["field"].' = :biographyId')
 		   ->setParameter('biographyId', $params["author"])
+		   ->setParameter('poemId', $poemId)
 		   ->andWhere($subqueryPrevious);
 		   
-		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Poem p2 WHERE p2.id > '.$poemId.')';
+		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Poem p2 WHERE p2.id > :poemId AND p2.'.$params["field"].' = :biographyId)';
 		$qb_next = $this->createQueryBuilder("p");
 		
 		$qb_next->select("p.id, p.title, p.slug")
 		   ->where('p.'.$params["field"].' = :biographyId')
 		   ->setParameter('biographyId', $params["author"])
+		   ->setParameter('poemId', $poemId)
 		   ->andWhere($subqueryNext);
-		
-		$res = array(
+
+		return array(
 			"previous" => $qb_previous->getQuery()->getOneOrNullResult(),
 			"next" => $qb_next->getQuery()->getOneOrNullResult()
 		);
-
-		return $res;
 	}
 }

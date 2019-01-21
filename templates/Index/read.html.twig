@@ -219,7 +219,7 @@
 			{% endif %}
 			
 			{% if(browsingPoems['next'] is not empty) %}
-				<span data-nav-action="{{ 'poem.browsing.Next'|trans }}" data-nav-title="{{ browsingPoems['next']['title'] }}" class="right" id="next_data"><a href="{{ path('read', {'id' : browsingPoems['next']['id'], 'slug' : browsingPoems['next']['slug']}) }}">{{ 'poem.browsing.Next'|trans }} <i class="fa fa-arrow-circle-right"></i></a></span>
+				<span data-nav-action="{{ 'poem.browsing.Next'|trans }}" data-nav-title="{{ browsingPoems['next']['title'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsingPoems['next']['id'], 'slug' : browsingPoems['next']['slug']}) }}">{{ 'poem.browsing.Next'|trans }} <i class="fa fa-arrow-circle-right"></i></a></span>
 			{% endif %}
 		</div>
 		<div style="clear: both;"></div>

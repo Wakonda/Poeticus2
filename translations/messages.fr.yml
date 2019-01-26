@@ -353,3 +353,10 @@ admin:
         Text: "Texte"
         Image: "Image"
         Biography: "Biographie"
+    socialNetwork:
+        Send: "Envoyer"
+    imageGenerator:
+        Text: "Texte"
+        Image: "Image"
+        FontSize: "Taille de la police"
+        InvertColors: "Inverser les couleurs"

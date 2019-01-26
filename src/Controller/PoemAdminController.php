@@ -10,8 +10,10 @@ use App\Entity\Collection;
 use App\Entity\PoeticForm;
 use App\Form\Type\PoemType;
 use App\Form\Type\PoemFastType;
+use App\Form\Type\ImageGeneratorType;
 use App\Form\Type\PoemFastMultipleType;
 use App\Service\GenericFunction;
+use App\Service\ImageGenerator;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -153,8 +156,10 @@ class PoemAdminController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
+		
+		$imageGeneratorForm = $this->createForm(ImageGeneratorType::class);
 	
-		return $this->render('Poem/show.html.twig', array('entity' => $entity));
+		return $this->render('Poem/show.html.twig', array('entity' => $entity, 'imageGeneratorForm' => $imageGeneratorForm->createView()));
 	}
 	
 	public function editAction(Request $request, $id)
@@ -693,11 +698,139 @@ class PoemAdminController extends Controller
 
 		$connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
-		$statues = $connection->post("statuses/update", ["status" => $request->request->get("twitter_area")." ".$this->generateUrl("read", array("id" => $id, 'slug' => $entity->getSlug()), UrlGeneratorInterface::ABSOLUTE_URL)]);
+		$parameters = [];
+		$parameters["status"] = $request->request->get("twitter_area")." ".$this->generateUrl("read", array("id" => $id, 'slug' => $entity->getSlug()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$image = $request->request->get('image_tweet');
+
+		if(!empty($image)) {
+			$media = $connection->upload('media/upload', array('media' => $image));
+			$parameters['media_ids'] = implode(',', array($media->media_id_string));
+		}
+
+		$statues = $connection->post("statuses/update", $parameters);
 	
 		$session->getFlashBag()->add('message', 'Twitter envoyé avec succès');
 	
 		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
+	}
+
+	public function pinterestAction(Request $request, SessionInterface $session, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Proverb::class)->find($id);
+		
+		$mail = getenv("PINTEREST_MAIL");
+		$pwd = getenv("PINTEREST_PASSWORD");
+		$username = getenv("PINTEREST_USERNAME");
+
+		$bot = PinterestBot::create();
+		$bot->auth->login($mail, $pwd);
+		
+		$boards = $bot->boards->forUser($username);
+		
+		$image = $request->request->get('image_pinterest');
+		
+		$bot->pins->create($image, $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
+		
+		if(empty($bot->getLastError()))
+			$session->getFlashBag()->add('message', 'Envoyé avec succès sur Pinterest');
+		else
+			$session->getFlashBag()->add('message', $bot->getLastError());
+	
+		return $this->redirect($this->generateUrl("proverbadmin_show", array("id" => $id)));
+	}
+	
+	public function saveImageAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+		
+        $imageGeneratorForm = $this->createForm(ImageGeneratorType::class);
+        $imageGeneratorForm->handleRequest($request);
+		
+		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid())
+		{
+			$file = $imageGeneratorForm->get('image')->getData();
+			
+            $fileName = md5(uniqid()).'_'.$file->getClientOriginalName();
+
+			$data = file_get_contents($file->getPathname());
+			$image = imagecreatefromstring($data);
+			
+			ob_start();
+			imagepng($image);
+			$png = ob_get_clean();
+				
+			$image_size = getimagesizefromstring($png);
+			
+			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
+
+			$widthText = $image_size[0] * 0.9;
+			$start_x = $image_size[0] * 0.1;
+			$start_y = $image_size[1] * 0.35;
+
+			$copyright_x = $image_size[0] * 0.03;
+			$copyright_y = $image_size[1] - $image_size[1] * 0.03;
+
+			if($imageGeneratorForm->get('invert_colors')->getData())
+			{
+				$white = imagecolorallocate($image, 0, 0, 0);
+				$black = imagecolorallocate($image, 255, 255, 255);
+			}
+			else
+			{
+				$black = imagecolorallocate($image, 0, 0, 0);
+				$white = imagecolorallocate($image, 255, 255, 255);
+			}
+
+			$imageGenerator = new ImageGenerator();
+			$imageGenerator->setFontColor($black);
+			$imageGenerator->setStrokeColor($white);
+			$imageGenerator->setStroke(true);
+			$imageGenerator->setBlur(true);
+			$imageGenerator->setFont($font);
+			$imageGenerator->setFontSize($imageGeneratorForm->get('font_size')->getData());
+			$imageGenerator->setImage($image);
+			
+			$text = html_entity_decode($imageGeneratorForm->get('text')->getData(), ENT_QUOTES);
+			
+			$imageGenerator->setText($text);
+			$imageGenerator->setCopyright(["x" => $copyright_x, "y" => $copyright_y, "text" => "poeticus.wakonda.guru"]);
+
+			$imageGenerator->generate($start_x, $start_y, $widthText);
+// die($image);
+			imagepng($image, "photo/poem/".$fileName);
+			imagedestroy($image);
+			
+			$entity->addImage($fileName);
+			
+			$entityManager->persist($entity);
+			$entityManager->flush();
+			
+			$redirect = $this->generateUrl('poemadmin_show', array('id' => $entity->getId()));
+
+			return $this->redirect($redirect);
+		}
+
+        return $this->render('Poem/show.html.twig', array('entity' => $entity, 'imageGeneratorForm' => $imageGeneratorForm->createView()));
+	}
+	
+	public function removeImageAction(Request $request, $id, $fileName)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
+		
+		$entity->removeImage($fileName);
+		
+		$entityManager->persist($entity);
+		$entityManager->flush();
+		
+		$filesystem = new Filesystem();
+		$filesystem->remove("photo/poem/".$fileName);
+		
+		$redirect = $this->generateUrl('poemadmin_show', array('id' => $entity->getId()));
+
+		return $this->redirect($redirect);
 	}
 
 	private function genericCreateForm($locale, $entity)

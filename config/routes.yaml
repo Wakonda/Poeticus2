@@ -199,6 +199,14 @@ vote_poem:
     path: /vote_poem/{idPoem}
     controller: App\Controller\PoemVoteController::voteAction
 
+poemadmin_save_image:
+    path: /admin/poem/saveimage/{id}
+    controller: App\Controller\PoemAdminController:saveImageAction
+
+poemadmin_remove_image:
+    path: /admin/poem/removeimage/{id}/{fileName}
+    controller: App\Controller\PoemAdminController:removeImageAction
+
 # ADMIN AJAX
 list_selected_biography:
     path: /list_selected_biography
@@ -558,6 +566,10 @@ poemadmin_getbiographiesbyajax:
 poemadmin_twitter:
     path: /admin/poem/twitter/{id}
     controller: App\Controller\PoemAdminController::twitterAction
+
+poemadmin_pinterest:
+    path: /admin/proverb/pinterest/{id}
+    controller: App\Controller\ProverbAdminController::pinterestAction
 
 # ADMIN STORE
 storeadmin_index:

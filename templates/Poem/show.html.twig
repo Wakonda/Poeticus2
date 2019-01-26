@@ -47,26 +47,113 @@
 			<th>{{ "admin.form.Slug"|trans }}</th>
 			<td>{{ entity.slug }}</td>
 		</tr>
+		<tr>
+			<th>Image</th>
+			<td>
+				{% if entity.images is not empty %}
+					{% for image in entity.images %}
+						<div>
+							{{ ("photo/poem/"~image)|max_size_image() }}
+							&nbsp;
+							<a class="btn btn-danger" href="{{ path('poemadmin_remove_image', {'id' : entity.id, 'fileName': image}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+						<br>
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
 	</table>
 	<hr>
-	<div class="panel panel-default sub_block">
-		<div class="panel-heading" role="tab" id="headingTwitter">
-			<p class="panel-title">
-			<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
+	<div class="card">
+		<div class="card-header" role="tab" id="headingImageGenerator">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapseImageGenerator" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-picture-o" aria-hidden="true"></i> Générer une image
+			</a>
+		</div>
+		<div id="collapseImageGenerator" class="collapse" aria-labelledby="headingImageGenerator" aria-expanded="true">
+			<div class="card-body">
+				{{ form_start(imageGeneratorForm, { 'action': path('poemadmin_save_image', {'id': entity.id})}) }}
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.text, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.text, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.image, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.image, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.font_size, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.font_size, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.invert_colors, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.invert_colors) }}
+						</div>
+					</div>
+					<div class="text-right">
+					{{ form_row(imageGeneratorForm.save) }}
+					</div>
+				{{ form_end(imageGeneratorForm) }}
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="card mt-2">
+		<div class="card-header" role="tab" id="headingTwitter">
+			<a href="#" data-toggle="collapse" data-target="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
 			<i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter
 			</a>
-			</p>
 		</div>
-		<div id="collapseTwitter" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwitter" aria-expanded="true" style="">
-			<div class="panel-body">
+		<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
+			<div class="card-body">
 				<form action="{{ path('poemadmin_twitter', {'id': entity.id}) }}" method="post">
-					<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title|raw }} #{{ entity.biography|replace({'-': '', ' ':''}) }} </textarea>
+					<label for="addImage"> <input type="checkbox" id="addImage"> Ajouter une image</label>
+					<div class="row d-none mb-3" id="image_container">
+						{% for image in entity.images %}
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/poem/'~image)) }}"></div></div>
+						{% endfor %}
+					</div>
+					<input type="hidden" name="image_tweet" id="image_tweet">
+					<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title|raw }} #{{ entity.biography|replace({'-': '', ' ':''}) }}</textarea>
 					<br>
 					<input value="Tweeter" id="tweet" type="submit" class="btn btn-outline-secondary">
 				</form>
 			</div>
 		</div>
 	</div>
+	
+	{% if entity.images is not empty %}
+	<div class="card mt-2">
+		<div class="card-header" role="tab" id="headingPinterest">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapsePinterest" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest
+			</a>
+		</div>
+		<div id="collapsePinterest" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
+			<div class="card-body">
+				<form action="{{ path('poemadmin_pinterest', {'id': entity.id}) }}" method="post">
+					<div class="row mb-3">
+						{% for image in entity.images %}
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/poem/'~image)) }}"></div></div>
+						{% endfor %}
+					</div>
+					<input type="hidden" name="image_pinterest" id="image_pinterest">
+					<textarea id="pinterest_area" name="pinterest_area" rows="3" cols="70" class="form-control">{{ entity.title|raw }} #{{ entity.biography|replace({'-': '', ' ':''}) }}</textarea>
+					<br>
+					<input value="{{ 'admin.socialNetwork.Send'|trans }}" id="tweet" type="submit" class="btn btn-outline-secondary">
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endif %}
 	<hr>
 	<a href="{{ path('poemadmin_edit', { 'id' : entity.id }) }}">
 		<i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}
@@ -93,4 +180,28 @@
 			{{ 'admin.poem.ForSameCollection'|trans }}
 		</a>
 	{% endif %}
+{% endblock %}
+
+{% block script_additional %}
+	<script type="text/javascript">
+		$(function() {
+			// Twitter
+			$("div#collapseTwitter input#addImage").click(function() {
+				$("div#collapseTwitter #image_container").toggleClass('d-none');
+			});
+		
+			$("div#collapseTwitter div#image_container .thumbnail img").click(function() {
+				$("div#collapseTwitter div#image_container .thumbnail img").removeAttr("style");
+				$(this).css({"border-color": "#eca7a7"});
+				$("#image_tweet").val($(this).attr("src"));
+			});
+			
+			// Pinterest
+			$("div#collapsePinterest .thumbnail img").click(function() {
+				$("div#collapsePinterest .thumbnail img").removeAttr("style");
+				$(this).css({"border-color": "#eca7a7"});
+				$("#image_pinterest").val($(this).attr("src"));
+			});
+		});
+	</script>
 {% endblock %}

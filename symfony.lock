@@ -44,6 +44,9 @@
             "ref": "c1431086fec31f17fbcfe6d6d7e92059458facc1"
         }
     },
+    "doctrine/event-manager": {
+        "version": "v1.0.0"
+    },
     "doctrine/inflector": {
         "version": "v1.3.0"
     },
@@ -58,6 +61,12 @@
     },
     "doctrine/orm": {
         "version": "v2.6.1"
+    },
+    "doctrine/persistence": {
+        "version": "v1.1.0"
+    },
+    "doctrine/reflection": {
+        "version": "v1.0.0"
     },
     "easycorp/easy-log-handler": {
         "version": "1.0",
@@ -85,6 +94,9 @@
     },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "nikic/php-parser": {
+        "version": "v4.2.0"
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
@@ -151,6 +163,9 @@
             "version": "3.3",
             "ref": "c646e4b71af082e94b5014daca36ef6812bad076"
         }
+    },
+    "symfony/contracts": {
+        "version": "v1.0.2"
     },
     "symfony/css-selector": {
         "version": "v4.0.5"
@@ -266,6 +281,9 @@
             "ref": "41416370e732d1c8e7a0953a5ce815b641cfba0f"
         }
     },
+    "symfony/polyfill-ctype": {
+        "version": "v1.10.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.7.0"
     },
@@ -305,9 +323,6 @@
             "ref": "cda8b550123383d25827705d05a42acf6819fe4e"
         }
     },
-    "symfony/security": {
-        "version": "v4.0.5"
-    },
     "symfony/security-bundle": {
         "version": "3.3",
         "recipe": {
@@ -316,6 +331,18 @@
             "version": "3.3",
             "ref": "f8a63faa0d9521526499c0a8f403c9964ecb0527"
         }
+    },
+    "symfony/security-core": {
+        "version": "v4.2.2"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.2.2"
+    },
+    "symfony/security-guard": {
+        "version": "v4.2.2"
+    },
+    "symfony/security-http": {
+        "version": "v4.2.2"
     },
     "symfony/serializer": {
         "version": "v4.0.5"
@@ -341,7 +368,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "3.3",
-            "ref": "6bcd6c570c017ea6ae5a7a6a027c929fd3542cd8"
+            "ref": "1fb02a6e1c8f3d4232cce485c9afa868d63b115a"
         }
     },
     "symfony/twig-bridge": {
@@ -361,6 +388,9 @@
     },
     "symfony/var-dumper": {
         "version": "v4.0.5"
+    },
+    "symfony/var-exporter": {
+        "version": "v4.2.2"
     },
     "symfony/web-link": {
         "version": "v4.0.5"

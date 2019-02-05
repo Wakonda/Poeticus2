@@ -49,17 +49,21 @@ class IndexController extends Controller
 
 	public function indexSearchAction(Request $request, TranslatorInterface $translator)
 	{
+		$entityManager = $this->getDoctrine()->getManager();
 		$search = $request->request->get("index_search");
-		$search['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
 		
-		if($search['type'] == "biography")
-			$search['type'] =  $translator->trans('main.field.GreatWriters');
-		elseif($search['type'] == "user")
-			$search['type'] =  $translator->trans('main.field.YourPoems');
-
 		unset($search["_token"]);
 
-		$criteria = array_filter(array_values($search));
+		$criteria = $search;
+		
+		if($search['type'] == "biography")
+			$criteria['type'] =  $translator->trans('main.field.GreatWriters');
+		elseif($search['type'] == "user")
+			$criteria['type'] =  $translator->trans('main.field.YourPoems');
+
+		
+		$criteria['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
+		$criteria = array_filter(array_values($criteria));
 		$criteria = empty($criteria) ? $translator->trans("search.result.None") : $criteria;
 
 		return $this->render('Index/resultIndexSearch.html.twig', ['search' => base64_encode(json_encode($search)), 'criteria' => $criteria]);

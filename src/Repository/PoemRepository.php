@@ -83,7 +83,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 
 		if(!empty($datasObject->country))
 		{
-			$qb->andWhere("pf.country_id = :country")
+			$qb->andWhere("pfc.id = :country")
 			   ->setParameter("country", $datasObject->country);
 		}
 

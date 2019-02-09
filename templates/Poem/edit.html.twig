@@ -122,31 +122,37 @@
 			$("#{{ form.poetic_form.vars.id }}").change();
 			$("#{{ form.collection.vars.id }}").change();
 			
-			$("select#{{ form.language.vars.id }}").change(function() {
+			function changeLanguage(selector, loadCollection) {
 				var input = $(".container_{{ form.biography.vars.id }} > .input-group > input[type='hidden']");
 				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
 				$(".container_{{ form.biography.vars.id }}").parent().append(input[0]);
 				$(".container_{{ form.biography.vars.id }}").remove();
 
-				setComboboxEdit('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.biography.vars.id }}", "{{ form.biography.vars.value }}", changeBiography);
-			
-				$.ajax({
-					type: "GET",
-					url: "{{ path('get_poeticforms_by_language') }}",
-					data: { "locale" : $(this).val() },
-					success: function(data)
-					{
-						$("select#{{ form.poetic_form.vars.id }}").empty();
-						$("select#{{ form.poetic_form.vars.id }}").append('<option value="" selected="selected">{{ 'main.field.ChooseAnOption'|trans }}</option>');
-						
-						for (var i = 0; i < data.length; i++) {
-							$("select#{{ form.poetic_form.vars.id }}").append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
+				setComboboxEdit('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + selector.val(), 'biography', "#{{ form.biography.vars.id }}", "{{ form.biography.vars.value }}", changeBiography);
+				
+				if(loadCollection) {
+					$.ajax({
+						type: "GET",
+						url: "{{ path('get_poeticforms_by_language') }}",
+						data: { "locale" : selector.val() },
+						success: function(data)
+						{
+							$("select#{{ form.poetic_form.vars.id }}").empty();
+							$("select#{{ form.poetic_form.vars.id }}").append('<option value="" selected="selected">{{ 'main.field.ChooseAnOption'|trans }}</option>');
+							
+							for (var i = 0; i < data.length; i++) {
+								$("select#{{ form.poetic_form.vars.id }}").append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
+							}
 						}
-					}
-				});
+					});
+				}
+			}
+			
+			$("select#{{ form.language.vars.id }}").change(function() {
+				changeLanguage($(this), true);
 			});
 			
-			$("select#{{ form.language.vars.id }}").change();
+			changeLanguage($("select#{{ form.language.vars.id }}"), false);
 		});
 	</script>
 {% endblock %}

@@ -159,7 +159,7 @@ class CountryAdminController extends Controller
 	public function getCountriesByLanguageAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entities = $entityManager->getRepository(Country::class)->findAllByLanguage($request->getLocale());
+		$entities = $entityManager->getRepository(Country::class)->findAllByLanguage($request->query->get("locale"));
 		
 		$res = array();
 		

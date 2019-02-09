@@ -31,6 +31,8 @@ require __DIR__.'/../../vendor/simple_html_dom.php';
 
 class PoemAdminController extends Controller
 {
+	private $formName = "poem";
+
 	public function indexAction(Request $request)
 	{
 		return $this->render('Poem/index.html.twig');
@@ -108,12 +110,15 @@ class PoemAdminController extends Controller
 	public function createAction(Request $request, TranslatorInterface $translator)
 	{
 		$entity = new Poem();
-        $form = $this->genericCreateForm($request->getLocale(), $entity);
+		$entityManager = $this->getDoctrine()->getManager();
+		$locale = $request->request->get($this->formName)["language"];
+		$language = $entityManager->getRepository(Language::class)->find($locale);
+
+        $form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 
 		$this->checkForDoubloon($entity, $form);
 
-		$entityManager = $this->getDoctrine()->getManager();
 		$poeticForm = $entity->getPoeticForm();
 		
 		if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
@@ -166,7 +171,7 @@ class PoemAdminController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
-		$form = $this->genericCreateForm($request->getLocale(), $entity);
+		$form = $this->genericCreateForm($entity->getLanguage()->getAbbreviation(), $entity);
 
 		return $this->render('Poem/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
@@ -175,7 +180,11 @@ class PoemAdminController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
-		$form = $this->genericCreateForm($request->getLocale(), $entity);
+		
+		$locale = $request->request->get($this->formName)["language"];
+		$language = $entityManager->getRepository(Language::class)->find($locale);
+		
+		$form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($entity, $form);

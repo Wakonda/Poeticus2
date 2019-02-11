@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -878,6 +880,14 @@ class IndexController extends Controller
 			'links' => $links
 		));
     }
+	
+	
+	public function downloadImageAction($fileName)
+	{
+		$response = new BinaryFileResponse('photo/poem/'.$fileName);
+		$response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
+		return $response;
+	}
 	
 	public function readStoreAction($id)
 	{

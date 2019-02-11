@@ -800,6 +800,11 @@ div.social_network_container {
 /* Datatables */
 .filter-dt { width: 150px !important;}
 
+#contents div.carousel div.carousel-inner img {
+	width: 100% !important;
+	border: none !important;
+}
+
 /* Social Network */
 .social-media-icons ul {
     list-style: none;

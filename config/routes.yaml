@@ -14,6 +14,10 @@ index_search_datatables:
     path: /result_search/{search}
     controller: App\Controller\IndexController::indexSearchDatatablesAction
 
+download_image:
+    path: /download_image/{fileName}
+    controller: App\Controller\IndexController::downloadImageAction
+
 store:
     path: /store/{page}
     controller: App\Controller\IndexController::storeAction

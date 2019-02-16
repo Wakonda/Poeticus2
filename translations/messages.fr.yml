@@ -354,8 +354,10 @@ admin:
         Image: "Image"
         Biography: "Biographie"
     socialNetwork:
+        AddAnImage: "Ajouter une image"
         Send: "Envoyer"
     imageGenerator:
+        GenerateAnImage: "Générer une image"
         Text: "Texte"
         Image: "Image"
         FontSize: "Taille de la police"

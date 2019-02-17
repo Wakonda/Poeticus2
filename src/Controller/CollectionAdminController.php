@@ -86,7 +86,7 @@ class CollectionAdminController extends Controller
         $form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($entity->getImage() == null)
 			$form->get("image")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
@@ -126,7 +126,7 @@ class CollectionAdminController extends Controller
 		return $this->render('Collection/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Collection::class)->find($id);
@@ -134,7 +134,7 @@ class CollectionAdminController extends Controller
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($form->isValid())
 		{
@@ -164,12 +164,12 @@ class CollectionAdminController extends Controller
 		return $this->createForm(CollectionType::class, $entity, array("locale" => $locale));
 	}
 
-	private function checkForDoubloon($entity, $form)
+	private function checkForDoubloon(TranslatorInterface $translator, $entity, $form)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$checkForDoubloon = $entityManager->getRepository(Collection::class)->checkForDoubloon($entity);
 
 		if($checkForDoubloon > 0)
-			$form->get("title")->addError(new FormError('Cette entrée existe déjà !'));
+			$form->get("title")->addError(new FormError($translator->trans("admin.index.ThisEntryAlreadyExists")));
 	}
 }

@@ -85,7 +85,7 @@ class CountryAdminController extends Controller
 		$entity = new Country();
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($entity->getFlag() == null)
 			$form->get("flag")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
@@ -125,7 +125,7 @@ class CountryAdminController extends Controller
 		return $this->render('Country/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Country::class)->find($id);
@@ -133,7 +133,7 @@ class CountryAdminController extends Controller
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 
 		if($form->isValid())
 		{
@@ -179,7 +179,7 @@ class CountryAdminController extends Controller
 		return $this->createForm(CountryType::class, $entity, array('locale' => $locale));
 	}
 
-	private function checkForDoubloon($entity, $form)
+	private function checkForDoubloon(TranslatorInterface $translator, $entity, $form)
 	{
 		if($entity->getTitle() != null and empty($entity->getLanguage()))
 		{
@@ -187,7 +187,7 @@ class CountryAdminController extends Controller
 			$checkForDoubloon = $entityManager->getRepository(Country::class)->checkForDoubloon($entity);
 
 			if($checkForDoubloon > 0)
-				$form->get("title")->addError(new FormError('Cette entrée existe déjà !'));
+				$form->get("title")->addError(new FormError($translator->trans("admin.index.ThisEntryAlreadyExists")));
 		}
 	}
 }

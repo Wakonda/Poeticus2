@@ -183,6 +183,7 @@ editPassword:
         PasswordValidation: "Senha (Validação)"
 contact:
     field:
+        YourMessageHasBeenSentSuccessfully: "Sua mensagem foi enviada com sucesso!"
         ContactUs: "Encontramo-nos!"
         Message: "Mensagem"
         Email: "E-mail"
@@ -273,6 +274,10 @@ admin:
         CurrentImage: "Foto atual"
         CurrentFile: "Ficheiro actual"
         UnreadMessages: "Mensagens não lidas"
+        ThisEntryAlreadyExists: "Esta entrada já existe!"
+        SentSuccessfully: "Enviado com sucesso"
+    error:
+        UnknownURL: "URL desconhecido"
     table:
         Title: "Título"
         Action: "Acção"

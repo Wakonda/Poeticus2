@@ -87,7 +87,7 @@ class PageAdminController extends Controller
         $form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		if($entity->getPhoto() == null)
 			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 
@@ -126,7 +126,7 @@ class PageAdminController extends Controller
 		return $this->render('Page/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Page::class)->find($id);
@@ -134,7 +134,7 @@ class PageAdminController extends Controller
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($form->isValid())
 		{
@@ -174,7 +174,7 @@ class PageAdminController extends Controller
 		return $this->createForm(PageType::class, $entity, array('locale' => $locale));
 	}
 	
-	private function checkForDoubloon($entity, $form)
+	private function checkForDoubloon(TranslatorInterface $translator, $entity, $form)
 	{
 		if($entity->getTitle() != null)
 		{
@@ -182,7 +182,7 @@ class PageAdminController extends Controller
 			$checkForDoubloon = $entityManager->getRepository(Page::class)->checkForDoubloon($entity);
 
 			if($checkForDoubloon > 0)
-				$form->get("title")->addError(new FormError('Cette entrée existe déjà !'));
+				$form->get("title")->addError(new FormError($translator->trans("admin.index.ThisEntryAlreadyExists")));
 		}
 	}
 }

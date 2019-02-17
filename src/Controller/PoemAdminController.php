@@ -117,7 +117,7 @@ class PoemAdminController extends Controller
         $form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 
 		$poeticForm = $entity->getPoeticForm();
 		
@@ -176,7 +176,7 @@ class PoemAdminController extends Controller
 		return $this->render('Poem/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
@@ -187,7 +187,7 @@ class PoemAdminController extends Controller
 		$form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if(($entity->isBiography() and $entity->getBiography() == null) or ($entity->isUser() and $entity->getUser() == null))
 			$form->get($entity->getAuthorType())->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
@@ -446,7 +446,7 @@ class PoemAdminController extends Controller
 		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale()));
 	}
 	
-	public function addFastMultipleAction(Request $request)
+	public function addFastMultipleAction(Request $request, TranslatorInterface $translator)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = new Poem();
@@ -464,7 +464,7 @@ class PoemAdminController extends Controller
 			$authorizedURLs = ['d3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=', 'd3d3LnBlbnNpZXJpcGFyb2xlLml0'];
 			
 			if(!in_array(base64_encode($url_array['host']), $authorizedURLs))
-				$form->get("url")->addError(new FormError('URL inconnue'));
+				$form->get("url")->addError(new FormError($translator->trans("admin.error.UnknownURL")));
 		}
 
 		if($form->isValid())
@@ -549,7 +549,7 @@ class PoemAdminController extends Controller
 							break;
 	
 						$i++;
-// 
+
 						$entityManager->persist($entityPoem);
 						$entityManager->flush();
 						$id = $entity->getId();
@@ -695,7 +695,7 @@ class PoemAdminController extends Controller
 		return $rsp;
 	}
 
-	public function twitterAction(Request $request, SessionInterface $session, $id)
+	public function twitterAction(Request $request, SessionInterface $session, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
@@ -718,12 +718,12 @@ class PoemAdminController extends Controller
 
 		$statues = $connection->post("statuses/update", $parameters);
 	
-		$session->getFlashBag()->add('message', 'Twitter envoyé avec succès');
+		$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
 	
 		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
 	}
 
-	public function pinterestAction(Request $request, SessionInterface $session, $id)
+	public function pinterestAction(Request $request, SessionInterface $session, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Proverb::class)->find($id);
@@ -742,7 +742,7 @@ class PoemAdminController extends Controller
 		$bot->pins->create($image, $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError()))
-			$session->getFlashBag()->add('message', 'Envoyé avec succès sur Pinterest');
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
 		else
 			$session->getFlashBag()->add('message', $bot->getLastError());
 	
@@ -807,7 +807,7 @@ class PoemAdminController extends Controller
 			$imageGenerator->setCopyright(["x" => $copyright_x, "y" => $copyright_y, "text" => "poeticus.wakonda.guru"]);
 
 			$imageGenerator->generate($start_x, $start_y, $widthText);
-// die($image);
+
 			imagepng($image, "photo/poem/".$fileName);
 			imagedestroy($image);
 			
@@ -847,7 +847,7 @@ class PoemAdminController extends Controller
 		return $this->createForm(PoemType::class, $entity, array('locale' => $locale));
 	}
 
-	private function checkForDoubloon($entity, $form)
+	private function checkForDoubloon(TranslatorInterface $translator, $entity, $form)
 	{
 		if($entity->getTitle() != null)
 		{
@@ -855,7 +855,7 @@ class PoemAdminController extends Controller
 			$checkForDoubloon = $entityManager->getRepository(Poem::class)->checkForDoubloon($entity);
 
 			if($checkForDoubloon > 0)
-				$form->get("title")->addError(new FormError('Cette entrée existe déjà !'));
+				$form->get("title")->addError(new FormError($translator->trans("admin.index.ThisEntryAlreadyExists")));
 		}
 	}
 }

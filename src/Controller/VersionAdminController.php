@@ -85,7 +85,7 @@ class VersionAdminController extends Controller
         $form = $this->genericCreateForm($request->getLocale(), $entity);
 		
 		$form->handleRequest($request);
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($entity->getFile() == null)
 			$form->get("file")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
@@ -125,7 +125,7 @@ class VersionAdminController extends Controller
 		return $this->render('Version/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Version::class)->find($id);
@@ -133,7 +133,7 @@ class VersionAdminController extends Controller
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
-		$this->checkForDoubloon($entity, $form);
+		$this->checkForDoubloon($translator, $entity, $form);
 		
 		if($form->isValid())
 		{
@@ -163,7 +163,7 @@ class VersionAdminController extends Controller
 		return $this->createForm(VersionType::class, $entity, array('locale' => $locale));
 	}
 	
-	private function checkForDoubloon($entity, $form)
+	private function checkForDoubloon(TranslatorInterface $translator, $entity, $form)
 	{
 		if($entity->getVersionNumber() != null)
 		{
@@ -171,7 +171,7 @@ class VersionAdminController extends Controller
 			$checkForDoubloon = $entityManager->getRepository(Version::class)->checkForDoubloon($entity);
 
 			if($checkForDoubloon > 0)
-				$form->get("versionNumber")->addError(new FormError('Cette entrée existe déjà !'));
+				$form->get("versionNumber")->addError(new FormError($translator->trans("admin.index.ThisEntryAlreadyExists")));
 		}
 	}
 }

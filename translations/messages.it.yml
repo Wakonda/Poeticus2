@@ -121,6 +121,8 @@ user:
         ForgottenPassword: "Hai dimenticato la password?"
         PasswordOrUserForgotten: "La password inserita non è corretta. Riprovare."
         YouAreLoggedInAs: "Sei già connesso come"
+        CongratulationAccountActivated: "Congratulazioni %username%, il tuo account è stato attivato. Inserisci i tuoi dati di accesso per accedere."
+        AccountCannotBeActivated: "Mi spiace %username%, il tuo account non può essere attivato perché il link è scaduto."
     createAccount:
         CreateAccount: "Registrati"
         Pseudo: "Nome utente"
@@ -137,6 +139,13 @@ user:
         UseGravatar: "Utilizza un gravatar"
         CurrentGravatar: "Avatar corrente:"
         PasswordsMustMatch: "Le password devono corrispondere"
+        TheWordMustMatchThePicture: "La parola deve corrispondere all'immagine"
+        Registration: "Registrazione"
+        UnableToAccessThisPage: "Impossibile accedere a questa pagina"
+        UserSameUsernameEmailExists: "Esiste già un utente con lo stesso nome utente / email!"
+        PasswordMustContainAtLeast: "La password deve contenere almeno %minLength% caratteri."
+        PasswordOneLetter: "La password deve contenere almeno una lettera."
+        PasswordOneNumber: "La password deve avere almeno un numero."
     confirmation:
         Title: "Conferma"
         Text: "Il tuo account è stato creato. Tuttavia, per accedere, è necessario attivare il proprio account. Per fare ciò, clicca sul link che hai ricevuto via email."
@@ -165,13 +174,17 @@ user:
         Vote: "Voto"
 forgottenPassword:
     index:
+        ForgotYourPassword: "Password dimenticata"
         ResetPassword: "Reimposta password"
         NewPasswordSend: "Compila uno dei campi per ricevere una password temporanea tramite email."
     field:
         EmailUsername: "Indirizzo email o Nome utente"
         Captcha: "Inserisci il testo che vedi sull'immagine"
         Send: "Reimposta password"
+        TheWordMustMatchThePicture: "La parola deve corrispondere all'immagine"
+        UsernameOrEmailAddressDoesNotExist: "Il nome utente o l'indirizzo email non esiste"
     confirmation:
+        YourPasswordHasBeenChanged: "La tua password è stata cambiata."
         Title: "Conferma - Password dimenticata"
         EmailSent: "Ti è stata inviata un'email. Troverai la procedura per poter riconnetterti sul"
         Email: "<p>Ciao %entity.username%,</p><p>Se ricevi questa email, hai dimenticato la password. Per rimediare alla situazione, abbiamo generato un provvisorio:</p><p><b><u>Password temporanea:</u></b> <i>%temporaryPassword%</i></p><p><b><u>Avvertenza:</u></b> Questa password è temporanea. Di conseguenza, ti invitiamo a modificarlo non appena <a href='%urlLogin%'>accedi al tuo account</a>.</p><p>Cordiali saluti,</p><p>La squadra di <a href='%urlIndex%'><b>Poéticus</b></a></p>"

@@ -47,15 +47,9 @@ class UserController extends Controller
 				$session->getFlashBag()->add('expired_login', $translator->trans('user.login.AccountCannotBeActivated', ['%username%' => $entity->getUsername()]));
 		}
 		
-		// get the login error if there is one
-		$error = $authenticationUtils->getLastAuthenticationError();
-
-		// last username entered by the user
-		$lastUsername = $authenticationUtils->getLastUsername();
-
 		return $this->render('User/login.html.twig', array(
-			'last_username' => $lastUsername,
-			'error'         => $error,
+				'error'         => $authenticationUtils->getLastAuthenticationError(),
+				'last_username' => $authenticationUtils->getLastUsername()
 		));
 	}
 
@@ -81,7 +75,7 @@ class UserController extends Controller
 	public function newAction(Request $request)
 	{
 		$entity = new User();
-        $form = $this->createFormUser($translator, $request->getLocale(), $entity, false);
+        $form = $this->createFormUser($entity, false);
 
 		return $this->render('User/new.html.twig', array('form' => $form->createView()));
 	}
@@ -89,7 +83,7 @@ class UserController extends Controller
 	public function createAction(Request $request, SessionInterface $session, \Swift_Mailer $mailer, TranslatorInterface $translator)
 	{
 		$entity = new User();
-        $form = $this->createFormUser($translator, $request->getLocale(), $entity, false);
+        $form = $this->createFormUser($entity, false);
 		$form->handleRequest($request);
 		
 		$params = $request->request->get("user");
@@ -151,12 +145,12 @@ class UserController extends Controller
 			$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY', null, $translator->trans('user.createAccount.UnableToAccessThisPage'));
 			$entity = $tokenStorage->getToken()->getUser();
 		}
-		$form = $this->createFormUser($translator, $request->getLocale(), $entity, true);
+		$form = $this->createFormUser($entity, true);
 	
 		return $this->render('User/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function updateAction(Request $request, TokenStorageInterface $tokenStorage, $id)
+	public function updateAction(Request $request, TokenStorageInterface $tokenStorage, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		if(empty($id))
@@ -166,7 +160,7 @@ class UserController extends Controller
 		
 		$current_avatar = $entity->getAvatar();
 
-		$form = $this->createFormUser($translator, $request->getLocale(), $entity, true);
+		$form = $this->createFormUser($entity, true);
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
@@ -292,7 +286,7 @@ class UserController extends Controller
 		return $password;
 	}
 
-	private function createFormUser(TranslatorInterface $translator, $locale, $entity, $ifEdit)
+	private function createFormUser($entity, $ifEdit)
 	{		
 		return $this->createForm(UserType::class, $entity, ['edit' => $ifEdit]);
 	}

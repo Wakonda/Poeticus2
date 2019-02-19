@@ -231,7 +231,7 @@ class PoemAdminController extends Controller
 		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity));
 	}
 
-	public function addFastAction(Request $request)
+	public function addFastAction(Request $request, TranslatorInterface $translator, SessionInterface $session)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = new Poem();
@@ -427,6 +427,9 @@ class PoemAdminController extends Controller
 				$redirect = $this->generateUrl('poemadmin_show', array('id' => $id));
 			else
 				$redirect = $this->generateUrl('poemadmin_index');
+
+
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.AddedSuccessfully", ["%numberAdded%" => $numberAdded, "%numberDoubloons%" => $numberDoubloons]));
 
 			return $this->redirect($redirect);
 		}

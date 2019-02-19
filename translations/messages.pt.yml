@@ -289,6 +289,7 @@ admin:
         UnreadMessages: "Mensagens não lidas"
         ThisEntryAlreadyExists: "Esta entrada já existe!"
         SentSuccessfully: "Enviado com sucesso"
+        AddedSuccessfully: "%numberAdded% poemas adicionados, %numberDoubloons% duplicatas"
     error:
         UnknownURL: "URL desconhecido"
     table:

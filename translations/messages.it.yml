@@ -242,6 +242,7 @@ error:
     index:
         Error: "Erro"
         PageNotFound: "A página que você deseja acessar não existe!"
+        Message: "<p>Si è verificato un <b>errore %code%</b>. Se il problema persiste, non esitare a <a href='%url%' alt=''>contattarci</a> per consentirci di risolverlo il prima possibile!</p>"
 version:
     index:
         Version: "Versione"

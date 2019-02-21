@@ -291,6 +291,7 @@ admin:
         ThisEntryAlreadyExists: "Cette entrée existe déjà !"
         SentSuccessfully: "Envoyé avec succès"
         AddedSuccessfully: "%numberAdded% poésie(s) ajoutée(s), %numberDoubloons% doublon(s)"
+        List: "Liste"
     error:
         UnknownURL: "URL inconnue"
     table:

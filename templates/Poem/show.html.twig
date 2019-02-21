@@ -155,6 +155,7 @@
 	</div>
 	{% endif %}
 	<hr>
+	<a href="{{ path('poemadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - 
 	<a href="{{ path('poemadmin_edit', { 'id' : entity.id }) }}">
 		<i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}
 	</a> - 

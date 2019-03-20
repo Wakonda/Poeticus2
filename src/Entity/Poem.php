@@ -87,6 +87,16 @@ class Poem
      */
 	protected $language;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PoemImage::class, cascade={"persist", "remove"}, mappedBy="poem", orphanRemoval=true)
+     */
+    protected $poemImages;
+
+    public function __construct()
+    {
+        $this->poemImages = new ArrayCollection();
+    }
+
 	public function getStateString()
 	{
 		$res = "";
@@ -313,4 +323,21 @@ class Poem
 	{
 		$this->images = array_diff($this->images, [$image]);
 	}
+
+    public function getPoemImages()
+    {
+        return $this->poemImages;
+    }
+     
+    public function addPoemImage(PoemImage $poemImage)
+    {
+        $this->poemImages->add($poemImage);
+        $poemImage->setPoem($this);
+    }
+	
+    public function removePoemImage(PoemImage $poemImage)
+    {
+        $poemImage->setPoem(null);
+        $this->poemImages->removeElement($poemImage);
+    }
 }

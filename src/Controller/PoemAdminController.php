@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Poem;
+use App\Entity\PoemImage;
 use App\Entity\User;
 use App\Entity\Language;
 use App\Entity\Biography;
@@ -712,16 +713,26 @@ class PoemAdminController extends Controller
 
 		$parameters = [];
 		$parameters["status"] = $request->request->get("twitter_area")." ".$this->generateUrl("read", array("id" => $id, 'slug' => $entity->getSlug()), UrlGeneratorInterface::ABSOLUTE_URL);
-		$image = $request->request->get('image_tweet');
+		$imageId = $request->request->get('image_id_tweet');
 
-		if(!empty($image)) {
-			$media = $connection->upload('media/upload', array('media' => $image));
+		if(!empty($imageId)) {
+			$poemImage = $entityManager->getRepository(PoemImage::class)->find($imageId);
+			
+			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/photo/poem/'.$poemImage->getImage())));
 			$parameters['media_ids'] = implode(',', array($media->media_id_string));
 		}
 
 		$statues = $connection->post("statuses/update", $parameters);
 	
-		$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+		if(isset($statues->errors) and !empty($statues->errors))
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentError"));
+		else {
+			$poemImage->addSocialNetwork("Twitter");
+			$entityManager->persist($poemImage);
+			$entityManager->flush();
+		
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+		}
 	
 		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
 	}
@@ -729,7 +740,7 @@ class PoemAdminController extends Controller
 	public function pinterestAction(Request $request, SessionInterface $session, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Proverb::class)->find($id);
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
 		
 		$mail = getenv("PINTEREST_MAIL");
 		$pwd = getenv("PINTEREST_PASSWORD");
@@ -740,16 +751,23 @@ class PoemAdminController extends Controller
 		
 		$boards = $bot->boards->forUser($username);
 		
-		$image = $request->request->get('image_pinterest');
+		$imageId = $request->request->get('image_id_pinterest');
 		
-		$bot->pins->create($image, $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
+		$poemImage = $entityManager->getRepository(PoemImage::class)->find($imageId);
 		
-		if(empty($bot->getLastError()))
+		$bot->pins->create($request->getUriForPath('/photo/poem/'.$poemImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
+		
+		if(empty($bot->getLastError())) {
 			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+			
+			$poemImage->addSocialNetwork("Pinterest");
+			$entityManager->persist($poemImage);
+			$entityManager->flush();
+		}
 		else
 			$session->getFlashBag()->add('message', $bot->getLastError());
 	
-		return $this->redirect($this->generateUrl("proverbadmin_show", array("id" => $id)));
+		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
 	}
 	
 	public function saveImageAction(Request $request, $id)
@@ -813,8 +831,8 @@ class PoemAdminController extends Controller
 
 			imagepng($image, "photo/poem/".$fileName);
 			imagedestroy($image);
-			
-			$entity->addImage($fileName);
+
+			$entity->addPoemImage(new PoemImage($fileName));
 			
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -827,12 +845,16 @@ class PoemAdminController extends Controller
         return $this->render('Poem/show.html.twig', array('entity' => $entity, 'imageGeneratorForm' => $imageGeneratorForm->createView()));
 	}
 	
-	public function removeImageAction(Request $request, $id, $fileName)
+	public function removeImageAction(Request $request, $id, $poemImageId)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Poem::class)->find($id);
 		
-		$entity->removeImage($fileName);
+		$poemImage = $entityManager->getRepository(PoemImage::class)->find($poemImageId);
+		
+		$fileName = $poemImage->getImage();
+		
+		$entity->removePoemImage($poemImage);
 		
 		$entityManager->persist($entity);
 		$entityManager->flush();

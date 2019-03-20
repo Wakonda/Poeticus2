@@ -290,6 +290,7 @@ admin:
         UnreadMessages: "Mensagens não lidas"
         ThisEntryAlreadyExists: "Esta entrada já existe!"
         SentSuccessfully: "Enviado com sucesso"
+        SentError: "Ocorreu um erro"
         AddedSuccessfully: "%numberAdded% poemas adicionados, %numberDoubloons% duplicatas"
         List: "Lista"
     error:

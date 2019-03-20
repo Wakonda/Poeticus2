@@ -208,7 +208,7 @@ poemadmin_save_image:
     controller: App\Controller\PoemAdminController:saveImageAction
 
 poemadmin_remove_image:
-    path: /admin/poem/removeimage/{id}/{fileName}
+    path: /admin/poem/removeimage/{id}/{poemImageId}
     controller: App\Controller\PoemAdminController:removeImageAction
 
 # ADMIN AJAX

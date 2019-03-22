@@ -506,6 +506,15 @@ versionadmin_update:
     path: /admin/version/upate/{id}
     controller: App\Controller\VersionAdminController::updateAction
 
+# ADMIN POEMIMAGE
+poemimageadmin_index:
+    path: /admin/poem_image/index
+    controller: App\Controller\PoemImageAdminController::indexAction
+
+poemimageadmin_indexdatatables:
+    path: /admin/poem_image/indexdatatables
+    controller: App\Controller\PoemImageAdminController::indexDatatablesAction
+
 # ADMIN POEM
 poemadmin_index:
     path: /admin/poem/index

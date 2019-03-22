@@ -274,6 +274,7 @@ admin:
         Page: "Pagina"
         Country: "Paese"
         Poem: "Poesia"
+        PoemImage: "Immagine di poesia"
         Collection: "Raccolta"
         Version: "Versione"
         Store: "Bottega"
@@ -324,6 +325,9 @@ admin:
         ForSameBiography: "per il stesso autore"
         ForSameCollection: "per la stessa collezione"
         Number: "Quantità"
+    poemImage:
+        Image: "Immagine"
+        Share: "Suddividere"
     biography:
         Title: "Titolo"
         Text: "Testo"

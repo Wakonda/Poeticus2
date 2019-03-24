@@ -44,4 +44,13 @@ class PoemImageRepository extends ServiceEntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getPaginator()
+	{
+		$qb = $this->createQueryBuilder("ip");
+
+		$qb->join('ip.poem', 'pf');
+
+		return $qb->getQuery();
+	}
 }

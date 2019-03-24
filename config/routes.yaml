@@ -130,6 +130,10 @@ country_poem_datatables:
     path: /country_poem_datatables/{countryId}
     controller: App\Controller\IndexController::countryDatatablesAction
 
+byimages:
+    path: /byimages
+    controller: App\Controller\IndexController::byImagesAction
+
 page_display:
     path: /page/{name}
     controller: App\Controller\IndexController::pageAction

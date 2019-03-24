@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Spipu\Html2Pdf\Html2Pdf;
 
 use App\Entity\Poem;
+use App\Entity\PoemImage;
 use App\Entity\Biography;
 use App\Entity\Store;
 use App\Entity\User;
@@ -141,6 +142,23 @@ class IndexController extends Controller
 		$browsingPoems = $entityManager->getRepository(Poem::class)->browsingPoemShow($params, $id);
 
 		return $this->render('Index/read.html.twig', ['entity' => $entity, 'browsingPoems' => $browsingPoems]);
+	}
+
+	public function byImagesAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$query = $entityManager->getRepository(PoemImage::class)->getPaginator();
+		
+		$paginator  = $this->get('knp_paginator');
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$request->query->getInt('page', 1), /*page number*/
+			10 /*limit per page*/
+		);
+		
+		$pagination->setCustomParameters(['align' => 'center']);
+		
+		return $this->render('Index/byImage.html.twig', ['pagination' => $pagination]);
 	}
 
 	public function readPDFAction(Request $request, $id)

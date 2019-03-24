@@ -7,6 +7,7 @@ menu:
         PoeticForms: "Forme poetiche"
         YourPoems: "Le vostre poesie"
         Store: "Bottega"
+        Images: "Immagini"
     left:
         RecentPoems: "Poesie recenti"
         FollowUs: "Seguiteci"
@@ -265,6 +266,9 @@ poem:
     browsing:
         Previous: "Precedente"
         Next: "Seguente"
+poemImage:
+    index:
+        ByImages: "In immagine "
 admin:
     index:
         Biography: "Biografia"

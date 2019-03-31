@@ -158,7 +158,7 @@ class IndexController extends Controller
 		
 		$pagination->setCustomParameters(['align' => 'center']);
 		
-		return $this->render('Index/byImage.html.twig', ['pagination' => $pagination]);
+		return $this->render('Index/byimage.html.twig', ['pagination' => $pagination]);
 	}
 
 	public function readPDFAction(Request $request, $id)

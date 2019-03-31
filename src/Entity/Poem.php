@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Service\GenericFunction;
+
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PoemRepository")
@@ -12,7 +14,7 @@ class Poem
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     protected $id;

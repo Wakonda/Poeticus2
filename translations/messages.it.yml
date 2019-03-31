@@ -99,6 +99,8 @@ store:
     author:
         Title: "Titolo"
         Action: "Azione"
+    read:
+        Abstract: "Astratto"
 yourPoems:
     index:
         YourPoems: "Le vostre poesie"

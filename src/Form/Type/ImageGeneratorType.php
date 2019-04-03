@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ImageGeneratorType extends AbstractType
@@ -22,6 +23,9 @@ class ImageGeneratorType extends AbstractType
 			->add('invert_colors', CheckboxType::class, ["label" => "admin.imageGenerator.InvertColors", "required" => false])
 			->add('text', TextareaType::class, array(
                 'attr' => array('class' => 'redactor'), 'label' => 'admin.imageGenerator.Text'
+            ))
+			->add('version', ChoiceType::class, array(
+                "required" => true, 'label' => 'admin.imageGenerator.Version', "choices" => ["V1" => "v1", "V2" => "v2"]
             ))
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', "attr" => array("class" => "btn btn-primary")))
 			;

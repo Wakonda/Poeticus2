@@ -147,7 +147,7 @@ class IndexController extends Controller
 	public function byImagesAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$query = $entityManager->getRepository(PoemImage::class)->getPaginator();
+		$query = $entityManager->getRepository(PoemImage::class)->getPaginator($request->getLocale());
 		
 		$paginator  = $this->get('knp_paginator');
 		$pagination = $paginator->paginate(

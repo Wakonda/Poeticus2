@@ -15,6 +15,7 @@ use App\Form\Type\ImageGeneratorType;
 use App\Form\Type\PoemFastMultipleType;
 use App\Service\GenericFunction;
 use App\Service\ImageGenerator;
+use App\Service\PHPImage;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -780,57 +781,95 @@ class PoemAdminController extends Controller
 		
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid())
 		{
-			$file = $imageGeneratorForm->get('image')->getData();
-			
+			$data = $imageGeneratorForm->getData();
+			$file = $data['image'];
             $fileName = md5(uniqid()).'_'.$file->getClientOriginalName();
+			$text = html_entity_decode($data['text'], ENT_QUOTES);
 
-			$data = file_get_contents($file->getPathname());
-			$image = imagecreatefromstring($data);
-			
-			ob_start();
-			imagepng($image);
-			$png = ob_get_clean();
-				
-			$image_size = getimagesizefromstring($png);
-			
 			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
-
-			$widthText = $image_size[0] * 0.9;
-			$start_x = $image_size[0] * 0.1;
-			$start_y = $image_size[1] * 0.35;
-
-			$copyright_x = $image_size[0] * 0.03;
-			$copyright_y = $image_size[1] - $image_size[1] * 0.03;
-
-			if($imageGeneratorForm->get('invert_colors')->getData())
+			
+			if($data["version"] == "v1")
 			{
-				$white = imagecolorallocate($image, 0, 0, 0);
-				$black = imagecolorallocate($image, 255, 255, 255);
+				$image = imagecreatefromstring(file_get_contents($file->getPathname()));
+				
+				ob_start();
+				imagepng($image);
+				$png = ob_get_clean();
+					
+				$image_size = getimagesizefromstring($png);
+				
+
+				$widthText = $image_size[0] * 0.9;
+				$start_x = $image_size[0] * 0.1;
+				$start_y = $image_size[1] * 0.35;
+
+				$copyright_x = $image_size[0] * 0.03;
+				$copyright_y = $image_size[1] - $image_size[1] * 0.03;
+
+				if($data['invert_colors'])
+				{
+					$white = imagecolorallocate($image, 0, 0, 0);
+					$black = imagecolorallocate($image, 255, 255, 255);
+				}
+				else
+				{
+					$black = imagecolorallocate($image, 0, 0, 0);
+					$white = imagecolorallocate($image, 255, 255, 255);
+				}
+
+				$imageGenerator = new ImageGenerator();
+				$imageGenerator->setFontColor($black);
+				$imageGenerator->setStrokeColor($white);
+				$imageGenerator->setStroke(true);
+				$imageGenerator->setBlur(true);
+				$imageGenerator->setFont($font);
+				$imageGenerator->setFontSize($data['font_size']);
+				$imageGenerator->setImage($image);
+				
+				$imageGenerator->setText($text);
+				$imageGenerator->setCopyright(["x" => $copyright_x, "y" => $copyright_y, "text" => "poeticus.wakonda.guru"]);
+
+				$imageGenerator->generate($start_x, $start_y, $widthText);
+
+				imagepng($image, "photo/poem/".$fileName);
+				imagedestroy($image);
 			}
 			else
 			{
-				$black = imagecolorallocate($image, 0, 0, 0);
-				$white = imagecolorallocate($image, 255, 255, 255);
+				$textColor = [0, 0, 0];
+				$strokeColor = [255, 255, 255];
+				$rectangleColor = [255, 255, 255];
+				
+				if($data["invert_colors"]) {
+					$textColor = [255, 255, 255];
+					$strokeColor = [0, 0, 0];
+					$rectangleColor = [0, 0, 0];
+				}
+
+				$bg = $data['image']->getPathName();
+				$image = new PHPImage();
+				$image->setDimensionsFromImage($bg);
+				$image->draw($bg);
+				$image->resize(486, 540, true, true);
+				$image->setAlignHorizontal('center');
+				$image->setAlignVertical('center');
+				$image->setFont($font);
+				$image->setTextColor($textColor);
+				$image->setStrokeWidth(1);
+				$image->setStrokeColor($strokeColor);
+				$gutter = 50;
+				$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2, $rectangleColor, 0.5);
+				$image->textBox("“".$text."”\n___\n".$entity->getAuthor(), array(
+					'width' => $image->getWidth() - $gutter * 2,
+					'height' => $image->getHeight() - $gutter * 2,
+					'fontSize' => $data["font_size"],
+					'x' => $gutter,
+					'y' => $gutter
+				));
+
+				imagepng($image->getResource(), "photo/poem/".$fileName);
+				imagedestroy($image->getResource());
 			}
-
-			$imageGenerator = new ImageGenerator();
-			$imageGenerator->setFontColor($black);
-			$imageGenerator->setStrokeColor($white);
-			$imageGenerator->setStroke(true);
-			$imageGenerator->setBlur(true);
-			$imageGenerator->setFont($font);
-			$imageGenerator->setFontSize($imageGeneratorForm->get('font_size')->getData());
-			$imageGenerator->setImage($image);
-			
-			$text = html_entity_decode($imageGeneratorForm->get('text')->getData(), ENT_QUOTES);
-			
-			$imageGenerator->setText($text);
-			$imageGenerator->setCopyright(["x" => $copyright_x, "y" => $copyright_y, "text" => "poeticus.wakonda.guru"]);
-
-			$imageGenerator->generate($start_x, $start_y, $widthText);
-
-			imagepng($image, "photo/poem/".$fileName);
-			imagedestroy($image);
 
 			$entity->addPoemImage(new PoemImage($fileName));
 			

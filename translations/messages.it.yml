@@ -394,3 +394,4 @@ admin:
         Image: "Immagine"
         FontSize: "Dimensione del carattere"
         InvertColors: "Invertire i colori"
+        Version: "Versione"

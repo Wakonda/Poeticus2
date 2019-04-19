@@ -845,12 +845,13 @@ class PoemAdminController extends Controller
 					$strokeColor = [0, 0, 0];
 					$rectangleColor = [0, 0, 0];
 				}
+				
+				// str_replace("\xe2\x80\x8b", '', 'test') => remove ZERO WIDTH SPACE character
 
 				$bg = $data['image']->getPathName();
 				$image = new PHPImage();
 				$image->setDimensionsFromImage($bg);
 				$image->draw($bg);
-				$image->resize(486, 540, true, true);
 				$image->setAlignHorizontal('center');
 				$image->setAlignVertical('center');
 				$image->setFont($font);
@@ -859,7 +860,7 @@ class PoemAdminController extends Controller
 				$image->setStrokeColor($strokeColor);
 				$gutter = 50;
 				$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2, $rectangleColor, 0.5);
-				$image->textBox("“".$text."”\n___\n".$entity->getAuthor(), array(
+				$image->textBox("“".html_entity_decode($text)."”\n___\n".str_replace("\xe2\x80\x8b", '', $entity->getAuthor()->getTitle()), array(
 					'width' => $image->getWidth() - $gutter * 2,
 					'height' => $image->getHeight() - $gutter * 2,
 					'fontSize' => $data["font_size"],

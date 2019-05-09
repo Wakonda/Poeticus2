@@ -646,3 +646,20 @@ useradmin_show:
 useradmin_enabled:
     path: /admin/user/enabled/{id}/{state}
     controller: App\Controller\UserControlleradmin:enabledAction
+
+# ADMIN BACKUP
+backupadmin_index:
+    path: /admin/backup/index
+    controller: App\Controller\BackupAdminController::indexAction
+
+backupadmin_download:
+    path: /admin/backup/download/{filename}
+    controller: App\Controller\BackupAdminController::downloadAction
+
+backupadmin_delete:
+    path: /admin/backup/delete/{filename}
+    controller: App\Controller\BackupAdminController::deleteAction
+
+backupadmin_generate:
+    path: /admin/backup/generate
+    controller: App\Controller\BackupAdminController::generateAction

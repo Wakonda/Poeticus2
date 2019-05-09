@@ -83,6 +83,9 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "ifsnop/mysqldump-php": {
+        "version": "v2.7"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },

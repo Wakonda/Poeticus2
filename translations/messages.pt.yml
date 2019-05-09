@@ -114,6 +114,13 @@ yourPoems:
         Text: "Texto"
         Draft: "Rascunho"
         Save: "Registar"
+backup:
+    index:
+        File: "Arquivo"
+        Actions: "Estoque"
+        No: "Sem backup"
+        FileDeleted: "Arquivo excluído"
+        FileGenerated: "Arquivo gerado"
 user:
     login:
         Pseudo: "Nome de utilizador(a)"
@@ -300,6 +307,7 @@ admin:
         SentError: "Ocorreu um erro"
         AddedSuccessfully: "%numberAdded% poemas adicionados, %numberDoubloons% duplicatas"
         List: "Lista"
+        Backup: "Backup"
     error:
         UnknownURL: "URL desconhecido"
     table:

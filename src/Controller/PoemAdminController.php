@@ -34,6 +34,9 @@ require __DIR__.'/../../vendor/simple_html_dom.php';
 class PoemAdminController extends Controller
 {
 	private $formName = "poem";
+	
+	private $authorizedURLs = ['cG9lc2llLndlYm5ldC5mcg==', 'd3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=', 'd3d3LnBvZXRpY2EuZnI=', 'd3d3LnRvdXRlbGFwb2VzaWUuY29t', 'd3d3LnVuaGFpa3UuY29t', 'd3d3LmNpdGFkb3IucHQ='];
+	private $authorizedURLMultiples = ['d3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=', 'd3d3LnBlbnNpZXJpcGFyb2xlLml0'];
 
 	public function indexAction(Request $request)
 	{
@@ -230,7 +233,7 @@ class PoemAdminController extends Controller
 		
 		$form = $this->createForm(PoemFastType::class, $entity, array("locale" => $request->getLocale()));
 	
-		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity, 'authorizedURLs' => $this->authorizedURLs));
 	}
 
 	public function addFastAction(Request $request, TranslatorInterface $translator, SessionInterface $session)
@@ -436,7 +439,7 @@ class PoemAdminController extends Controller
 			return $this->redirect($redirect);
 		}
 	
-		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity, 'authorizedURLs' => $this->authorizedURLs));
 	}
 	
 	public function newFastMultipleAction(Request $request)
@@ -448,7 +451,7 @@ class PoemAdminController extends Controller
 
 		$form = $this->createForm(PoemFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
 
-		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale()));
+		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));
 	}
 	
 	public function addFastMultipleAction(Request $request, TranslatorInterface $translator)
@@ -465,10 +468,8 @@ class PoemAdminController extends Controller
 		{
 			$url = $req["url"];
 			$url_array = parse_url($url);
-			
-			$authorizedURLs = ['d3d3LnBvZXNpZS1mcmFuY2Fpc2UuZnI=', 'd3d3LnBlbnNpZXJpcGFyb2xlLml0'];
-			
-			if(!in_array(base64_encode($url_array['host']), $authorizedURLs))
+
+			if(!in_array(base64_encode($url_array['host']), $this->authorizedURLMultiples))
 				$form->get("url")->addError(new FormError($translator->trans("admin.error.UnknownURL")));
 		}
 
@@ -570,7 +571,7 @@ class PoemAdminController extends Controller
 			return $this->redirect($redirect);
 		}
 		
-		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale()));
+		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));
 	}
 	
 	public function listSelectedBiographyAction(Request $request)

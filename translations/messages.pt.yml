@@ -304,6 +304,7 @@ admin:
         UnreadMessages: "Mensagens não lidas"
         ThisEntryAlreadyExists: "Esta entrada já existe!"
         SentSuccessfully: "Enviado com sucesso"
+        YouMustSelectAnImage: "Você deve selecionar uma imagem"
         SentError: "Ocorreu um erro"
         AddedSuccessfully: "%numberAdded% poemas adicionados, %numberDoubloons% duplicatas"
         List: "Lista"

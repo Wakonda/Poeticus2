@@ -757,6 +757,11 @@ class PoemAdminController extends Controller
 		
 		$poemImage = $entityManager->getRepository(PoemImage::class)->find($imageId);
 		
+		if(empty($poemImage)) {
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.YouMustSelectAnImage"));
+			return $this->redirect($this->generateUrl("proverbadmin_show", array("id" => $id)));
+		}
+
 		$bot->pins->create($request->getUriForPath('/photo/poem/'.$poemImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError())) {

@@ -15,7 +15,7 @@
 
 {% block meta_tag %}
 	{{ parent() }}
-	<meta property="og:description"   content="{{ entity.text }}" />
+	<meta property="og:description" content="{{ entity.text }}" />
 	
 	{% if image is not null %}
 		<meta name="twitter:card" content="summary_large_image">
@@ -133,7 +133,7 @@
 	</div>
 	
 	{% if entity.poemImages is not empty %}
-	<h3>En image ...</h3>
+	<h3>{{ "poem.read.InPictures"|trans }}</h3>
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators hidden_print">

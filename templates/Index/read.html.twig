@@ -13,6 +13,18 @@
 
 {% block meta_tag_description %}{{ entity.title }} est une poésie de {{ entity.biography.title }} publiée {{ (entity.releasedDate is not empty) ? "en "~entity.releasedDate : "à une date inconnue"}} {{ (entity.collection is not null) ? "dans le recueil intitulé "~entity.collection.title : "" }}{% endblock %}
 
+{% block meta_tag %}
+	{{ parent() }}
+	<meta property="og:description"   content="{{ entity.text }}" />
+	
+	{% if image is not null %}
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="{{ entity.text }}">
+		<meta property="og:type" content="website">
+		<meta property="og:image" content="{{ absolute_url(asset('photo/poem/'~image.image)) }}" />
+	{% endif %}
+{% endblock %}
+
 {% block script_additional %}
 <script src="{{ asset('js/jquery.qtip/jquery.qtip.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/aterkik-jquery-tweet-highlighted/jquery.tweetHighlighted.js') }}"></script>
@@ -137,6 +149,10 @@
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<img src="{{ asset('photo/poem/'~poemImage.image) }}" class="text-center" alt="">
 					<div class="carousel-caption hidden_print">
+						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}&text={{ poemImage.poem.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&t={{ poemImage.poem.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&media={{ absolute_url(asset('photo/poem/'~poemImage.image)) }}&description={{ poemImage.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
 						<a href="{{ path('download_image', {'fileName': poemImage.image}) }}" class="btn btn-success "><i class="fa fa-download" aria-hidden="true"></i></a>
 					</div>
 				</div>

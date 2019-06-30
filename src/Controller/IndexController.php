@@ -126,6 +126,8 @@ class IndexController extends Controller
 		
 		if(empty($entity))
 			throw $this->createNotFoundException('404');
+
+		$image = (!empty($idImage)) ? $entityManager->getRepository(PoemImage::class)->find($idImage) : null;
 		
 		$params = array();
 		
@@ -141,7 +143,7 @@ class IndexController extends Controller
 
 		$browsingPoems = $entityManager->getRepository(Poem::class)->browsingPoemShow($params, $id);
 
-		return $this->render('Index/read.html.twig', ['entity' => $entity, 'browsingPoems' => $browsingPoems]);
+		return $this->render('Index/read.html.twig', ['entity' => $entity, 'browsingPoems' => $browsingPoems, 'image' => $image]);
 	}
 
 	public function byImagesAction(Request $request)

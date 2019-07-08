@@ -144,6 +144,7 @@ user:
         Country: "País"
         Captcha: "Digite o texto que vê na imagem"
         CreateSave: "Crie a sua conta"
+        Save: "Registro"
         OR: "OU"
         SelectFile: "Selecione um arquivo"
         UseGravatar: "Use um gravatar"

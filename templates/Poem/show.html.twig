@@ -57,7 +57,15 @@
 							&nbsp;
 							<a class="btn btn-danger" href="{{ path('poemadmin_remove_image', {'id' : entity.id, 'poemImageId': poemImage.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
 						</div>
-						<br>
+						<div class="input-group mt-3">
+							<input class="form-control" id="url_image_{{ poemImage.id }}" value="{{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary copy" type="button" data-clipboard-target="#url_image_{{ poemImage.id }}">
+								<i class="fa fa-clipboard" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+						<hr>
 					{% endfor %}
 				{% endif %}
 			</td>
@@ -190,7 +198,9 @@
 {% endblock %}
 
 {% block script_additional %}
+	<script src="{{ asset('js/clipboard.js/clipboard.min.js') }}"></script>
 	<script type="text/javascript">
+		new ClipboardJS('.copy');
 		$(function() {
 			// Twitter
 			$("div#collapseTwitter input#addImage").click(function() {

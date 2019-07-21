@@ -50,7 +50,7 @@
 {% block main_content %}
 	<p class="text-center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>
 	<br>
-	{{ entity.text|raw }}
+	<p>{{ entity.text|raw }}</p>
 	<table class="show">
 		{% if entity.dayBirth is not null or entity.monthBirth is not null or entity.yearBirth is not null %}
 			<tr>

@@ -1,39 +1,20 @@
 <script type="text/javascript">
+	function loadComments()
+	{
+		$.ajax(
+		{
+			type: "GET",
+			url: "{{ path('comment_load', { poemId: poemId }) }}?page=1",
+			cache: false,
+			success: function(data)
+			{
+				$("#list_comments").html(data);
+			}
+		});
+	}
+
 	$(function()
 	{
-		$('body').on('submit', "#form_comment", function(event)
-		{
-			var DATA = $(this).serialize();
-
-			$.ajax(
-			{
-				type: "POST",
-				url: "{{ path('comment_create', { poemId: poemId }) }}?page=1",
-				data: DATA,
-				cache: false,
-				success: function(data)
-				{
-					loadComments();
-					tinyMCE.activeEditor.setContent('');
-				}
-			});
-			event.preventDefault();
-		});
-		
-		function loadComments()
-		{
-			$.ajax(
-			{
-				type: "GET",
-				url: "{{ path('comment_load', { poemId: poemId }) }}?page=1",
-				cache: false,
-				success: function(data)
-				{
-					$("#list_comments").html(data);
-				}
-			});
-		}
-		
 		$(document).on("click", ".page_action", function()
 		{
 			$.ajax(

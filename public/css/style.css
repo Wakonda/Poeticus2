@@ -688,10 +688,6 @@ div.advert {
 }
 
 /** Poem Browsing **/
-div#poem_browsing {
-	font-size: 19px;
-}
-
 div#poem_browsing i {
 	vertical-align: middle;
 }

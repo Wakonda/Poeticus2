@@ -900,8 +900,7 @@ class IndexController extends Controller
 			'links' => $links
 		));
     }
-	
-	
+
 	public function downloadImageAction($fileName)
 	{
 		$response = new BinaryFileResponse('photo/poem/'.$fileName);

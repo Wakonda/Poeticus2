@@ -56,7 +56,7 @@ class CommentController extends Controller
 
 		$params = $this->getParametersComment($request, $poemId);
 
-		return $this->render('Comment/form.html.twig', array("form" => $form->createView()));
+		return $this->render('Comment/form.html.twig', array("form" => $form->createView(), "poemId" => $poemId));
 	}
 	
 	public function loadCommentAction(Request $request, $poemId)

@@ -20,7 +20,7 @@
 .web-server-pid
 ###< symfony/web-server-bundle ###
 
-/public/photo/biograpghy/
+/public/photo/biography/
 /public/photo/collection/
 /public/photo/country/
 /public/photo/language/

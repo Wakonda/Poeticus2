@@ -16,7 +16,7 @@
 	<script type="text/javascript">
 		$(function ()
 		{
-			oTablePoem = $('table.poems_user_datatables').DataTable( {
+			oTable = $('table.entities_user_datatables').DataTable( {
 				"oLanguage": {
 					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
 				},
@@ -56,7 +56,7 @@
 							cache: false,
 							success: function(data)
 							{
-								oTablePoem.ajax.reload();
+								oTable.ajax.reload();
 							}
 						});
 						$noty.close();
@@ -132,7 +132,7 @@
 	</table>
 	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyPoems'|trans }}</h2>
 	<hr class="show_user_separator">
-	<table class="poems_user_datatables table table-striped table-bordered dt-responsive">
+	<table class="entities_user_datatables table table-striped table-bordered dt-responsive">
 		<thead>
 			<th>{{ 'user.myProfile.Title'|trans }}</th>
 			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") and entity.username == app.user.username %}

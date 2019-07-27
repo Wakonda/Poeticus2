@@ -431,7 +431,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'pf.title', 'u.username');
 		
-		$qb->select("pf.id AS poem_id, pf.title AS poem_title, u.username AS username, u.id AS user_id, pf.slug AS slug")
+		$qb->select("pf.id AS id, pf.title AS title, u.username AS username, u.id AS user_id, pf.slug AS slug")
 		   ->where("pf.authorType = 'user'")
 		   ->join("pf.user", "u")
 		   ->andWhere("pf.state = 0");

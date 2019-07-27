@@ -11,7 +11,7 @@
 	<script src="{{ asset('js/tinymce/js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 
-{% block meta_tag_description %}{{ entity.title }} est une poésie de {{ entity.biography.title }} publiée {{ (entity.releasedDate is not empty) ? "en "~entity.releasedDate : "à une date inconnue"}} {{ (entity.collection is not null) ? "dans le recueil intitulé "~entity.collection.title : "" }}{% endblock %}
+{% block meta_tag_description %}{{ entity.title }} est une poésie de {{ entity.isBiography ? entity.biography.title : entity.user.username }} publiée {{ (entity.releasedDate is not empty) ? "en "~entity.releasedDate : "à une date inconnue"}} {{ (entity.collection is not null) ? "dans le recueil intitulé "~entity.collection.title : "" }}{% endblock %}
 
 {% block meta_tag %}
 	{{ parent() }}
@@ -177,7 +177,7 @@
 	{% if entity.authorType == "biography" %}
 		<a href="{{ path('author', {'id' : entity.biography.id, 'slug' : entity.biography.slug }) }}" alt="">{{ entity.biography.title }}</a>
 	{% else %}
-		<a href="{{ path('user_show', {'id' : entity.user }) }}" alt="">{{ entity.user }}</a>
+		<a href="{{ path('user_show', {'username' : entity.user.username }) }}" alt="">{{ entity.user }}</a>
 	{% endif %}
 	-
 	<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" alt="" height="8" /></a>

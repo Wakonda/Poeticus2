@@ -137,8 +137,8 @@ class IndexController extends Controller
 			$params["field"] = "biography";
 		}
 		else {
-			$params["author"] = $entityManager->getRepository(User::class)->findOneBy(["username" => $entity->getUser()])->getId();
-			$params["field"] = "user_id";			
+			$params["author"] = $entity->getUser()->getId();
+			$params["field"] = "user";			
 		}
 
 		$browsingPoems = $entityManager->getRepository(Poem::class)->browsingPoemShow($params, $id);
@@ -712,8 +712,8 @@ class IndexController extends Controller
 			{
 				$row = array();
 
-				$show = $this->generateUrl('read', array('id' => $entity['poem_id'], 'slug' => $entity['slug']));
-				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['poem_title'].'</a>';
+				$show = $this->generateUrl('read', array('id' => $entity['id'], 'slug' => $entity['slug']));
+				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['title'].'</a>';
 
 				$show = $this->generateUrl('user_show', array('username' => $entity['username']));
 				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['username'].'</a>';

@@ -65,7 +65,7 @@ class UserController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		if(!empty($username))
-			$entity = $entityManager->getRepository(User::class)->findOneByName(["username" => $username]);
+			$entity = $entityManager->getRepository(User::class)->findOneBy(["username" => $username]);
 		else
 			$entity = $tokenStorage->getToken()->getUser();
 
@@ -388,7 +388,7 @@ class UserController extends Controller
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity->getTitle().'</a>';
 
 			if ($authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED') and $tokenStorage->getToken()->getUser()->getUsername() == $username) {
-				$row[] = '<div class="state_poem '.$entity->getStateRealName().'">'.$translator->trans($entity->getStateString()).'</div>';
+				$row[] = '<div class="state_entity '.$entity->getStateRealName().'">'.$translator->trans($entity->getStateString()).'</div>';
 				$row[] = '<a href="'.$this->generateUrl('poemuser_edit', array("id" => $entity->getId())).'" alt=""><span class="fa fa-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="fa fa-times">'.$translator->trans('user.myProfile.Delete').'</span></a>';
 			}
 			

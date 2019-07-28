@@ -58,7 +58,7 @@ class SendPoemController extends Controller
 
 		$res = array("result" => "error");
 		
-		$res["content"] = $this->render('Index/send_poem_form.html.twig', array('form' => $form->createView(), 'poemId' => $poemId));
+		$res["content"] = $this->render('Index/send_poem_form.html.twig', array('form' => $form->createView(), 'poemId' => $poemId))->getContent();
 		
 		$response = new Response(json_encode($res));
 		$response->headers->set('Content-Type', 'application/json');

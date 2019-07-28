@@ -30,7 +30,7 @@ class PoemFastType extends AbstractType
 
         $builder
 			->add('ipProxy', TextType::class, array(
-                'label' => 'Adresse Proxy', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")]
+                'label' => 'admin.poem.ProxyAddress', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")]
             ))
 
 			->add('url', TextType::class, array(

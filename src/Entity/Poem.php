@@ -12,6 +12,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Poem
 {
+	const PUBLISHED_STATE = 0;
+	const DRAFT_STATE = 1;
+	const DELETE_STATE = 2;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -97,6 +101,7 @@ class Poem
     public function __construct()
     {
         $this->poemImages = new ArrayCollection();
+		$this->state = self::PUBLISHED_STATE;
     }
 
 	public function getStateString()
@@ -105,13 +110,13 @@ class Poem
 		
 		switch($this->state)
 		{
-			case 0:
+			case self::PUBLISHED_STATE:
 				$res = "poem.state.Published";
 				break;
-			case 1:
+			case self::DRAFT_STATE:
 				$res = "poem.state.Draft";
 				break;
-			case 2:
+			case self::DELETE_STATE:
 				$res = "poem.state.Deleted";
 				break;
 			default:
@@ -127,13 +132,13 @@ class Poem
 		
 		switch($this->state)
 		{
-			case 0:
+			case self::PUBLISHED_STATE:
 				$res = "published";
 				break;
-			case 1:
+			case self::DRAFT_STATE:
 				$res = "draft";
 				break;
-			case 2:
+			case self::DELETE_STATE:
 				$res = "deleted";
 				break;
 			default:

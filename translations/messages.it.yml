@@ -337,6 +337,7 @@ admin:
         Country: "Paese"
         Collection: "Raccolta"
         PublicationDate: "Data di pubblicazione"
+        ProxyAddress: "Indirizzo proxy"
         UnknownDate: "Data sconosciuta"
         Image: "Immagine"
         RapidCreation: "Rapida creazione"

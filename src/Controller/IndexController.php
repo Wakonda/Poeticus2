@@ -166,7 +166,7 @@ class IndexController extends Controller
 	public function readPDFAction(Request $request, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Poem::class)->find($id, true);
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
 		
 		if(empty($entity))
 			throw $this->createNotFoundException('404');
@@ -548,7 +548,7 @@ class IndexController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$biography = $entityManager->getRepository(Biography::class)->find($biographyId);
-		$collection = $entityManager->getRepository(Collection::class)->find($collectionId, true);
+		$collection = $entityManager->getRepository(Collection::class)->find($collectionId);
 		$entities = $entityManager->getRepository(Collection::class)->getAllPoemsByCollectionAndAuthorForPdf($collectionId);
 
 		$content = $this->renderView('Index/pdf_poem_collection.html.twig', array('biography' => $biography, 'collection' => $collection, 'entities' => $entities));
@@ -802,7 +802,7 @@ class IndexController extends Controller
 	public function poemUserUpdateAction(Request $request, TokenStorageInterface $tokenStorage, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Poem::class)->find($id, true);
+		$entity = $entityManager->getRepository(Poem::class)->find($id);
 		$form = $this->createForm(PoemUserType::class, $entity);
 		$form->handleRequest($request);
 

@@ -127,7 +127,7 @@
 {% endblock %}
 
 {% block main_content %}
-	<div class="d-none alert alert-success" id="send_poem_result"></div>
+	<div class="d-none alert alert-success" id="send_result"></div>
 	<div id="main_poem_text">
 		{{ entity.text|raw }}
 	</div>
@@ -253,11 +253,11 @@
 	</div>
 	<!-- Modal -->
 	<div class="modal fade hidden_print" id="send_poem_modal" tabindex="-1" role="dialog" aria-labelledby="sendPoemModalLabel">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="sendPoemModalLabel"><i class="fa fa-share-square-o" aria-hidden="true"></i> {{ 'send.index.SendPoemFriend'|trans }}</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
 				{{ render(controller('App\\Controller\\SendPoemController::indexAction', {'poemId': entity.id})) }}
 			</div>

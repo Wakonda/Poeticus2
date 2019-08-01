@@ -81,6 +81,6 @@
 		<a href="{{ path('country', {'id' : random.country.id, 'slug' : random.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~random.country.flag) }}" alt="" height="8" /></a>
 	</div>
 	{% else %}
-		<p>{{ 'main.index.NoPoem'|trans }}</p>
+		<div class="alert alert-danger text-center" role="alert">{{ 'main.index.NoPoem'|trans }}</div>
 	{% endif %}
 {% endblock %}

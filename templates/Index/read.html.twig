@@ -171,7 +171,9 @@
 		</a>
 	</div>
 	{% endif %}
-	
+
+	{% include "Admin/quick_admin.html.twig" with {edit_route: 'poemadmin_edit', show_route: 'poemadmin_show'} %}
+
 	<hr>
 	<p>
 	{% if entity.authorType == "biography" %}

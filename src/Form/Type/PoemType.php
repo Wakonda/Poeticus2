@@ -27,6 +27,9 @@ use App\Entity\Biography;
 use App\Entity\User;
 use App\Entity\Collection;
 use App\Entity\PoeticForm;
+use App\Entity\Tag;
+
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class PoemType extends AbstractType
 {
@@ -104,6 +107,22 @@ class PoemType extends AbstractType
 				'expanded' => false,
 				'placeholder' => 'main.field.ChooseAnOption'
 			))
+		   ->add('tags', Select2EntityType::class, [
+				'label' => 'admin.poem.Tags',
+				'multiple' => true,
+				'remote_route' => 'tagadmin_gettagsbyajax',
+				'class' => Tag::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => true,
+				'cache_timeout' => 60000, // if 'cache' is true
+				'language' => $locale,
+				'placeholder' => 'main.field.ChooseAnOption'
+			])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

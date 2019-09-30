@@ -50,6 +50,10 @@ main:
         Search: "Cercare"
         YourPoems: "Le vostre poesie"
         GreatWriters: "Grandi scrittori"
+tag:
+    table:
+        Title: "Titolo"
+        Collection: "Raccolta"
 biography:
     index:
         ByAuthors: "Per autore"
@@ -248,7 +252,7 @@ vote:
     field:
         Error: "Errore"
         YouMustBeLoggedInToVote: "Devi essere registrato per votare!"
-        YouHaveAlreadyVotedForThisPoem: "Hai già votato per questa poesia"
+        YouHaveAlreadyVotedForThis: "Hai già votato per questa poesia"
 error:
     index:
         Error: "Erro"
@@ -294,6 +298,7 @@ admin:
         Collection: "Raccolta"
         Version: "Versione"
         Store: "Bottega"
+        Tag: "Etichetta"
         Create: "Creare"
         Read: "Leggere"
         Update: "Modificare"
@@ -344,6 +349,7 @@ admin:
         ForSameBiography: "per il stesso autore"
         ForSameCollection: "per la stessa collezione"
         Number: "Quantità"
+        Tags: "Etichette"
     poemImage:
         Image: "Immagine"
         Share: "Suddividere"
@@ -355,6 +361,10 @@ admin:
         Image: "Immagine"
         Nationality: "Nazionalità"
         Country: "Paese"
+    tag:
+        Title: "Titolo"
+        Photo: "Foto"
+        InternationalName: "Denominazione internazionale"
     poeticForm:
         Title: "Titolo"
         Text: "Testo"

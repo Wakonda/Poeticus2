@@ -65,7 +65,7 @@ class PoeticusExtension extends AbstractExtension
 	{
 		$basePath = ($isPDF) ? '' : '/';
 		
-		if(!file_exists($img))
+		if(!file_exists($img) or !is_file($img))
 			return '<img src="'.$basePath.'photo/640px-Starry_Night_Over_the_Rhone.jpg" alt="" style="max-width: 400px" />';
 		
 		$imageSize = getimagesize($img);

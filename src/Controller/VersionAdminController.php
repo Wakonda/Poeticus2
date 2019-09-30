@@ -111,7 +111,7 @@ class VersionAdminController extends Controller
 	public function showAction(Request $request, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Version::class)->find($id, true);
+		$entity = $entityManager->getRepository(Version::class)->find($id);
 
 		return $this->render('Version/show.html.twig', array('entity' => $entity));
 	}

@@ -22,7 +22,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'pf.id', 'pf.title', 'la.title', 'pf.id');
 		
-		$qb->leftjoin("pf.language", "la");
+		$qb->leftjoin("pf.language", "la")
+		   ->andWhere("pf.state = 0");
 		
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -50,7 +51,8 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb = $this->createQueryBuilder("pf");
 
 		$qb->leftjoin("pf.biography", "pfb")
-		   ->leftjoin("pf.country", "pfc");
+		   ->leftjoin("pf.country", "pfc")
+		   ->andWhere("pf.state = 0");
 
 		$this->whereLanguage($qb, 'pf', $locale);
 
@@ -165,6 +167,41 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		return $qb;
 	}
 
+	public function getPoemByTagDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $tagId, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pf");
+
+		$aColumns = array( 'pf.title', 'co.title');
+		
+		$qb->leftjoin("pf.tags", "bo")
+		   ->where("bo.id = :id")
+		   ->andWhere("pf.state = 0")
+		   ->setParameter("id", $tagId);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('pf.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(DISTINCT pf.id) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+		{
+			$qb->groupBy("pf.id")
+			   ->setFirstResult($iDisplayStart)
+			   ->setMaxResults($iDisplayLength);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getPoemByAuthorDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $authorId, $count = false)
 	{
 		$qb = $this->createQueryBuilder("pf");
@@ -174,6 +211,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb->leftjoin("pf.biography", "bo")
 		   ->leftjoin("pf.collection", "co")
 		   ->where("bo.id = :id")
+		   ->andWhere("pf.state = 0")
 		   ->setParameter("id", $authorId);
 		
 		if(!empty($sortDirColumn))
@@ -209,6 +247,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb->select("bp.id AS id, bp.title AS author, bp.slug AS slug, bp.photo AS photo, COUNT(pf.id) AS number_poems_by_author")
 		   ->where("pf.authorType = 'biography'")
 		   ->leftjoin("pf.biography", "bp")
+		   ->andWhere("pf.state = 0")
 		   ->groupBy("bp.id");
 		   
 		 $this->whereLanguage($qb, "pf", $locale);
@@ -248,6 +287,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb->select("co.id AS poeticform_id, co.title AS poeticform, COUNT(pf.id) AS number_poems_by_poeticform, co.slug AS poeticform_slug")
 		   ->where("pf.authorType = 'biography'")
 		   ->innerjoin("pf.poeticForm", "co")
+		   ->andWhere("pf.state = 0")
 		   ->groupBy("co.id");
 
 		$this->whereLanguage($qb, 'pf', $locale);
@@ -289,6 +329,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		   ->where("pform.id = :id")
 		   ->setParameter("id", $collectionId)
 		   ->andWhere("pf.authorType = :authorType")
+		   ->andWhere("pf.state = 0")
 		   ->setParameter("authorType", "biography");
 		
 		if(!empty($sortDirColumn))
@@ -320,6 +361,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb->select("bp.id AS author_id, co.id AS collection_id, bp.title AS author, bp.slug AS author_slug, co.title AS collection, co.slug AS collection_slug, COUNT(pf.id) AS number_poems_by_collection")
 		   ->leftjoin("pf.biography", "bp")
 		   ->innerjoin("pf.collection", "co")
+		   ->andWhere("pf.state = 0")
 		   ->where("pf.authorType = 'biography'")
 		   ->groupBy("co.id")
 		   ->addGroupBy("bp.id")
@@ -363,6 +405,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		   ->leftjoin("pf.collection", "co")
 		   ->where("co.id = :id")
 		   ->setParameter("id", $collectionId)
+		   ->andWhere("pf.state = 0")
 		   ->andWhere("pf.authorType = :authorType")
 		   ->setParameter("authorType", "biography");
 		
@@ -395,6 +438,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		$qb->select("co.id AS country_id, co.slug AS country_slug, co.title AS country_title, COUNT(pf.id) AS number_poems_by_country, co.flag AS flag")
 		   ->where("pf.authorType = 'biography'")
 		   ->innerjoin("pf.country", "co")
+		   ->andWhere("pf.state = 0")
 		   ->groupBy("co.id");
 		
 		$this->whereLanguage($qb, 'pf', $locale);
@@ -469,6 +513,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		   ->innerjoin("pf.country", "co")
 		   ->where("co.id = :id")
 		   ->setParameter("id", $countryId)
+		   ->andWhere("pf.state = 0")
 		   ->andWhere("pf.authorType = :authorType")
 		   ->setParameter("authorType", "biography")
 		   ;
@@ -502,6 +547,7 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 		   ->where("pf.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug())
 		   ->leftjoin("pf.biography", "bo")
+		   ->andWhere("pf.state = 0")
 		   ->andWhere("bo.id = :biographyId")
 		   ->setParameter("biographyId", $entity->getBiography())
 		   ->andWhere("la.id = :idLanguage")
@@ -588,22 +634,24 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 	public function browsingPoemShow($params, $poemId)
 	{
 		// Previous
-		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Poem p2 WHERE p2.id < :poemId AND p2.'.$params["field"].' = :biographyId)';
+		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Poem p2 WHERE p2.state = 0 AND p2.id < :poemId AND p2.'.$params["field"].' = :biographyId)';
 		$qb_previous = $this->createQueryBuilder("p");
 		
 		$qb_previous->select("p.id, p.title, p.slug")
 		   ->where('p.'.$params["field"].' = :biographyId')
 		   ->setParameter('biographyId', $params["author"])
 		   ->setParameter('poemId', $poemId)
+		   ->andWhere("p.state = 0")
 		   ->andWhere($subqueryPrevious);
 		   
-		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Poem p2 WHERE p2.id > :poemId AND p2.'.$params["field"].' = :biographyId)';
+		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Poem p2 WHERE p2.state = 0 AND p2.id > :poemId AND p2.'.$params["field"].' = :biographyId)';
 		$qb_next = $this->createQueryBuilder("p");
 		
 		$qb_next->select("p.id, p.title, p.slug")
 		   ->where('p.'.$params["field"].' = :biographyId')
 		   ->setParameter('biographyId', $params["author"])
 		   ->setParameter('poemId', $poemId)
+		   ->andWhere("p.state = 0")
 		   ->andWhere($subqueryNext);
 
 		return array(

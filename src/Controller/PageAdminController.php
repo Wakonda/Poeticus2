@@ -112,7 +112,7 @@ class PageAdminController extends Controller
 	public function showAction(Request $request, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Page::class)->find($id, true);
+		$entity = $entityManager->getRepository(Page::class)->find($id);
 	
 		return $this->render('Page/show.html.twig', array('entity' => $entity));
 	}

@@ -87,16 +87,15 @@ class CollectionAdminController extends Controller
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
-		
-		if($entity->getImage() == null)
-			$form->get("image")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 
 		if($form->isValid())
 		{
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getImage());
-			$entity->getImage()->move("photo/collection/", $image);
-			$entity->setImage($image);
+			if($entity->getImage() != null) {
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getImage());
+				$entity->getImage()->move("photo/collection/", $image);
+				$entity->setImage($image);
+			}
 			$entityManager = $this->getDoctrine()->getManager();
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -112,7 +111,7 @@ class CollectionAdminController extends Controller
 	public function showAction(Request $request, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Collection::class)->find($id, true);
+		$entity = $entityManager->getRepository(Collection::class)->find($id);
 	
 		return $this->render('Collection/show.html.twig', array('entity' => $entity));
 	}

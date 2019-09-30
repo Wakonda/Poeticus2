@@ -35,7 +35,7 @@ class CollectionType extends AbstractType
 			->add('text', TextareaType::class, array(
                 "required" => false, "label" => "admin.collection.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('image', FileType::class, array('data_class' => null, "label" => "admin.collection.Image", "required" => true
+			->add('image', FileType::class, array('data_class' => null, "label" => "admin.collection.Image", "required" => false
             ))
 			
 			->add('releasedDate', IntegerType::class, array(
@@ -47,7 +47,8 @@ class CollectionType extends AbstractType
             ))
 
             ->add('biography', BiographySelectorType::class, array(
-                'label' => 'admin.collection.Biography'
+                'label' => 'admin.collection.Biography',
+				'constraints' => array(new Assert\NotBlank())
             ))
 			
 			->add('widgetProduct', TextareaType::class, array('required' => false, 'label' => 'admin.collection.ProductCode'))

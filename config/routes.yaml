@@ -47,6 +47,16 @@ last_poem:
     path: /last_poem
     controller: App\Controller\IndexController::lastPoemAction
 
+tag:
+    path: /tag/{id}/{slug}
+    controller: App\Controller\IndexController::tagAction
+    defaults:
+        slug: null
+
+tag_poem_datatables:
+    path: /tag_poem_datatables/{tagId}
+    controller: App\Controller\IndexController::tagDatatablesAction
+
 author:
     path: /author/{id}/{slug}
     controller: App\Controller\IndexController::authorAction
@@ -361,7 +371,40 @@ poeticformadmin_edit:
 poeticformadmin_update:
     path: /admin/poeticform/upate/{id}
     controller: App\Controller\PoeticFormAdminController::updateAction
-    
+
+# ADMIN TAG
+tagadmin_index:
+    path: /admin/tag/index
+    controller: App\Controller\TagAdminController::indexAction
+
+tagadmin_indexdatatables:
+    path: /admin/tag/indexdatatables
+    controller: App\Controller\TagAdminController::indexDatatablesAction
+
+tagadmin_new:
+    path: /admin/tag/new
+    controller: App\Controller\TagAdminController::newAction
+
+tagadmin_create:
+    path: /admin/tag/create
+    controller: App\Controller\TagAdminController::createAction
+
+tagadmin_show:
+    path: /admin/tag/show/{id}
+    controller: App\Controller\TagAdminController::showAction
+
+tagadmin_edit:
+    path: /admin/tag/edit/{id}
+    controller: App\Controller\TagAdminController::editAction
+
+tagadmin_update:
+    path: /admin/tag/upate/{id}
+    controller: App\Controller\TagAdminController::updateAction
+
+tagadmin_gettagsbyajax:
+    path: /admin/tag/gettagsbyajax
+    controller: App\Controller\TagAdminController::getTagsByAjaxAction
+
 # ADMIN COUNTRY
 countryadmin_index:
     path: /admin/country/index

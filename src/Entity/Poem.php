@@ -98,6 +98,11 @@ class Poem
      */
     protected $poemImages;
 
+   /**
+    * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="poems", cascade={"persist"})
+    */
+	protected $tags;
+
     public function __construct()
     {
         $this->poemImages = new ArrayCollection();
@@ -347,4 +352,44 @@ class Poem
         $poemImage->setPoem(null);
         $this->poemImages->removeElement($poemImage);
     }
+	
+   /**
+    * Add tags
+    *
+    * @param Tag $tags
+    */
+	public function addTag(Tag $tag)
+	{
+		$this->tags[] = $tag;
+	}
+
+    /**
+     * Set tags
+     *
+     * @param string $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+
+   /**
+    * Remove tags
+    *
+    * @param Tag $tag
+    */
+	public function removeTag(Tag $tag)
+	{
+		$this->tags->removeElement($tag);
+	}
+
+   /**
+    * Get tags
+    *
+    * @return Doctrine\Common\Collections\Collection
+    */
+	public function getTags()
+	{
+		return $this->tags;
+	}
 }

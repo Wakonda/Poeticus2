@@ -50,6 +50,10 @@ main:
         Search: "Rechercher"
         YourPoems: "Vos poésies"
         GreatWriters: "Grands auteurs"
+tag:
+    table:
+        Title: "Titre"
+        Collection: "Recueil"
 biography:
     index:
         ByAuthors: "Par auteurs"
@@ -248,7 +252,7 @@ vote:
     field:
         Error: "Erreur"
         YouMustBeLoggedInToVote: "Vous devez être connecté pour pouvoir voter !"
-        YouHaveAlreadyVotedForThisPoem: "Vous avez déjà voté pour cette poésie"
+        YouHaveAlreadyVotedForThis: "Vous avez déjà voté pour cette poésie"
 error:
     index:
         Error: "Erreur"
@@ -294,6 +298,7 @@ admin:
         Collection: "Recueil"
         Version: "Version"
         Store: "Boutique"
+        Tag: "Tag"
         Create: "Créer"
         Read: "Lire"
         Update: "Modifier"
@@ -344,6 +349,7 @@ admin:
         ForSameBiography: "pour le même auteur"
         ForSameCollection: "pour le même recueil"
         Number: "Nombre"
+        Tags: "Tags"
     poemImage:
         Image: "Image"
         Share: "Partager"
@@ -355,6 +361,10 @@ admin:
         Image: "Image"
         Nationality: "Nationalité"
         Country: "Pays"
+    tag:
+        Title: "Titre"
+        Photo: "Photo"
+        InternationalName: "Nom international"
     poeticForm:
         Title: "Titre"
         Text: "Texte"

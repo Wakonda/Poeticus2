@@ -41,7 +41,7 @@ class PoemVoteController extends Controller
 				$numberOfDoubloons = $entityManager->getRepository(PoemVote::class)->checkIfUserAlreadyVote($idPoem, $userDb->getId());
 				
 				if($numberOfDoubloons >= 1)
-					$state = $translator->trans("vote.field.YouHaveAlreadyVotedForThisPoem");
+					$state = $translator->trans("vote.field.YouHaveAlreadyVotedForThis");
 				else
 				{
 					$entityManager->persist($entity);

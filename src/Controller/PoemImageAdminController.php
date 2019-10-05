@@ -64,7 +64,7 @@ class PoemImageAdminController extends Controller
 				$ocialNetworks = array_unique($entity->getSocialNetwork());
 				
 				foreach ($ocialNetworks as $sn) {
-					$socialNetworkArray[] = '<span class="badge badge-secondary"><i class="fa fa-'.strtolower($sn).'" aria-hidden="true"></i></span>';
+					$socialNetworkArray[] = '<span class="badge badge-secondary"><i class="fab fa-'.strtolower($sn).'" aria-hidden="true"></i></span>';
 				}
 			}
 			

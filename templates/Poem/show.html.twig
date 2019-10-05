@@ -67,13 +67,13 @@
 						<div>
 							{{ ("photo/poem/"~poemImage.image)|max_size_image() }}
 							&nbsp;
-							<a class="btn btn-danger" href="{{ path('poemadmin_remove_image', {'id' : entity.id, 'poemImageId': poemImage.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							<a class="btn btn-danger" href="{{ path('poemadmin_remove_image', {'id' : entity.id, 'poemImageId': poemImage.id}) }}"><i class="fas fa-trash" aria-hidden="true"></i></a>
 						</div>
 						<div class="input-group mt-3">
 							<input class="form-control" id="url_image_{{ poemImage.id }}" value="{{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}">
 							<div class="input-group-append">
 								<button class="btn btn-outline-secondary copy" type="button" data-clipboard-target="#url_image_{{ poemImage.id }}">
-								<i class="fa fa-clipboard" aria-hidden="true"></i>
+								<i class="fas fa-clipboard" aria-hidden="true"></i>
 								</button>
 							</div>
 						</div>
@@ -87,7 +87,7 @@
 	<div class="card">
 		<div class="card-header" role="tab" id="headingImageGenerator">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapseImageGenerator" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-picture-o" aria-hidden="true"></i> {{ 'admin.imageGenerator.GenerateAnImage'|trans }}
+			<i class="far fa-image" aria-hidden="true"></i> {{ 'admin.imageGenerator.GenerateAnImage'|trans }}
 			</a>
 		</div>
 		<div id="collapseImageGenerator" class="collapse" aria-labelledby="headingImageGenerator" aria-expanded="true">
@@ -135,7 +135,7 @@
 	<div class="card mt-2">
 		<div class="card-header" role="tab" id="headingTwitter">
 			<a href="#" data-toggle="collapse" data-target="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter
+			<i class="fab fa-twitter-square" aria-hidden="true"></i> Twitter
 			</a>
 		</div>
 		<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
@@ -160,7 +160,7 @@
 	<div class="card mt-2">
 		<div class="card-header" role="tab" id="headingPinterest">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapsePinterest" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest
+			<i class="fab fa-pinterest" aria-hidden="true"></i> Pinterest
 			</a>
 		</div>
 		<div id="collapsePinterest" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
@@ -181,12 +181,12 @@
 	</div>
 	{% endif %}
 	<hr>
-	<a href="{{ path('poemadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - 
+	<a href="{{ path('poemadmin_index') }}"><i class="fas fa-list"></i> {{ 'admin.index.List'|trans }}</a> - 
 	<a href="{{ path('poemadmin_edit', { 'id' : entity.id }) }}">
-		<i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}
+		<i class="fas fa-edit"></i> {{ 'admin.index.Update'|trans }}
 	</a> - 
 	<a href="{{ path('poemadmin_new') }}">
-		<i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}
+		<i class="fas fa-plus-square"></i> {{ 'admin.index.Create'|trans }}
 	</a> | 
 	<a href="{{ path('poemadmin_new', {'biographyId' : entity.biography.id}) }}">
 		{{ 'admin.poem.ForSameBiography'|trans }}
@@ -197,7 +197,7 @@
 		</a>
 	{% endif %} - 
 	<a href="{{ path('poemadmin_newfast') }}" alt="">
-		<i class="fa fa-paper-plane"></i> {{ "admin.poem.RapidCreation"|trans }}
+		<i class="fas fa-paper-plane"></i> {{ "admin.poem.RapidCreation"|trans }}
 	</a> | 
 	<a href="{{ path('poemadmin_newfast', {'biographyId' : entity.biography.id}) }}">
 		{{ 'admin.poem.ForSameBiography'|trans }}

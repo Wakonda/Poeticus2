@@ -66,7 +66,7 @@
 		{{ form_rest(form) }}
 	{{ form_end(form) }}
 	<hr class="flare">
-	<h2>{{ 'main.index.PoemRandomly'|trans }} {% if random is not null %}<a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fa fa-info" aria-hidden="true"></i></a>{% endif %}</h2>
+	<h2>{{ 'main.index.PoemRandomly'|trans }} {% if random is not null %}<a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fas fa-info" aria-hidden="true"></i></a>{% endif %}</h2>
 	{% if random is not null %}
 	<h3><a href="{{ path('read', {'id' : random.id, 'slug' : random.slug }) }}" alt="{{ random.title }}">{{ random.title }}</a></h3>
 	<div>

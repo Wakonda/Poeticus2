@@ -317,6 +317,8 @@ admin:
         AddedSuccessfully: "%numberAdded% poemas adicionados, %numberDoubloons% duplicatas"
         List: "Lista"
         Backup: "Backup"
+        MultipleEdition: "Edição Múltipla"
+        ChangesMadeSuccessfully: "Alterações feitas com sucesso"
     error:
         UnknownURL: "URL desconhecido"
     table:

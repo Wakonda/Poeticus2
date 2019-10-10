@@ -629,8 +629,16 @@ poemadmin_twitter:
     controller: App\Controller\PoemAdminController::twitterAction
 
 poemadmin_pinterest:
-    path: /admin/proverb/pinterest/{id}
-    controller: App\Controller\ProverbAdminController::pinterestAction
+    path: /admin/poem/pinterest/{id}
+    controller: App\Controller\PoemAdminController::pinterestAction
+
+poemadmin_editmultiple:
+    path: /admin/poem/editmultiple
+    controller: App\Controller\PoemAdminController:editMultipleAction
+
+poemadmin_updatemultiple:
+    path: /admin/poem/updatemultiple/{ids}
+    controller: App\Controller\PoemAdminController:updateMultipleAction
 
 # ADMIN STORE
 storeadmin_index:

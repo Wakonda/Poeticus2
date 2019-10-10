@@ -50,15 +50,38 @@
 				<!-- Hgroup Element Ends Here -->
 
 				<!-- Nav Element Starts Here -->
-				<nav class="navigation">
-					<a href="{{ path('index') }}"><i class="fas fa-home"></i> {{ 'menu.top.MainPage'|trans }}</a>
-					<a href="{{ path('byauthors') }}">{{ 'menu.top.Authors'|trans }}</a>
-					<a href="{{ path('bycollections') }}">{{ 'menu.top.Collections'|trans }}</a>
-					<a href="{{ path('bycountries') }}">{{ 'menu.top.Countries'|trans }}</a>
-					<a href="{{ path('bypoeticforms') }}">{{ 'menu.top.PoeticForms'|trans }}</a>
-					<a href="{{ path('bypoemusers') }}">{{ 'menu.top.YourPoems'|trans }}</a>
-					<a href="{{ path('store') }}">{{ 'menu.top.Store'|trans }}</a>
-					<a href="{{ path('byimages') }}">{{ 'menu.top.Images'|trans }}</a>
+				<nav class="navbar navbar-expand-lg navbar-light bg-white navbar-expand-md my-2 text-center">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav">
+							<li class="nav-item  {{ app.request.get('_route') in ['index']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('index') }}"><i class="fas fa-home"></i> {{ 'menu.top.MainPage'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['byauthors', 'author']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('byauthors') }}">{{ 'menu.top.Authors'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['bycollections', 'collection']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('bycollections') }}">{{ 'menu.top.Collections'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['bycountries', 'country']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('bycountries') }}">{{ 'menu.top.Countries'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['bypoeticforms', 'poeticform']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('bypoeticforms') }}">{{ 'menu.top.PoeticForms'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['bypoemusers']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('bypoemusers') }}">{{ 'menu.top.YourPoems'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['store', 'read_store']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('store') }}">{{ 'menu.top.Store'|trans }}</a>
+							</li>
+							<li class="nav-item {{ app.request.get('_route') in ['byimages']  ? 'active' : '' }}">
+								<a class="nav-link" href="{{ path('byimages') }}">{{ 'menu.top.Images'|trans }}</a>
+							</li>
+						</ul>
+					</div>
 				</nav>
 			</header>
 			<!-- Header Element Ends Here -->

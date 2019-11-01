@@ -778,13 +778,13 @@ class PoemAdminController extends Controller
 		$statues = $connection->post("statuses/update", $parameters);
 	
 		if(isset($statues->errors) and !empty($statues->errors))
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentError"));
+			$session->getFlashBag()->add('message', "Twitter - ".$translator->trans("admin.index.SentError"));
 		else {
 			$poemImage->addSocialNetwork("Twitter");
 			$entityManager->persist($poemImage);
 			$entityManager->flush();
 		
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+			$session->getFlashBag()->add('message', "Twitter - ".$translator->trans("admin.index.SentSuccessfully"));
 		}
 	
 		return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
@@ -809,14 +809,14 @@ class PoemAdminController extends Controller
 		$poemImage = $entityManager->getRepository(PoemImage::class)->find($imageId);
 		
 		if(empty($poemImage)) {
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.YouMustSelectAnImage"));
+			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.YouMustSelectAnImage"));
 			return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
 		}
 
 		$bot->pins->create($request->getUriForPath('/photo/poem/'.$poemImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError())) {
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.SentSuccessfully"));
 			
 			$poemImage->addSocialNetwork("Pinterest");
 			$entityManager->persist($poemImage);

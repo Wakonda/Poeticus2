@@ -14,22 +14,15 @@
 
 		<link rel="shortcut icon" href="{{ asset('photo/favicon.ico') }}">
 
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style.css')) }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style_print.css')) }}" media="print" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-4.2.1-dist/css/bootstrap.min.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/fontawesome.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/solid.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/brands.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/regular.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('js/BackToTop/BackToTop.css')) }}" />
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 		
 		{% block style_additional %}
 		{% endblock %}
 
 		{% block script_additional_sup %}
 		{% endblock %}
-		
-		<script src="{{ asset('js/jquery.js') }}"></script>
 	</head>
 	<body>
 		<div class="resize"></div>
@@ -215,6 +208,8 @@
 			<!-- Footer Element Ends Here -->
 		</div>
 		<!-- Div Wrapper Element ends Here -->
+		
+		{{ encore_entry_script_tags('app') }}
 
 		<script src="{{ asset('css/bootstrap-4.2.1-dist/js/bootstrap.min.js') }}"></script>
 		<script src="{{ asset(minify_file('js/cookiechoices/cookiechoices.js')) }}"></script>
@@ -223,10 +218,8 @@
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
 			ga('create', 'UA-12307735-4', 'auto');
 			ga('send', 'pageview');
-
 			$(function() {
 				cookieChoices.showCookieBar({
 					linkHref: '{{ path("page_display", {"name" : "cookie"}) }}',
@@ -235,13 +228,11 @@
 			});
 		</script>
 		
-		<script src="{{ asset(minify_file('js/BackToTop/BackToTop.js')) }}"></script>
 		<script>
 			// Resize "aside" and "article" tags
 			function resizeAsideArticle() {
 				var articleHeight = $("article#contents").height();
 				var asideHeight = $("aside#sidebar-wrapper").height();
-
 				if(asideHeight < articleHeight) {
 					$("article#contents").css("border-left", "1px solid #ccc");
 					$("aside").css("border-right", "none");
@@ -250,10 +241,6 @@
 					$("article#contents").css("border-left", "none");
 				}
 			}
-			
-			$(function() {
-				$(document).BackToTop();
-			});
 		</script>
 		{% block script_additional %}
 		{% endblock %}
@@ -266,7 +253,6 @@
 			$( document ).ajaxComplete(function() {
 				resizeAsideArticle();
 			});
-
 			window.fbAsyncInit = function(){
 				FB.Event.subscribe("xfbml.render", function(){
 					resizeAsideArticle();

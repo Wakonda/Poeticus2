@@ -843,7 +843,7 @@ class PoemAdminController extends Controller
             $fileName = md5(uniqid()).'_'.$file->getClientOriginalName();
 			$text = html_entity_decode($data['text'], ENT_QUOTES);
 
-			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
+			$font = realpath(__DIR__."/../../assets").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
 			
 			if($data["version"] == "v1")
 			{

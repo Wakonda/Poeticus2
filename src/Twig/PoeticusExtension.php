@@ -24,9 +24,7 @@ class PoeticusExtension extends AbstractExtension
         return array(
 			new TwigFilter('html_entity_decode', array($this, 'htmlEntityDecodeFilter')),
 			new TwigFilter('toString', array($this, 'toStringFilter')),
-			new TwigFilter('text_month', array($this, 'textMonthFilter')),
 			new TwigFilter('max_size_image', array($this, 'maxSizeImageFilter'), array('is_safe' => array('html'))),
-			new TwigFilter('date_letter', array($this, 'dateLetterFilter'), array('is_safe' => array('html'))),
 			new TwigFilter('remove_control_characters', array($this, 'removeControlCharactersFilter')),
 			new TwigFilter('base64_decode', array($this, 'base64DecodeFilter'))
         );
@@ -39,6 +37,9 @@ class PoeticusExtension extends AbstractExtension
 			new TwigFunction('number_version', array($this, 'getCurrentVersion')),
 			new TwigFunction('code_by_language', array($this, 'getCodeByLanguage')),
 			new TwigFunction('minify_file', array($this, 'minifyFile')),
+			new TwigFunction('text_month', array($this, 'textMonth')),
+			new TwigFunction('date_biography_letter', array($this, 'dateBiographyLetter'), array('is_safe' => array('html'))),
+			new TwigFunction('date_letter', array($this, 'dateLetter'), array('is_safe' => array('html'))),
 			new TwigFunction('count_unread_messages', array($this, 'countUnreadMessagesFunction'))
 		);
 	}
@@ -54,11 +55,10 @@ class PoeticusExtension extends AbstractExtension
         return html_entity_decode($str);
     }
 
-	public function textMonthFilter($month, $year)
+	public function textMonth($year, $month, $locale)
 	{
-		$locale = $this->app['generic_function']->getLocaleTwigRenderController();
-		$arrayMonth = $this->formatDateByLocale();
-		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].$year : "");
+		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
+		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].($year < 0 ? abs($year)." ".$arrayBCYear[$locale] : $year) : "");
 	}
 	
 	public function maxSizeImageFilter($img, array $options = [], $isPDF = false)
@@ -84,16 +84,26 @@ class PoeticusExtension extends AbstractExtension
 		return '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" />';
 	}
 	
-	public function dateLetterFilter($date, $locale)
+	public function dateBiographyLetter($year, $month, $day, $locale)
 	{
-		if(is_string($date))
-			$date = new \DateTime($date);
-
-		$arrayMonth = $this->formatDateByLocale();
-		$month = $arrayMonth[$locale]["months"][$date->format("n") - 1];
-		$day = ($date->format("j") == 1) ? $date->format("j").((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $date->format("j");
+		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
+		$month = $arrayMonth[$locale]["months"][$month - 1];
 		
-		return $day.$arrayMonth[$locale]["separator"].$month.$arrayMonth[$locale]["separator"].$date->format("Y");
+		$day = ($day == 1) ? $day.((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $day;
+		
+		return ltrim($day, "0")." ".$month." ".($year < 0 ? abs($year)." ".$arrayBCYear[$locale] : $year);
+	}
+	
+	public function dateLetter(\DateTime $date, $locale)
+	{
+		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
+		$month = $arrayMonth[$locale]["months"][$date->format("m") - 1];
+		$day = $date->format("d");
+		$year = $date->format("Y");
+		
+		$day = ($day == 1) ? $day.((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $day;
+		
+		return ltrim($day, "0")." ".$month." ".($year < 0 ? abs($year)." ".$arrayBCYear[$locale] : $year);
 	}
 
 	public function removeControlCharactersFilter($string)
@@ -153,7 +163,12 @@ class PoeticusExtension extends AbstractExtension
 		$arrayMonth['it'] = array("sup" => "°", "separator" => " ", "months" => array("gennaio", "febbraio", "marzo", "aprile", "maggio", "guigno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"));
 		$arrayMonth['pt'] = array("sup" => null, "separator" => " de ", "months" => array("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"));
 	
-		return $arrayMonth;
+		$arrayBCYear = [];
+		$arrayBCYear["fr"] = "av. J.-C.";
+		$arrayBCYear["it"] = "a.C.";
+		$arrayBCYear["pt"] = "a.C.";
+
+		return [$arrayBCYear, $arrayMonth];
 	}
 
 	public function countUnreadMessagesFunction()

@@ -135,6 +135,8 @@
 				$(".container_{{ form.vars['id'] }}_biography").remove();
 				setComboboxNew('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.biography.vars.id }}", changeBiography);
 			
+				$("#{{ form.tags.vars.id }}").empty().trigger('change');
+
 				$.ajax({
 					type: "GET",
 					url: "{{ path('get_poeticforms_by_language') }}",

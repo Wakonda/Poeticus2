@@ -52,7 +52,8 @@ class PoemImageRepository extends ServiceEntityRepository
 		$qb->join('ip.poem', 'pf')
 		   ->join('pf.language', 'la')
 		   ->where('la.abbreviation = :locale')
-		   ->setParameter("locale", $locale);
+		   ->setParameter("locale", $locale)
+		   ->orderBy("ip.id", "DESC");
 
 		return $qb->getQuery();
 	}

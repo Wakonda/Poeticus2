@@ -30,11 +30,11 @@ class PoemFastMultipleType extends AbstractType
 
         $builder
 			->add('ipProxy', TextType::class, array(
-                'label' => 'admin.poem.ProxyAddress', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")]
+                'label' => 'admin.poem.ProxyAddress', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")], "data" => $options["ipProxy"]
             ))
 
 			->add('url', TextType::class, array(
-                'constraints' => [new Assert\NotBlank(), new Assert\Url()], 'label' => 'URL', 'mapped' => false
+                'constraints' => [new Assert\NotBlank(), new Assert\Url()], 'label' => 'URL', 'mapped' => false, "data" => $options["url"]
             ))
 
 			->add('releasedDate', IntegerType::class, array(
@@ -95,7 +95,9 @@ class PoemFastMultipleType extends AbstractType
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			"locale" => null
+			"locale" => null,
+			"url" => null,
+			"ipProxy" => null
 		));
 	}
 

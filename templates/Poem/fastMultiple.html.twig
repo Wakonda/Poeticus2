@@ -50,6 +50,9 @@
 						{
 							$("#{{ form.collection.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 						});
+						{% if form.collection.vars.value is not null %}
+							$("#{{ form.collection.vars.id }}").val("{{ form.collection.vars.value }}");
+						{% endif %}
 					}
 				});
 			}

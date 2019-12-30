@@ -271,18 +271,37 @@ class PoemAdminController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = new Poem();
-		$entityManager = $this->getDoctrine()->getManager();
-		$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
-		
-		if(!empty($biographyId))
-		{
-			$entity->setBiography($entityManager->getRepository(Biography::class)->find($biographyId));
-			$entity->setLanguage($entityManager->getRepository(Language::class)->find($entity->getBiography()->getLanguage()->getId()));
+
+		$datas = $request->query->all();
+		$datas = !empty($datas) ? json_decode($datas["datas"], true) : null;
+
+		$url = null;
+		$ipProxy = null;
+
+		if(!empty($datas)) {
+			$entity->setLanguage($entityManager->getRepository(Language::class)->find($datas["language"]));
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($datas["biography"]));
+			
+			if(!empty($datas["collection"]))
+				$entity->setCollection($entityManager->getRepository(Collection::class)->find($datas["collection"]));
+
+			if(!empty($datas["poetic_form"]))
+				$entity->setPoeticForm($entityManager->getRepository(PoeticForm::class)->find($datas["poetic_form"]));
+			
+			$url = $datas["url"];
+			$ipProxy = $datas["ipProxy"];
+		} else {
+			$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+
+			if(!empty($biographyId))
+			{
+				$entity->setBiography($entityManager->getRepository(Biography::class)->find($biographyId));
+				$entity->setLanguage($entityManager->getRepository(Language::class)->find($entity->getBiography()->getLanguage()->getId()));
+			}
+			if(!empty($collectionId))
+				$entity->setCollection($entityManager->getRepository(Collection::class)->find($collectionId));
 		}
-		if(!empty($collectionId))
-			$entity->setCollection($entityManager->getRepository(Collection::class)->find($collectionId));
-		
-		$form = $this->createForm(PoemFastType::class, $entity, array("locale" => $request->getLocale()));
+		$form = $this->createForm(PoemFastType::class, $entity, array("locale" => $request->getLocale(), "url" => $url, "ipProxy" => $ipProxy));
 	
 		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity, 'authorizedURLs' => $this->authorizedURLs));
 	}
@@ -479,15 +498,12 @@ class PoemAdminController extends Controller
 					$numberAdded++;
 				}
 			}
-			if(!empty($id))
-				$redirect = $this->generateUrl('poemadmin_show', array('id' => $id));
-			else
-				$redirect = $this->generateUrl('poemadmin_index');
-
 
 			$session->getFlashBag()->add('message', $translator->trans("admin.index.AddedSuccessfully", ["%numberAdded%" => $numberAdded, "%numberDoubloons%" => $numberDoubloons]));
 
-			return $this->redirect($redirect);
+			unset($req["_token"]);
+
+			return $this->redirect($this->generateUrl('poemadmin_newfast', ["datas" => json_encode($req)]));
 		}
 	
 		return $this->render('Poem/fast.html.twig', array('form' => $form->createView(), 'entity' => $entity, 'authorizedURLs' => $this->authorizedURLs));
@@ -498,14 +514,34 @@ class PoemAdminController extends Controller
 		$entityManager = $this->getDoctrine()->getManager();
 
 		$entity = new Poem();
-		$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+		$datas = $request->query->all();
+		$datas = !empty($datas) ? json_decode($datas["datas"], true) : null;
 
-		$form = $this->createForm(PoemFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
+		$url = null;
+		$ipProxy = null;
+
+		if(!empty($datas)) {
+			$entity->setLanguage($entityManager->getRepository(Language::class)->find($datas["language"]));
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($datas["biography"]));
+			$entity->setReleasedDate($datas["releasedDate"]);
+			
+			if(!empty($datas["collection"]))
+				$entity->setCollection($entityManager->getRepository(Collection::class)->find($datas["collection"]));
+
+			if(!empty($datas["poetic_form"]))
+				$entity->setPoeticForm($entityManager->getRepository(PoeticForm::class)->find($datas["poetic_form"]));
+
+			$url = $datas["url"];
+			$ipProxy = $datas["ipProxy"];
+		} else
+			$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+
+		$form = $this->createForm(PoemFastMultipleType::class, $entity, array("locale" => $request->getLocale(), "url" => $url, "ipProxy" => $ipProxy));
 
 		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));
 	}
 	
-	public function addFastMultipleAction(Request $request, TranslatorInterface $translator)
+	public function addFastMultipleAction(Request $request, SessionInterface $session, TranslatorInterface $translator)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = new Poem();
@@ -526,6 +562,7 @@ class PoemAdminController extends Controller
 
 		if($form->isValid())
 		{
+			$numberDoubloons = 0;
 			$entity->setAuthorType("biography");
 			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
 			$number = $req['number'];
@@ -568,8 +605,10 @@ class PoemAdminController extends Controller
 						$entityPoem->setState(0);
 						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('fr'));
 					
-						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
+						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1) {
+							$numberDoubloons++;
 							continue;
+						}
 						
 						if($number == $i)
 							break;
@@ -599,8 +638,10 @@ class PoemAdminController extends Controller
 						
 						$entityPoem->setLanguage($entityManager->getRepository(Language::class)->findOneByAbbreviation('it'));
 						
-						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1)
+						if($entityManager->getRepository(Poem::class)->checkForDoubloon($entityPoem) >= 1) {
+							$numberDoubloons++;
 							continue;
+						}
 						
 						if($number == $i)
 							break;
@@ -614,12 +655,11 @@ class PoemAdminController extends Controller
 				break;
 			}
 			
-			if(isset($id))
-				$redirect = $this->generateUrl('poemadmin_show', array('id' => $id));
-			else
-				$redirect = $this->generateUrl('poemadmin_index');
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.AddedSuccessfully", ["%numberAdded%" => $i, "%numberDoubloons%" => $numberDoubloons]));
 
-			return $this->redirect($redirect);
+			unset($req["_token"]);
+
+			return $this->redirect($this->generateUrl('poemadmin_newfastmultiple', ["datas" => json_encode($req)]));
 		}
 		
 		return $this->render('Poem/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));

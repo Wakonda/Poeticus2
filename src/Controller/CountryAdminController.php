@@ -87,16 +87,14 @@ class CountryAdminController extends Controller
 		$form->handleRequest($request);
 		$this->checkForDoubloon($translator, $entity, $form);
 		
-		if($entity->getFlag() == null)
-			$form->get("flag")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
+		if($entity->getFlag() == null or empty($entity->getFlag()["title"]) or empty($entity->getFlag()["content"]))
+			$form->get("flag")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getFlag());
-			$entity->getFlag()->move("photo/country/", $image);
-			$entity->setFlag($image);
+			file_put_contents(Country::PATH_FILE.$entity->getFlag()["title"], $entity->getFlag()["content"]);
+			$entity->setFlag($entity->getFlag()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -137,16 +135,13 @@ class CountryAdminController extends Controller
 
 		if($form->isValid())
 		{
-			if(!is_null($entity->getFlag()))
-			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getFlag());
-				$entity->getFlag()->move("photo/country/", $image);
-			}
-			else
-				$image = $currentImage;
+			if(!is_null($entity->getFlag()) and (!empty($entity->getFlag()["title"]) or !empty($entity->getFlag()["content"]))) {
+				file_put_contents(Country::PATH_FILE.$entity->getFlag()["title"], $entity->getFlag()["content"]);
+				$title = $entity->getFlag()["title"];
+			} else
+				$title = $currentImage;
 
-			$entity->setFlag($image);
+			$entity->setFlag($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

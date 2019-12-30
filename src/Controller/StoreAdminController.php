@@ -95,15 +95,15 @@ class StoreAdminController extends Controller
 		
 		$this->checkForDoubloon($translator, $entity, $form);
 
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
+		if($entity->getPhoto() == null or empty($entity->getPhoto()["title"]) or empty($entity->getPhoto()["content"]))
+			$form->get("photo")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+
 		if($form->isValid())
 		{
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/store/", $image);
-			$entity->setPhoto($image);
+			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
+				file_put_contents(Store::PATH_FILE.$title, $content);
+
+			$entity->setPhoto($title);
 			$entityManager = $this->getDoctrine()->getManager();
 			
 			if(empty($entity->getBiography())) {
@@ -158,18 +158,15 @@ class StoreAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
+			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/store/", $image);
+				file_put_contents(Page::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$title = $entity->getPhoto()["title"];
 			}
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setPhoto($image);
-
-			$entityManager = $this->getDoctrine()->getManager();
+			$entity->setPhoto($title);
 			
 			if(empty($entity->getBiography())) {
 				$biography = new Biography();

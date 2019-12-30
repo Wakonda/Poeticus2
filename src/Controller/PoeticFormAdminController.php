@@ -88,16 +88,14 @@ class PoeticFormAdminController extends Controller
 		
 		$this->checkForDoubloon($entity, $form);
 
-		if($entity->getImage() == null)
-			$form->get("image")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		if($entity->getImage() == null or empty($entity->getImage()["title"]) or empty($entity->getImage()["content"]))
+			$form->get("image")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 		
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getImage());
-			$entity->getImage()->move("photo/poeticform/", $image);
-			$entity->setImage($image);
+			file_put_contents(PoeticForm::PATH_FILE.$entity->getImage()["title"], $entity->getImage()["content"]);
+			$entity->setImage($entity->getImage()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -138,16 +136,15 @@ class PoeticFormAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getImage()))
+			if(!is_null($entity->getImage()) and (!empty($entity->getImage()["title"]) or !empty($entity->getImage()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getImage());
-				$entity->getImage()->move("photo/poeticform/", $image);
+				file_put_contents(PoeticForm::PATH_FILE.$entity->getImage()["title"], $entity->getImage()["content"]);
+				$title = $entity->getImage()["title"];
 			}
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setImage($image);
+			$entity->setImage($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

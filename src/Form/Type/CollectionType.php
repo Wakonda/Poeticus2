@@ -35,9 +35,7 @@ class CollectionType extends AbstractType
 			->add('text', TextareaType::class, array(
                 "required" => false, "label" => "admin.collection.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('image', FileType::class, array('data_class' => null, "label" => "admin.collection.Image", "required" => false
-            ))
-			
+			->add('image', FileSelectorType::class, array("label" => "admin.collection.Image", "required" => false, "current_file" => $builder->getData()->getImage(), "path_file" => Collection::PATH_FILE))
 			->add('releasedDate', IntegerType::class, array(
                 'label' => 'admin.collection.PublicationDate'
             ))

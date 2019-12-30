@@ -30,8 +30,7 @@ class PoeticFormType extends AbstractType
 			->add('text', TextareaType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.poeticForm.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('image', FileType::class, array('data_class' => null, "label" => "admin.poeticForm.Image", "required" => true
-            ))
+			->add('image', FileSelectorType::class, array("label" => "admin.poeticForm.Image", "required" => true, "current_file" => $builder->getData()->getImage(), "path_file" => PoeticForm::PATH_FILE))
 			->add('typeContentPoem', ChoiceType::class, array("label" => "admin.poeticForm.KindOfContent", "required" => true, "multiple" => false, "expanded" => false, 'choices' => ['admin.poeticForm.Image' => PoeticForm::IMAGETYPE, 'admin.poeticForm.Text' => PoeticForm::TEXTTYPE]
 			))
 			->add('language', EntityType::class, array(

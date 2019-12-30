@@ -88,16 +88,15 @@ class PageAdminController extends Controller
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+
+		if($entity->getPhoto() == null or empty($entity->getPhoto()["title"]) or empty($entity->getPhoto()["content"]))
+			$form->get("photo")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/page/", $image);
-			$entity->setPhoto($image);
+			file_put_contents(PoeticForm::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+			$entity->setPhoto($entity->getPhoto()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -138,16 +137,15 @@ class PageAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
+			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/page/", $image);
+				file_put_contents(Page::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$title = $entity->getPhoto()["title"];
 			}
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setPhoto($image);
+			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

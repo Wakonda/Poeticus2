@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PoeticForm
 {
+	const PATH_FILE = "photo/poeticform/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

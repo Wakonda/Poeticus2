@@ -835,26 +835,28 @@ class PoemAdminController extends Controller
 		
         $imageGeneratorForm = $this->createForm(ImageGeneratorType::class);
         $imageGeneratorForm->handleRequest($request);
+		$data = $imageGeneratorForm->getData();
 		
+		if(empty($data["image"]["title"]) and empty($data["image"]["content"]))
+			$imageGeneratorForm->get("image")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid())
 		{
-			$data = $imageGeneratorForm->getData();
-			$file = $data['image'];
-            $fileName = md5(uniqid()).'_'.$file->getClientOriginalName();
+			$file = $data['image']["content"];
+            $fileName = md5(uniqid()).'_'.$data["image"]["title"];
 			$text = html_entity_decode($data['text'], ENT_QUOTES);
 
 			$font = realpath(__DIR__."/../../assets").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
 			
 			if($data["version"] == "v1")
 			{
-				$image = imagecreatefromstring(file_get_contents($file->getPathname()));
+				$image = imagecreatefromstring($file);
 				
 				ob_start();
 				imagepng($image);
 				$png = ob_get_clean();
-					
+
 				$image_size = getimagesizefromstring($png);
-				
 
 				$widthText = $image_size[0] * 0.9;
 				$start_x = $image_size[0] * 0.1;
@@ -902,10 +904,11 @@ class PoemAdminController extends Controller
 					$strokeColor = [0, 0, 0];
 					$rectangleColor = [0, 0, 0];
 				}
-				
-				// str_replace("\xe2\x80\x8b", '', 'test') => remove ZERO WIDTH SPACE character
 
-				$bg = $data['image']->getPathName();
+				$tmp = tmpfile();
+				fwrite($tmp, $file);
+				$bg = stream_get_meta_data($tmp)['uri'];
+
 				$image = new PHPImage();
 				$image->setDimensionsFromImage($bg);
 				$image->draw($bg);
@@ -927,6 +930,7 @@ class PoemAdminController extends Controller
 
 				imagepng($image->getResource(), "photo/poem/".$fileName);
 				imagedestroy($image->getResource());
+				fclose($tmp);
 			}
 
 			$entity->addPoemImage(new PoemImage($fileName));

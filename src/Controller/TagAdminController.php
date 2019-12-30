@@ -90,14 +90,14 @@ class TagAdminController extends Controller
 
 		if($entity->getPhoto() == null)
 			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
+
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			$gf = new GenericFunction();
-			$photo = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/tag/", $photo);
-			$entity->setPhoto($photo);
+			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
+				file_put_contents(Tag::PATH_FILE.$title, $content);
+
+			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -138,16 +138,15 @@ class TagAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
+			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/tag/", $image);
+				file_put_contents(Tag::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$title = $entity->getPhoto()["title"];
 			}
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setPhoto($image);
+			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

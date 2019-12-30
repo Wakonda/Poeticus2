@@ -90,12 +90,10 @@ class CollectionAdminController extends Controller
 
 		if($form->isValid())
 		{
-			if($entity->getImage() != null) {
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getImage());
-				$entity->getImage()->move("photo/collection/", $image);
-				$entity->setImage($image);
-			}
+			if(!empty($title = $entity->getImage()["title"]) and !empty($content = $entity->getImage()["content"]))
+				file_put_contents(Collection::PATH_FILE.$title, $content);
+
+			$entity->setImage($title);
 			$entityManager = $this->getDoctrine()->getManager();
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -137,16 +135,13 @@ class CollectionAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getImage()))
-			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getImage());
-				$entity->getImage()->move("photo/collection/", $image);
-			}
-			else
-				$image = $currentImage;
+			if(!empty($title = $entity->getImage()["title"]) and !empty($content = $entity->getImage()["content"])) {
+				file_put_contents(Collection::PATH_FILE.$title, $content);
+				$title = $entity->getFlag()["title"];
+			} else
+				$title = $currentImage;
 
-			$entity->setImage($image);
+			$entity->setImage($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

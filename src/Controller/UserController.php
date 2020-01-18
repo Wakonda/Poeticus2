@@ -14,7 +14,7 @@ use App\Form\Type\ForgottenPasswordType;
 use App\Form\Type\LoginType;
 use App\Service\PasswordHash;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
@@ -25,7 +25,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class UserController extends Controller
+class UserController extends AbstractController
 {
 	public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, SessionInterface $session, TranslatorInterface $translator)
 	{

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ use App\Service\Gravatar;
 use App\Service\Pagination;
 use App\Service\GenericFunction;
 
-class IndexController extends Controller
+class IndexController extends AbstractController
 {
 	public function indexAction(Request $request)
 	{

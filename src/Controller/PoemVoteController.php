@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class PoemVoteController extends Controller
+class PoemVoteController extends AbstractController
 {
 	public function voteAction(Request $request, TranslatorInterface $translator, TokenStorageInterface $tokenStorage, $idPoem)
 	{

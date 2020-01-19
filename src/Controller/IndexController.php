@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -32,6 +32,8 @@ use App\Form\Type\IndexSearchType;
 use App\Service\Gravatar;
 use App\Service\Pagination;
 use App\Service\GenericFunction;
+
+use Knp\Component\Pager\PaginatorInterface;
 
 class IndexController extends AbstractController
 {
@@ -147,12 +149,11 @@ class IndexController extends AbstractController
 		return $this->render('Index/read.html.twig', ['entity' => $entity, 'browsingPoems' => $browsingPoems, 'image' => $image]);
 	}
 
-	public function byImagesAction(Request $request)
+	public function byImagesAction(Request $request, PaginatorInterface $paginator)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$query = $entityManager->getRepository(PoemImage::class)->getPaginator($request->getLocale());
-		
-		$paginator  = $this->get('knp_paginator');
+
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
 			$request->query->getInt('page', 1), /*page number*/

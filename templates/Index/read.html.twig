@@ -100,8 +100,7 @@
 		var popupLocation = popupCenter(500, 300);
 		
 		$('div#main_poem_text').tweetHighlighted({
-			node: '<a href="#"><i class="fas fa-twitter fa-lg" aria-hidden="true"></i></a>',
-			cssClass: 'btn btn-primary',
+			node: '<a href="#" class="btn btn-primary"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>',
 			minLength: 6,
 			maxLength: 144 * 2,
 			extra: '- {{ url("read", { "id" : entity.id, 'slug' : entity.slug }) }}',
@@ -149,10 +148,10 @@
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<img src="{{ asset('photo/poem/'~poemImage.image) }}" class="text-center" alt="">
 					<div class="carousel-caption hidden_print">
-						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}&text={{ poemImage.poem.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&t={{ poemImage.poem.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&media={{ absolute_url(asset('photo/poem/'~poemImage.image)) }}&description={{ poemImage.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
+						<a class="btn btn-primary twitter social-network" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}&text={{ poemImage.poem.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+						<a class="btn btn-primary facebook social-network" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&t={{ poemImage.poem.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+						<a class="btn btn-primary pinterest social-network" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&media={{ absolute_url(asset('photo/poem/'~poemImage.image)) }}&description={{ poemImage.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
+						<a class="btn btn-primary linkedin social-network" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
 						<a href="{{ path('download_image', {'fileName': poemImage.image}) }}" class="btn btn-success "><i class="fas fa-download" aria-hidden="true"></i></a>
 					</div>
 				</div>
@@ -182,7 +181,6 @@
 	{% endif %}
 
 	{% include "Admin/quick_admin.html.twig" with {edit_route: 'poemadmin_edit', show_route: 'poemadmin_show'} %}
-
 	<hr>
 	<p>
 	{% if entity.authorType == "biography" %}

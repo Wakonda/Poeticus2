@@ -13,7 +13,7 @@
 		font-size: 17px;
 	}
 	
-	p, span
+	p, span, .main_poem_text
 	{
 		font-size: 20px;
 		text-align: justify;
@@ -80,7 +80,7 @@
 <page pageset="old">
     <bookmark title="{{ entity.title }}" level="0" ></bookmark>
 	<h1>{{ entity.title }}</h1>
-    <div class="niveau">
+    <div class="main_poem_text">
         {{ entity.text|raw }}
     </div>
 </page>

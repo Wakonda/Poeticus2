@@ -40,7 +40,8 @@ class PoeticusExtension extends AbstractExtension
 			new TwigFunction('text_month', array($this, 'textMonth')),
 			new TwigFunction('date_biography_letter', array($this, 'dateBiographyLetter'), array('is_safe' => array('html'))),
 			new TwigFunction('date_letter', array($this, 'dateLetter'), array('is_safe' => array('html'))),
-			new TwigFunction('count_unread_messages', array($this, 'countUnreadMessagesFunction'))
+			new TwigFunction('count_unread_messages', array($this, 'countUnreadMessagesFunction')),
+			new TwigFunction('display_file', array($this, 'displayFileManagement'), array('is_safe' => array('html')))
 		);
 	}
 
@@ -64,7 +65,7 @@ class PoeticusExtension extends AbstractExtension
 	public function maxSizeImageFilter($img, array $options = [], $isPDF = false)
 	{
 		$basePath = ($isPDF) ? '' : '/';
-		
+
 		if(!file_exists($img) or !is_file($img))
 			return '<img src="'.$basePath.'photo/640px-Starry_Night_Over_the_Rhone.jpg" alt="" style="max-width: 400px" />';
 		
@@ -174,6 +175,40 @@ class PoeticusExtension extends AbstractExtension
 	public function countUnreadMessagesFunction()
 	{
 		return $this->em->getRepository("App\Entity\Contact")->countUnreadMessages();
+	}
+	
+	public function displayFileManagement($entity, $caption = true, $isPDF = false) {
+		$basePath = ($isPDF) ? '' : '/';
+		
+		$class = get_class($entity);
+		$img = null;
+		// photo/biography/5e371f8c3c979_384px-Riley_Reid_2019_by_Glenn_Francis.jpg
+		if(method_exists($entity, "getFileManagement") and !empty($entity->getFileManagement())) {
+			$img = $class::PATH_FILE.$entity->getFileManagement()->getPhoto();
+		}
+		// die(var_dump(!empty($img) , !file_exists($img) , !is_file($img), $img));
+		if(empty($img) or !file_exists($img) or !is_file($img))
+			return '<img src="'.$basePath.'photo/640px-Starry_Night_Over_the_Rhone.jpg" alt="" style="max-width: 400px" />';
+		
+		$imageSize = getimagesize($img);
+
+		$width = $imageSize[0];
+		$height = $imageSize[1];
+		
+		$max_width = 500;
+				
+		if($width > $max_width)
+		{
+			$height = ($max_width * $height) / $width;
+			$width = $max_width;
+		}
+		
+		$strImg = '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" class="img-responsive mx-auto d-block" />';
+		// die(var_dump($entity->getFileManagement()->getDescription()));
+		if(!$caption or empty($entity->getFileManagement()->getDescription()))
+			return $strImg;
+		
+		return '<figure class="image">'.$strImg.'<figcaption>'.$entity->getFileManagement()->getDescription().'</figcaption></figure>';
 	}
 	
 	public function minifyFile($file)

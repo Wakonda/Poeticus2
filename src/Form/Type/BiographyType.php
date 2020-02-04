@@ -34,7 +34,6 @@ class BiographyType extends AbstractType
 			->add('text', TextareaType::class, array(
                 'required' => false, "label" => "admin.biography.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('photo', FileSelectorType::class, array("label" => "admin.biography.Image", "required" => false, "current_file" => $builder->getData()->getPhoto(), "path_file" => Biography::PATH_FILE))
 			->add('dayBirth', IntegerType::class, array("label" => "admin.biography.BirthDate", "required" => false))
 			->add('monthBirth', IntegerType::class, array("label" => "", "required" => false))
 			->add('yearBirth', IntegerType::class, array("label" => "", "required" => false))
@@ -55,14 +54,15 @@ class BiographyType extends AbstractType
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language', 
 				'class' => Language::class,
-				'query_builder' => function (LanguageRepository $er) use ($locale) {
-					return $er->findAllForChoice($locale);
+				'query_builder' => function (LanguageRepository $er) {
+					return $er->findAllForChoice();
 				},
 				'multiple' => false,
 				'required' => false,
 				'expanded' => false,
 				'placeholder' => 'main.field.ChooseAnOption'
 			))
+			->add('fileManagement', FileManagementSelectorType::class, ["label" => "admin.biography.Image", "required" => false, "folder" => Biography::FOLDER])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
 			;
     }

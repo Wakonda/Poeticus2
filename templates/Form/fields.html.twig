@@ -48,6 +48,7 @@
 
 {% block file_selector_row %}
 	{{ form_errors(form.children.name) }}
+
 	<div class="input-group" id="{{ form.vars.id }}">
 		<div class="input-group-prepend">
 			<button class="btn btn-secondary upload active"><i class="fas fa-upload"></i></button>
@@ -93,6 +94,8 @@
 				$("#{{ form.vars.id }} .link").removeClass("active");
 				$("#{{ form.vars.id }} .name_file").hide();
 				$("#{{ form.vars.id }} .custom-file").show();
+				
+				$("#{{ form.children.name.vars.id }}").val("");
 			});
 			$("#{{ form.vars.id }} .link").click(function(e) {
 				e.preventDefault();
@@ -100,6 +103,9 @@
 				$("#{{ form.vars.id }} .upload").removeClass("active");
 				$("#{{ form.vars.id }} .custom-file").hide();
 				$("#{{ form.vars.id }} .name_file").show();
+				
+				document.getElementById("{{ form.children.file.vars.id }}").value = "";
+				$("label[for={{ form.children.file.vars.id }}]").html("");
 			});
 			
             $('#{{ form.children.file.vars.id }}').on('change',function(e){
@@ -111,5 +117,45 @@
 				}
             })
 		});
+	</script>
+{% endblock %}
+
+{% block file_management_selector_row %}
+	<div class="input-group">
+		<input type="text" readonly id="{{ form.children.id.vars.id }}_filename" class="form-control" />
+		{{ form_widget(form.children.id, {'attr':{'class':'form-control d-none'}}) }}
+		<div class="input-group-append">
+			<span class="input-group-text"><a href="#" id="file_manager_button_{{ form.children.id.vars.id }}"><i class="far fa-hand-pointer"></i></a></span>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="media_management" tabindex="-1" role="dialog" aria-labelledby="mediaManagementLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">{{ "fileManagement.index.FileManager"|trans }}</h5>
+					<button class="btn btn-danger btn-sm float-right" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+				</div>
+				<div class="modal-body">
+					<div class="embed-responsive embed-responsive-16by9">
+					  <iframe class="embed-responsive-item" src="{{ path('filemanagementadmin_media', {idForm: form.children.id.vars.id, folder: form.vars.folder}) }}" allowfullscreen></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+	<script>
+	$(function() {
+		$("#file_manager_button_{{ form.children.id.vars.id }}").click(function(e) {
+			e.preventDefault();
+			$('#media_management').modal('show');
+		});
+		
+		window.closeModal = function(){
+			$('#media_management').modal('hide');
+		};
+	});
 	</script>
 {% endblock %}

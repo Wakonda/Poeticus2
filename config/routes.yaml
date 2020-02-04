@@ -715,3 +715,14 @@ backupadmin_delete:
 backupadmin_generate:
     path: /admin/backup/generate
     controller: App\Controller\BackupAdminController::generateAction
+
+# ADMIN IMAGE LICENCE
+filemanagementadmin_uploadmedia:
+    path: /admin/filemanagement/upload_media/{idForm}/{folder}
+    controller: App\Controller\FileManagementAdminController::uploadMediaAction
+filemanagementadmin_media:
+    path: /admin/filemanagement/media/{idForm}/{folder}
+    controller: App\Controller\FileManagementAdminController::mediaAction
+filemanagementadmin_loadmedia:
+    path: /admin/filemanagement/loadmedia/{folder}
+    controller: App\Controller\FileManagementAdminController::loadMediaAction

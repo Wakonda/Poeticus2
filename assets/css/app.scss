@@ -40,6 +40,19 @@ h1 span{
 	font-weight: 700;
 }
 
+figure {
+	padding: 6px;
+    border-radius: .25rem!important;
+    border: 1px solid #dee2e6!important;
+    background-color: #f8f9fa!important;
+}
+
+figure figcaption {
+    font-style: italic;
+    margin-top: .5rem!important;
+	text-align: center;
+}
+
 a{
 	color: #6190ca;
 	text-decoration: none;
@@ -822,13 +835,6 @@ a.btn.linkedin {
 	border-color: 	$linkedin-color;
 }
 
-.row_flex {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	flex-wrap: wrap;
-}
 .card {
 	position: relative;
 	display: -ms-flexbox;

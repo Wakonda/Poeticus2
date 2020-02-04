@@ -100,11 +100,22 @@ store:
     index:
         Store: "Bottega"
         Search: "Cercare"
+        MoreInformations: "Maggiori info"
+        UnknownAuthor: "Autore sconosciuto"
+        NoProductFound: "Nessun prodotto trovato"
     author:
         Title: "Titolo"
         Action: "Azione"
     read:
         Abstract: "Astratto"
+fileManagement:
+    index:
+        FileManager: "Gestore di file"
+    form:
+        Description: "Descrizione"
+        Photo: "Foto"
+        Download: "Scaricare"
+        Search: "Ricercare"
 yourPoems:
     index:
         YourPoems: "Le vostre poesie"

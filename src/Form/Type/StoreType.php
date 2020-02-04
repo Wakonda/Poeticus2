@@ -34,10 +34,11 @@ class StoreType extends AbstractType
             ->add('text', TextareaType::class, array( 'attr' => array('class' => 'redactor'), 
                 'constraints' => new Assert\NotBlank(), "label" => "admin.store.Text"
             ))
-			->add('photo', FileSelectorType::class, array("label" => "admin.store.Image", "required" => true, "current_file" => $builder->getData()->getPhoto(), "path_file" => Store::PATH_FILE))
-			->add('amazonCode', TextType::class, array(
-                'constraints' => new Assert\NotBlank(), "label" => "admin.store.ProductCode", 'attr' => array('class' => 'redactor')
-            ))
+			->add('embedCode', TextareaType::class, array("label" => "admin.store.EmbedCode", "required" => true, "current_file" => $builder->getData()->getPhoto(), "path_file" => Store::PATH_FILE))
+			// ->add('photo', FileSelectorType::class, array("label" => "admin.store.Image", "required" => true, "current_file" => $builder->getData()->getPhoto(), "path_file" => Store::PATH_FILE))
+			// ->add('amazonCode', TextType::class, array(
+                // 'constraints' => new Assert\NotBlank(), "label" => "admin.store.ProductCode", 'attr' => array('class' => 'redactor')
+            // ))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language',
 				'class' => Language::class,

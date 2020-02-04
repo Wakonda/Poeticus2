@@ -100,11 +100,22 @@ store:
     index:
         Store: "Loja"
         Search: "Procurar"
+        MoreInformations: "Mais informação"
+        UnknownAuthor: "Autor desconhecido"
+		NoProductFound: "Nenhum produto encontrado"
     author:
         Title: "Título"
         Action: "Acção"
     read:
         Abstract: "Resumo"
+fileManagement:
+    index:
+        FileManager: "Gerenciador de arquivos"
+    form:
+        Description: "Descrição"
+        Photo: "Foto"
+        Download: "Baixar"
+        Search: "Procurar"
 yourPoems:
     index:
         YourPoems: "Seus poemas"

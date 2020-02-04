@@ -20,6 +20,46 @@ class BiographyAdminController extends AbstractController
 
 	public function indexAction()
 	{
+/*die(var_dump("ro"));
+		$em = $this->getDoctrine()->getManager();
+$classes = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+
+		
+		// die(var_dump($classes));
+$res = [];
+foreach($classes as $klass) {
+   $reflect = new \ReflectionClass($klass);
+
+   if($reflect->hasConstant('FOLDER')) 
+      $res[$klass::FOLDER] = $klass;
+}
+
+// die(var_dump($res));
+$conn = $em->getConnection();
+$columns= $conn->query("SELECT COLUMN_NAME FROM information_schema.columns WHERE table_schema='".$em->getConnection()->getDatabase()."' AND table_name='".$em->getClassMetadata($res["biography"])->getTableName()."' AND     
+        (
+            DATA_TYPE LIKE '%text%'
+        OR  
+            DATA_TYPE LIKE '%char%'
+        )")->fetchAll();
+
+$where = [];
+
+$img = "test.png";
+
+foreach($columns as $column) {
+$where[] = "a.".$column["COLUMN_NAME"]." LIKE '%".$img."%'";
+}
+
+
+$query = $em->getRepository($res["biography"])->createQueryBuilder("a")->andWhere(implode(" OR ", $where))->getQuery()->getResult();
+// $query->setParameter(1, 'romanb');
+die(var_dump(($query)));
+// $users = $query->getResult();
+
+die(var_dump($columns, $res));*/
+		
+		
 		return $this->render('Biography/index.html.twig');
 	}
 
@@ -99,12 +139,6 @@ class BiographyAdminController extends AbstractController
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
-				file_put_contents(Biography::PATH_FILE.$title, $content);
-			
-			$entity->setPhoto($title);
-			
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -138,8 +172,7 @@ class BiographyAdminController extends AbstractController
 
 		$locale = $request->request->get($this->formName)["language"];
 		$language = $entityManager->getRepository(Language::class)->find($locale);
-		
-		$currentImage = $entity->getPhoto();
+
 		$form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 		
@@ -147,14 +180,6 @@ class BiographyAdminController extends AbstractController
 		
 		if($form->isValid())
 		{
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"])) {
-				file_put_contents(Biography::PATH_FILE.$title, $content);
-				$title = $entity->getPhoto()["title"];
-			}
-			else
-				$title = $currentImage;
-
-			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

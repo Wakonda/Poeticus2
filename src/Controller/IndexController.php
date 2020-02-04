@@ -67,7 +67,6 @@ class IndexController extends AbstractController
 		elseif($search['type'] == "user")
 			$criteria['type'] =  $translator->trans('main.field.YourPoems');
 
-		
 		$criteria['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
 		$criteria = array_filter(array_values($criteria));
 		$criteria = empty($criteria) ? $translator->trans("search.result.None") : $criteria;

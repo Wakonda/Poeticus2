@@ -12,7 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Tag
 {
-	const PATH_FILE = "photo/tag/";
+	const FOLDER = "biography";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -30,6 +31,11 @@ class Tag
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $photo;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -132,4 +138,14 @@ class Tag
 		if(empty($this->slug))
 			$this->slug = GenericFunction::slugify($this->title);
     }
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
+	}
 }

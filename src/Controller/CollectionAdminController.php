@@ -90,10 +90,6 @@ class CollectionAdminController extends AbstractController
 
 		if($form->isValid())
 		{
-			if(!empty($title = $entity->getImage()["title"]) and !empty($content = $entity->getImage()["content"]))
-				file_put_contents(Collection::PATH_FILE.$title, $content);
-
-			$entity->setImage($title);
 			$entityManager = $this->getDoctrine()->getManager();
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -127,7 +123,7 @@ class CollectionAdminController extends AbstractController
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Collection::class)->find($id);
-		$currentImage = $entity->getImage();
+
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
@@ -135,13 +131,6 @@ class CollectionAdminController extends AbstractController
 		
 		if($form->isValid())
 		{
-			if(!empty($title = $entity->getImage()["title"]) and !empty($content = $entity->getImage()["content"])) {
-				file_put_contents(Collection::PATH_FILE.$title, $content);
-				$title = $entity->getFlag()["title"];
-			} else
-				$title = $currentImage;
-
-			$entity->setImage($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

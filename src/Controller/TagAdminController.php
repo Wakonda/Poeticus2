@@ -88,16 +88,12 @@ class TagAdminController extends AbstractController
 		
 		$this->checkForDoubloon($entity, $form);
 
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+			$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
 
 		if($form->isValid())
 		{
-			$entityManager = $this->getDoctrine()->getManager();
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
-				file_put_contents(Tag::PATH_FILE.$title, $content);
-
-			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -130,23 +126,18 @@ class TagAdminController extends AbstractController
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Tag::class)->find($id);
-		$currentImage = $entity->getPhoto();
+
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($entity, $form);
 		
+		if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+			$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
-			{
-				file_put_contents(Tag::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
-				$title = $entity->getPhoto()["title"];
-			}
-			else
-				$title = $currentImage;
-
-			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

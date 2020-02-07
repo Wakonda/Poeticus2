@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Poem
 {
+	const FOLDER = "poem";
+	const PATH_FILE = "photo/".self::FOLDER."/";
+
 	const PUBLISHED_STATE = 0;
 	const DRAFT_STATE = 1;
 	const DELETE_STATE = 2;
@@ -82,6 +85,11 @@ class Poem
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $photo;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 
     /**
      * @ORM\Column(type="json", length=255, nullable=true)
@@ -400,5 +408,15 @@ class Poem
 	public function getTags()
 	{
 		return $this->tags;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

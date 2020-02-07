@@ -37,7 +37,7 @@
 {% block meta_tag_description %}{{ entity.title }} est un recueil de poésies écrit par {{ entity.biography.title }} et publiée {{ (entity.releasedDate is not empty) ? "en "~entity.releasedDate : "à une date inconnue"}}.{% endblock %}
 
 {% block main_content %}
-	<p class="text-center">{{ ("photo/collection/"~entity.image)|max_size_image() }}</p>
+	{{ display_file(entity) }}
 	<br>
 	<div>
 		{% set biography = entity.biography %}

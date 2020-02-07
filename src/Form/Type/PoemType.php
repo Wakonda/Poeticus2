@@ -95,7 +95,6 @@ class PoemType extends AbstractType
 				'expanded' => false,
 				'placeholder' => 'main.field.ChooseAnOption'
 			))
-			->add('photo', FileType::class, array('data_class' => null, "label" => "Image", "required" => true))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language',
 				'class' => Language::class,
@@ -123,6 +122,7 @@ class PoemType extends AbstractType
 				'language' => $locale,
 				'placeholder' => 'main.field.ChooseAnOption'
 			])
+			->add('fileManagement', FileManagementSelectorType::class, ["label" => "admin.poem.Image", "required" => true, "folder" => Poem::FOLDER])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

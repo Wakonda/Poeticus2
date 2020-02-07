@@ -14,20 +14,29 @@ use Symfony\Component\Form\FormError;
 
 class FileManagementAdminController extends AbstractController
 {
-	public function mediaAction(Request $request, $idForm, $folder)
+	public function mediaAction(Request $request, $idForm, $folder, $id)
 	{
-		$entity = new FileManagement();
-		
+		if(empty($id))
+			$entity = new FileManagement();
+		else {
+			$entityManager = $this->getDoctrine()->getManager();
+			$entity = $entityManager->getRepository(FileManagement::class)->find($id);
+		}
+
 		$entity->setFolder($folder);
-		
 		$form = $this->createForm(FileManagementType::class, $entity);
 		
-		return $this->render('FileManagement/media.html.twig', ["form" => $form->createView(), "idForm" => $idForm, "folder" => $folder]);
+		return $this->render('FileManagement/media.html.twig', ["entity" => $entity, "form" => $form->createView(), "idForm" => $idForm, "folder" => $folder]);
 	}
 
-	public function uploadMediaAction(Request $request, TranslatorInterface $translator, $idForm, $folder)
+	public function uploadMediaAction(Request $request, TranslatorInterface $translator, $idForm, $folder, $id)
 	{
-		$entity = new FileManagement();
+		$entityManager = $this->getDoctrine()->getManager();
+		if(empty($id))
+			$entity = new FileManagement();
+		else
+			$entity = $entityManager->getRepository(FileManagement::class)->find($id);
+
 		$form = $this->createForm(FileManagementType::class, $entity);
 		$form->handleRequest($request);
 		
@@ -67,7 +76,7 @@ class FileManagementAdminController extends AbstractController
 			return $response;
 		}
 
-		$response = new Response(json_encode(["state" => "error", "content" => $this->render('FileManagement/media.html.twig', ["form" => $form->createView(), "idForm" => $idForm, "folder" => $entity->getFolder()])->getContent()]));
+		$response = new Response(json_encode(["state" => "error", "content" => $this->render('FileManagement/media.html.twig', ["form" => $form->createView(), "idForm" => $idForm, "folder" => $entity->getFolder(), "entity" => $entity])->getContent()]));
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;

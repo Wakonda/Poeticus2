@@ -718,11 +718,15 @@ backupadmin_generate:
 
 # ADMIN IMAGE LICENCE
 filemanagementadmin_uploadmedia:
-    path: /admin/filemanagement/upload_media/{idForm}/{folder}
+    path: /admin/filemanagement/upload_media/{idForm}/{folder}/{id}
     controller: App\Controller\FileManagementAdminController::uploadMediaAction
+    defaults:
+        id: null
 filemanagementadmin_media:
-    path: /admin/filemanagement/media/{idForm}/{folder}
+    path: /admin/filemanagement/media/{idForm}/{folder}/{id}
     controller: App\Controller\FileManagementAdminController::mediaAction
+    defaults:
+        id: null
 filemanagementadmin_loadmedia:
     path: /admin/filemanagement/loadmedia/{folder}
     controller: App\Controller\FileManagementAdminController::loadMediaAction

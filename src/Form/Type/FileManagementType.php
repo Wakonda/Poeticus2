@@ -20,7 +20,7 @@ class FileManagementType extends AbstractType
         $builder
             ->add('description', TextareaType::class, ["label" => "fileManagement.form.Description", 'attr' => array('class' => 'redactor'), 'constraints' => new Assert\NotBlank()])
             ->add('folder', HiddenType::class)
-			->add('photo', FileSelectorType::class, array('constraints' => new \Symfony\Component\Validator\Constraints\Valid(), "label" => "fileManagement.form.Photo", "required" => true, "mapped" => false))
+			->add('photo', FileSelectorType::class, array("label" => "fileManagement.form.Photo", "required" => true, "mapped" => false))
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
         ;
     }

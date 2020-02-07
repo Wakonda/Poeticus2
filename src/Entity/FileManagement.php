@@ -22,12 +22,11 @@ class FileManagement
     /**
      * @var text $description
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(name="photo", type="string", length=255)
      */
     private $photo;

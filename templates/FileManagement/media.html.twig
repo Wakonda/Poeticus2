@@ -44,6 +44,11 @@
 			</div>
 			<script>
 				$(function() {
+					{% if entity.id is not empty %}
+						$("#{{ form.photo.vars.id }} .link").click();
+						$("#{{ form.photo.name.vars.id }}").val("{{ entity.photo }}");
+						$('#nav-download-tab').tab('show');
+					{% endif %}
 					$('#image_licence').on('submit', function(e) {
 						e.preventDefault();
 
@@ -57,7 +62,7 @@
 
 						$.ajax({
 							type:'POST',
-							url: '{{ path("filemanagementadmin_uploadmedia", { idForm: idForm, folder: folder }) }}',
+							url: '{{ path("filemanagementadmin_uploadmedia", { idForm: idForm, folder: folder, id: entity.id }) }}',
 							data:formData,
 							cache:false,
 							contentType: contentTypeValue,

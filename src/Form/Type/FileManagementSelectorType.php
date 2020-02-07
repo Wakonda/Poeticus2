@@ -26,6 +26,7 @@ class FileManagementSelectorType extends AbstractType
 
         $builder
             ->add('id', TextType::class)
+            ->add('filename', TextType::class)
         ;
     }
 

@@ -304,7 +304,7 @@ class IndexController extends AbstractController
 		{
 			if(!empty($entity['id']))
 			{
-				$img = $gf->adaptImageSize("photo/biography/".$entity["photo"]);
+				$img = $gf->adaptImageSize(Biography::PATH_FILE.$entity["photo"]);
 				$row = array();
 				$show = $this->generateUrl('author', array('id' => $entity['id'], 'slug' => $entity['slug']));
 				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['author'].'</a>';

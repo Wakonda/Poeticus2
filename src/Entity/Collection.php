@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Collection
 {
-	const PATH_FILE = "photo/collection/";
+	const FOLDER = "biography";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -38,6 +39,11 @@ class Collection
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $image;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -154,5 +160,15 @@ class Collection
 	public function setLanguage($language)
 	{
 		$this->language = $language;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

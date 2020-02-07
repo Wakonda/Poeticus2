@@ -35,7 +35,6 @@ class CollectionType extends AbstractType
 			->add('text', TextareaType::class, array(
                 "required" => false, "label" => "admin.collection.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('image', FileSelectorType::class, array("label" => "admin.collection.Image", "required" => false, "current_file" => $builder->getData()->getImage(), "path_file" => Collection::PATH_FILE))
 			->add('releasedDate', IntegerType::class, array(
                 'label' => 'admin.collection.PublicationDate'
             ))
@@ -62,7 +61,7 @@ class CollectionType extends AbstractType
 				'expanded' => false,
 				'placeholder' => 'main.field.ChooseAnOption'
 			))
-			
+			->add('fileManagement', FileManagementSelectorType::class, ["label" => "admin.collection.Image", "required" => false, "folder" => Collection::FOLDER])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
 			;
     }

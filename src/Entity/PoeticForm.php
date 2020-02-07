@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class PoeticForm
 {
-	const PATH_FILE = "photo/poeticform/";
+	const FOLDER = "poeticform";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -40,9 +41,14 @@ class PoeticForm
     protected $typeContentPoem;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $image;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -132,5 +138,15 @@ class PoeticForm
 	public function setLanguage($language)
 	{
 		$this->language = $language;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

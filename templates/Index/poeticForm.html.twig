@@ -36,7 +36,7 @@
 {% block main_title %}{{ entity.title }}{% endblock %}
 
 {% block main_content %}
-	<p class="text-center">{{ ("photo/poeticform/"~entity.image)|max_size_image() }}</p>
+	{{ display_file(entity) }}
 	<div>
 		{{ entity.text|raw }}
 	</div>

@@ -18,8 +18,8 @@
 			<td>{{ entity.releasedDate }}</td>
 		</tr>
 		<tr>
-			<th>{{ "admin.collection.Image"|trans }}</th>
-			<td><p class="text-center">{{ ("photo/collection/"~entity.image)|max_size_image() }}</p></td>
+			<th>{{ 'admin.collection.Image'|trans }}</th>
+			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ ("photo/collection/"~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.collection.Biography"|trans }}</th>

@@ -29,7 +29,7 @@ class FileManagementTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $entity->getId();
+        return ["id" => $entity->getId(), "filename" => $entity->getPhoto()];
     }
 
     /**
@@ -49,7 +49,7 @@ class FileManagementTransformer implements DataTransformerInterface
         $entity = $this->entityManager
             ->getRepository(FileManagement::class)
             // query for the issue with this id
-            ->find($entityNumber)
+            ->find($entityNumber["id"])
         ;
 
         if (null === $entity) {
@@ -58,7 +58,7 @@ class FileManagementTransformer implements DataTransformerInterface
             // see the invalid_message option
             throw new TransformationFailedException(sprintf(
                 'An issue with number "%s" does not exist!',
-                $entityNumber
+                $entityNumber["id"]
             ));
         }
 

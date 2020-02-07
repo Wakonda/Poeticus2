@@ -130,8 +130,9 @@ class PoemAdminController extends AbstractController
 		$poeticForm = $entity->getPoeticForm();
 		
 		if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
-			if($entity->getPhoto() == null)
-				$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+			if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+				$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+			}
 		}
 		else {
 			if($entity->getText() == null)
@@ -145,13 +146,6 @@ class PoemAdminController extends AbstractController
 
 		if($form->isValid())
 		{
-			if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/poem/", $image);
-				$entity->setPhoto($image);
-			}
-
 			$entity->setState(0);
 			$entity->setCountry($entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
 			$entityManager->persist($entity);
@@ -196,19 +190,24 @@ class PoemAdminController extends AbstractController
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
-		
+
+		$poeticForm = $entity->getPoeticForm();
+
+		if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE) {
+			if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+				$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+			}
+		}
+		else {
+			if($entity->getText() == null)
+				$form->get("text")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+
 		if(($entity->isBiography() and $entity->getBiography() == null) or ($entity->isUser() and $entity->getUser() == null))
 			$form->get($entity->getAuthorType())->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 		
 		if($form->isValid())
 		{
-			if(!empty($poeticForm) and $poeticForm->getTypeContentPoem() == PoeticForm::IMAGETYPE and !is_null($entity->getPhoto())) {
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/poem/", $image);
-				$entity->setPhoto($image);
-			}
-
 			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -811,7 +810,7 @@ class PoemAdminController extends AbstractController
 		if(!empty($imageId)) {
 			$poemImage = $entityManager->getRepository(PoemImage::class)->find($imageId);
 			
-			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/photo/poem/'.$poemImage->getImage())));
+			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/'.Poem::PATH_FILE.$poemImage->getImage())));
 			$parameters['media_ids'] = implode(',', array($media->media_id_string));
 		}
 
@@ -853,7 +852,7 @@ class PoemAdminController extends AbstractController
 			return $this->redirect($this->generateUrl("poemadmin_show", array("id" => $id)));
 		}
 
-		$bot->pins->create($request->getUriForPath('/photo/poem/'.$poemImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
+		$bot->pins->create($request->getUriForPath('/'.Poem::PATH_FILE.$poemImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError())) {
 			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.SentSuccessfully"));
@@ -930,7 +929,7 @@ class PoemAdminController extends AbstractController
 
 				$imageGenerator->generate($start_x, $start_y, $widthText);
 
-				imagepng($image, "photo/poem/".$fileName);
+				imagepng($image, Poem::PATH_FILE.$fileName);
 				imagedestroy($image);
 			}
 			else
@@ -968,7 +967,7 @@ class PoemAdminController extends AbstractController
 					'y' => $gutter
 				));
 
-				imagepng($image->getResource(), "photo/poem/".$fileName);
+				imagepng($image->getResource(), Poem::PATH_FILE.$fileName);
 				imagedestroy($image->getResource());
 				fclose($tmp);
 			}
@@ -1001,7 +1000,7 @@ class PoemAdminController extends AbstractController
 		$entityManager->flush();
 		
 		$filesystem = new Filesystem();
-		$filesystem->remove("photo/poem/".$fileName);
+		$filesystem->remove(Poem::PATH_FILE.$fileName);
 		
 		$redirect = $this->generateUrl('poemadmin_show', array('id' => $entity->getId()));
 

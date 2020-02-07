@@ -88,14 +88,13 @@ class PoeticFormAdminController extends AbstractController
 		
 		$this->checkForDoubloon($entity, $form);
 
-		if($entity->getImage() == null or empty($entity->getImage()["title"]) or empty($entity->getImage()["content"]))
-			$form->get("image")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
+		if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+			$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			file_put_contents(PoeticForm::PATH_FILE.$entity->getImage()["title"], $entity->getImage()["content"]);
-			$entity->setImage($entity->getImage()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -128,23 +127,18 @@ class PoeticFormAdminController extends AbstractController
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(PoeticForm::class)->find($id);
-		$currentImage = $entity->getImage();
+
 		$form = $this->genericCreateForm($request->getLocale(), $entity);
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($entity, $form);
-		
+
+		if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+			$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
+
 		if($form->isValid())
 		{
-			if(!is_null($entity->getImage()) and (!empty($entity->getImage()["title"]) or !empty($entity->getImage()["content"])))
-			{
-				file_put_contents(PoeticForm::PATH_FILE.$entity->getImage()["title"], $entity->getImage()["content"]);
-				$title = $entity->getImage()["title"];
-			}
-			else
-				$title = $currentImage;
-
-			$entity->setImage($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

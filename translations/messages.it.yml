@@ -421,6 +421,7 @@ admin:
         Text: "Testo"
         Image: "Immagine"
         Biography: "Biografia"
+        EmbedCode: "Codice incorporato"
     socialNetwork:
         AddAnImage: "Aggiungi un'immagine"
         Send: "Invia"

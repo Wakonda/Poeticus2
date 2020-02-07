@@ -244,9 +244,10 @@ class PoemRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'bp.title', 'COUNT(pf.id)');
 		
-		$qb->select("bp.id AS id, bp.title AS author, bp.slug AS slug, bp.photo AS photo, COUNT(pf.id) AS number_poems_by_author")
+		$qb->select("bp.id AS id, bp.title AS author, bp.slug AS slug, fm.photo AS photo, COUNT(pf.id) AS number_poems_by_author")
 		   ->where("pf.authorType = 'biography'")
 		   ->leftjoin("pf.biography", "bp")
+		   ->leftjoin("bp.fileManagement", "fm")
 		   ->andWhere("pf.state = 0")
 		   ->groupBy("bp.id");
 		   

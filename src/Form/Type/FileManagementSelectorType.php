@@ -10,14 +10,18 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\FileManagement;
 
 class FileManagementSelectorType extends AbstractType
 {
     private $transformer;
+	private $entityManager;
 
-    public function __construct(FileManagementTransformer $transformer)
+    public function __construct(FileManagementTransformer $transformer, EntityManagerInterface $entityManager)
     {
         $this->transformer = $transformer;
+		$this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -32,6 +36,13 @@ class FileManagementSelectorType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+		if(!empty($id = $view->vars["value"]["id"]) and empty($view->vars["value"]["filename"])) {
+			$fm = $this->entityManager->getRepository(FileManagement::class)->find($id);
+			
+			if(!empty($fm))
+				$view->vars["value"]["filename"] = $fm->getPhoto();
+		}
+
 		$view->vars = array_merge($view->vars, array('folder' => $options['folder']));
     }
 

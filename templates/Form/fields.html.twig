@@ -123,7 +123,7 @@
 {% block file_management_selector_row %}
 	{{ form_errors(form.children.id) }}
 	<div class="input-group">
-		<input type="text" readonly id="{{ form.children.id.vars.id }}_filename" class="form-control" value="{{ form.children.filename.vars.value }}" />
+		<input type="text" readonly id="{{ form.children.id.vars.id }}_filename" class="form-control" value="{{ (form.vars.value is not empty) ? form.vars.value.filename : '' }}" />
 		{{ form_widget(form.children.id, {'attr':{'class':'form-control d-none'}}) }}
 		<div class="input-group-append">
 			<span class="input-group-text"><a href="#" id="file_manager_button_{{ form.children.id.vars.id }}"><i class="far fa-hand-pointer"></i></a></span>

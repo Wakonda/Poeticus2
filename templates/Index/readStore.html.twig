@@ -13,10 +13,13 @@
 		{{ entity.embedCode|raw }}
 		</div>
 	{% endif %}
-	<br>
-	<div class="text-center">
-		<a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a>
-	</div>
+
+	{% if entity.amazonCode %}
+		<br>
+		<div class="text-center">
+			<a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a>
+		</div>
+	{% endif %}
 	
 	{% if entity.text is not empty %}
 		<br>

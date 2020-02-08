@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Store
 {
-	const PATH_FILE = "photo/store/";
+	const FOLDER = "store";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id

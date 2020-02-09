@@ -28,6 +28,10 @@
 	#header_title {
 		font-family: "Script MT Bold", "Time New Roman", serif !important;
 	}
+	
+	.text-center {
+		text-align: center;
+	}
 
 	* {
 		font-family: times;
@@ -56,7 +60,11 @@
 
 <h1>{{ entity.title }}</h1>
 <br />
-{{ entity.text|raw }}
+{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('App\\Entity\\PoeticForm::IMAGETYPE') %}
+	{% if entity.fileManagement is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Poem::PATH_FILE')~entity.fileManagement.photo)|max_size_image([], true) }}</p>{% endif %}
+{% else %}
+	{{ entity.text|raw }}
+{% endif %}
 <br />
 <hr style="height: 1px"/>
 <span>{{ entity.biography.title|remove_control_characters }}</span> - <img class="flag" src="{{ constant('\\App\\Entity\\Country::PATH_FILE') }}{{ entity.country.flag }}" alt="" height="16" />

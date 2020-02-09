@@ -82,7 +82,11 @@
     <bookmark title="{{ entity.title }}" level="0" ></bookmark>
 	<h1>{{ entity.title }}</h1>
     <div class="main_poem_text">
-        {{ entity.text|raw }}
+		{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('App\\Entity\\PoeticForm::IMAGETYPE') %}
+			{% if entity.fileManagement is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Poem::PATH_FILE')~entity.fileManagement.photo)|max_size_image([], true) }}</p>{% endif %}
+		{% else %}
+			{{ entity.text|raw }}
+		{% endif %}
     </div>
 </page>
 {% endfor %}

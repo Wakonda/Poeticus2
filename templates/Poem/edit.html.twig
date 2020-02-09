@@ -95,9 +95,9 @@
 						$("#{{ form.released_date.vars.id }}").val(data.releasedDate);
 						
 						if(data.releasedDate != null)
-							$('input#{{ form.unknown_released_date.vars.id }}').attr('checked', false);
+							$('input#{{ form.unknown_released_date.vars.id }}').prop('checked', false);
 						else
-							$('input#{{ form.unknown_released_date.vars.id }}').attr('checked', true);
+							$('input#{{ form.unknown_released_date.vars.id }}').prop('checked', true);
 					}
 				});
 			});

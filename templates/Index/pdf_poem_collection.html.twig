@@ -57,7 +57,7 @@
     </page_footer>
 	<h1 class="center">{{ collection.title }}</h1>
 	{{ display_file(collection, false, true) }}
-	<p class="center">{{ ("photo/collection/"~collection.image)|max_size_image([], true) }}</p>
+	<p class="center">{{ (constant('\\App\\Entity\\Collection::PATH_FILE')~collection.image)|max_size_image([], true) }}</p>
 	<h2 class="center">{{ collection.biography.title|remove_control_characters }}</h2>
 	{% if collection.releasedDate is not empty %}
 		<p class="center bold">{{ collection.releasedDate }}</p>

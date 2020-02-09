@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Version
 {
+	const FOLDER = "version";
+	const PATH_FILE = "photo/".self::FOLDER."/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -64,7 +64,7 @@
 					success: function(data)
 					{
 						if(data.country != "")
-							$("div.poem-country").html('<img src="{{ asset('photo/country/') }}'+ data.country.flag +'" class="flag" />' + ' ' + data.country.title);
+							$("div.poem-country").html('<img src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')) }}'+ data.country.flag +'" class="flag" />' + ' ' + data.country.title);
 						else
 							$("div.poem-country").html("-");
 					

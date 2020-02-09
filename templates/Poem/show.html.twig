@@ -13,7 +13,7 @@
 			<th>{{ "admin.poem.Text"|trans }}</th>
 			<td>
 			{% if entity.poeticform is not null and entity.poeticform.typeContentPoem == constant('App\\Entity\\PoeticForm::IMAGETYPE') %}
-				{% if entity.fileManagement is not empty %}<p class="text-center">{{ ("photo/poem/"~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}
+				{% if entity.fileManagement is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Poem::PATH_FILE')~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}
 			{% else %}
 				{{ entity.text|raw }}
 			{% endif %}
@@ -65,7 +65,7 @@
 				{% if entity.poemImages is not empty %}
 					{% for poemImage in entity.poemImages %}
 						<div>
-							{{ ("photo/poem/"~poemImage.image)|max_size_image() }}
+							{{ (constant('\\App\\Entity\\Poem::PATH_FILE')~poemImage.image)|max_size_image() }}
 							&nbsp;
 							<a class="btn btn-danger" href="{{ path('poemadmin_remove_image', {'id' : entity.id, 'poemImageId': poemImage.id}) }}"><i class="fas fa-trash" aria-hidden="true"></i></a>
 						</div>
@@ -145,7 +145,7 @@
 					<label for="addImage"> <input type="checkbox" id="addImage"> {{ 'admin.socialNetwork.AddAnImage'|trans }}</label>
 					<div class="row d-none mb-3" id="image_container">
 						{% for poemImage in entity.poemImages %}
-							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/poem/'~poemImage.image)) }}" data-id="{{ poemImage.id }}"></div></div>
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset(constant('\\App\\Entity\\Poem::PATH_FILE')~poemImage.image)) }}" data-id="{{ poemImage.id }}"></div></div>
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_tweet" id="image_tweet">
@@ -169,7 +169,7 @@
 				<form action="{{ path('poemadmin_pinterest', {'id': entity.id}) }}" method="post">
 					<div class="row mb-3">
 						{% for poemImage in entity.poemImages %}
-							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/poem/'~poemImage.image)) }}" data-id="{{ poemImage.id }}"></div></div>
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset(constant('\\App\\Entity\\Poem::PATH_FILE')~poemImage.image)) }}" data-id="{{ poemImage.id }}"></div></div>
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_pinterest" id="image_pinterest">

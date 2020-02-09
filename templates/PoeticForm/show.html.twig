@@ -15,7 +15,7 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.poeticForm.Image'|trans }}</th>
-			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ ("photo/poeticform/"~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
+			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\PoeticForm::PATH_FILE')~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.form.Language"|trans }}</th>

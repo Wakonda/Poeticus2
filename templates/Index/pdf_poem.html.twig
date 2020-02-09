@@ -59,7 +59,7 @@
 {{ entity.text|raw }}
 <br />
 <hr style="height: 1px"/>
-<span>{{ entity.biography.title|remove_control_characters }}</span> - <img class="flag" src="photo/country/{{ entity.country.flag }}" alt="" height="16" />
+<span>{{ entity.biography.title|remove_control_characters }}</span> - <img class="flag" src="{{ constant('\\App\\Entity\\Country::PATH_FILE') }}{{ entity.country.flag }}" alt="" height="16" />
 {% if entity.collection is not null %}
 	-
 	<span class="underline italic">{{ entity.collection.title }}</span>

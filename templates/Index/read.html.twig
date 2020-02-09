@@ -21,7 +21,7 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="{{ entity.text }}">
 		<meta property="og:type" content="website">
-		<meta property="og:image" content="{{ absolute_url(asset('photo/poem/'~image.image)) }}" />
+		<meta property="og:image" content="{{ absolute_url(asset(constant('\\App\\Entity\\Poem::PATH_FILE')~image.image)) }}" />
 	{% endif %}
 {% endblock %}
 
@@ -146,11 +146,11 @@
 			{% set i = 0 %}
 			{% for poemImage in entity.poemImages %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-					<img src="{{ asset('photo/poem/'~poemImage.image) }}" class="text-center" alt="">
+					<img src="{{ asset(constant('\\App\\Entity\\Poem::PATH_FILE')~poemImage.image) }}" class="text-center" alt="">
 					<div class="carousel-caption hidden_print">
 						<a class="btn btn-primary twitter social-network" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id}) }}&text={{ poemImage.poem.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-twitter" aria-hidden="true"></i></a>
 						<a class="btn btn-primary facebook social-network" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&t={{ poemImage.poem.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-						<a class="btn btn-primary pinterest social-network" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&media={{ absolute_url(asset('photo/poem/'~poemImage.image)) }}&description={{ poemImage.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
+						<a class="btn btn-primary pinterest social-network" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}&media={{ absolute_url(asset(constant('\\App\\Entity\\Poem::PATH_FILE')~poemImage.image)) }}&description={{ poemImage.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
 						<a class="btn btn-primary linkedin social-network" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: poemImage.poem.id, slug: poemImage.poem.slug, idImage: poemImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
 						<a href="{{ path('download_image', {'fileName': poemImage.image}) }}" class="btn btn-success "><i class="fas fa-download" aria-hidden="true"></i></a>
 					</div>
@@ -189,7 +189,7 @@
 		<a href="{{ path('user_show', {'username' : entity.user.username }) }}" alt="">{{ entity.user }}</a>
 	{% endif %}
 	-
-	<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" alt="" height="8" /></a>
+	<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~entity.country.flag) }}" alt="" height="8" /></a>
 	{% if entity.collection is not null %}
 		-
 		<a class="underline font-italic" href="{{ path('collection', {'id' : entity.collection.id, 'slug' : entity.slug }) }}" alt="">{{ entity.collection.title }}</a>

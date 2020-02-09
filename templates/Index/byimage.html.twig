@@ -8,7 +8,7 @@
 	<div class="card-columns">
     {% for image in pagination %}
 		<div class="card">
-			<a href="{{ path('read', {'id' : image.poem.id, 'slug' : image.poem.slug}) }}"><img src="{{ asset('photo/poem/'~image.image) }}" class="card-img-top" alt="{{ image.poem.title }}"></a>
+			<a href="{{ path('read', {'id' : image.poem.id, 'slug' : image.poem.slug}) }}"><img src="{{ asset(constant('\\App\\Entity\\Poem::PATH_FILE')~image.image) }}" class="card-img-top" alt="{{ image.poem.title }}"></a>
 			<div class="card-body">
 				<p class="card-text font-weight-bold">{{ image.poem.title|raw }}</p>
 				<p class="card-text">
@@ -18,7 +18,7 @@
 						{% else %}
 							<a href="{{ path('user_show', {'id' : image.poem.user }) }}" alt="">{{ image.poem.user }}</a>
 						{% endif %}
-						<a href="{{ path('country', {'id' : image.poem.country.id, 'slug' : image.poem.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~image.poem.country.flag) }}" alt="" height="8" /></a>
+						<a href="{{ path('country', {'id' : image.poem.country.id, 'slug' : image.poem.country.slug }) }}" alt=""><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~image.poem.country.flag) }}" alt="" height="8" /></a>
 					</small>
 				</p>
 			</div>
@@ -26,7 +26,7 @@
 				<a class="btn btn-outline-secondary btn-sm" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: image.poem.id, slug: image.poem.slug, idImage: image.id}) }}&text={{ image.poem.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-twitter" aria-hidden="true"></i></a>
 				<a class="btn btn-outline-secondary btn-sm" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: image.poem.id, slug: image.poem.slug, idImage: image.id }) }}&t={{ image.poem.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fab fa-facebook" aria-hidden="true"></i></a>
 				<a class="btn btn-outline-secondary btn-sm" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: image.poem.id, slug: image.poem.slug, idImage: image.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-				<a class="btn btn-outline-secondary btn-sm" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: image.poem.id, slug: image.poem.slug, idImage: image.id }) }}&media={{ absolute_url(asset('photo/poem/'~image.image)) }}&description={{ image.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
+				<a class="btn btn-outline-secondary btn-sm" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: image.poem.id, slug: image.poem.slug, idImage: image.id }) }}&media={{ absolute_url(asset(constant('\\App\\Entity\\Poem::PATH_FILE')~image.image)) }}&description={{ image.poem.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
 			</div>
 		</div>
     {% endfor %}

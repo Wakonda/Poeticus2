@@ -110,7 +110,7 @@ class IndexController extends AbstractController
 			$row[] =$entity->getBiography()->getTitle();
 
 			$country = $entity->getCountry();
-			$row[] = '<img src="'.$request->getBaseUrl().'/photo/country/'.$country->getFlag().'" class="flag">';
+			$row[] = '<img src="'.$request->getBaseUrl().'/'.Country::PATH_FILE.$country->getFlag().'" class="flag">';
 
 			$output['aaData'][] = $row;
 		}
@@ -722,7 +722,7 @@ class IndexController extends AbstractController
 			$row = array();
 
 			$show = $this->generateUrl('country', array('id' => $entity['country_id'], 'slug' => $entity['country_slug']));
-			$row[] = '<a href="'.$show.'" alt="Show"><img src="'.$request->getBaseUrl().'/photo/country/'.$entity['flag'].'" class="flag" /> '.$entity['country_title'].'</a>';
+			$row[] = '<a href="'.$show.'" alt="Show"><img src="'.$request->getBaseUrl().'/'.Country::PATH_FILE.$entity['flag'].'" class="flag" /> '.$entity['country_title'].'</a>';
 
 			$row[] = '<span class="badge badge-secondary">'.$entity['number_poems_by_country'].'</span>';
 
@@ -966,7 +966,7 @@ class IndexController extends AbstractController
 
 	public function downloadImageAction($fileName)
 	{
-		$response = new BinaryFileResponse('photo/poem/'.$fileName);
+		$response = new BinaryFileResponse(Poem::PATH_FILE.$fileName);
 		$response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
 		return $response;
 	}

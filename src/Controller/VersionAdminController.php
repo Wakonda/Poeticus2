@@ -95,7 +95,7 @@ class VersionAdminController extends AbstractController
 			$entityManager = $this->getDoctrine()->getManager();
 			$gf = new GenericFunction();
 			$image = $gf->getUniqCleanNameForFile($entity->getFile());
-			$entity->getFile()->move("photo/version/", $image);
+			$entity->getFile()->move(Version::PATH_FILE, $image);
 			$entity->setFile($image);
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -141,7 +141,7 @@ class VersionAdminController extends AbstractController
 			{
 				$gf = new GenericFunction();
 				$image = $gf->getUniqCleanNameForFile($entity->getFile());
-				$entity->getPhoto()->move("photo/version/", $image);
+				$entity->getPhoto()->move(Version::PATH_FILE, $image);
 			}
 			else
 				$image = $currentImage;

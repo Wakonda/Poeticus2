@@ -16,7 +16,7 @@
 		<tr>
 			<th>{{ "admin.version.File"|trans }}</th>
 			<td>
-				<iframe src="{{ asset('photo/version/'~entity.file) }}" width="100%" height="500"></iframe>			
+				<iframe src="{{ asset(constant('\\App\\Entity\\Version::PATH_FILE')~entity.file) }}" width="100%" height="500"></iframe>			
 			</td>
 		</tr>
 	</table>

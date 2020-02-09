@@ -71,14 +71,14 @@
 	<h3><a href="{{ path('read', {'id' : random.id, 'slug' : random.slug }) }}" alt="{{ random.title }}">{{ random.title }}</a></h3>
 	<div>
 		{% if random.poeticform is not null and random.poeticform.typeContentPoem == constant('App\\Entity\\PoeticForm::IMAGETYPE') %}
-			{{ ("photo/poem/"~random.photo)|max_size_image() }}
+			{{ (constant('\\App\\Entity\\Poem::PATH_FILE')~random.photo)|max_size_image() }}
 		{% else %}
 			{{ random.text|raw }}
 		{% endif %}
 		<hr>
 		<a href="{{ path('author', {'id' : random.biography.id, 'slug' : random.biography.slug }) }}" alt="">{{ random.biography.title }}</a>
 		-
-		<a href="{{ path('country', {'id' : random.country.id, 'slug' : random.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~random.country.flag) }}" alt="" height="8" /></a>
+		<a href="{{ path('country', {'id' : random.country.id, 'slug' : random.country.slug }) }}" alt=""><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~random.country.flag) }}" alt="" height="8" /></a>
 	</div>
 	{% else %}
 		<div class="alert alert-danger text-center" role="alert">{{ 'main.index.NoPoem'|trans }}</div>

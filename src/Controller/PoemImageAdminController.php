@@ -55,7 +55,7 @@ class PoemImageAdminController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = array();
-			$row[] = "<img class='mx-auto d-block' src='/photo/poem/".$entity->getImage()."'>";
+			$row[] = "<img class='mx-auto d-block' src='/".Poem::PATH_FILE.$entity->getImage()."'>";
 			
 			$socialNetworkArray = [];
 			

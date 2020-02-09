@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Biography;
+use App\Entity\Collection;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +34,7 @@ class SitemapController
 
 		foreach($entities as $entity)
 		{
-			$sg->addItem("author/".$entity->getId()."/".$entity->getSlug(), '0.5', array("images" => array(array("loc" => "photo/biography/".$entity->getPhoto(), "caption" => ""))));
+			$sg->addItem("author/".$entity->getId()."/".$entity->getSlug(), '0.5', array("images" => array(array("loc" => Biography::PATH_FILE.$entity->getPhoto(), "caption" => ""))));
 		}
 		
 		// Collection
@@ -42,7 +44,7 @@ class SitemapController
 
 		foreach($entities as $entity)
 		{
-			$sg->addItem("collection/".$entity->getId()."/".$entity->getSlug(), '0.5', array("images" => array(array("loc" => "photo/collection/".$entity->getImage(), "caption" => ""))));
+			$sg->addItem("collection/".$entity->getId()."/".$entity->getSlug(), '0.5', array("images" => array(array("loc" => Collection::PATH_FILE.$entity->getImage(), "caption" => ""))));
 		}
 
 		// Country

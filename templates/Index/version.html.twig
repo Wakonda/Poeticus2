@@ -21,7 +21,7 @@
 					<td>{{ date_letter(entity.releaseDate, app.request.locale) }}</td>
 					<td>
 						{% if entity.file is not empty %}
-							<a href="{{ asset('photo/version/'~ entity.file) }}">Lire</a>
+							<a href="{{ asset(constant('\\App\\Entity\\Version::PATH_FILE')~ entity.file) }}">Lire</a>
 						{% else %}
 							-
 						{% endif %}

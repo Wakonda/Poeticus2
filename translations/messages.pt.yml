@@ -102,7 +102,7 @@ store:
         Search: "Procurar"
         MoreInformations: "Mais informação"
         UnknownAuthor: "Autor desconhecido"
-		NoProductFound: "Nenhum produto encontrado"
+        NoProductFound: "Nenhum produto encontrado"
     author:
         Title: "Título"
         Action: "Acção"

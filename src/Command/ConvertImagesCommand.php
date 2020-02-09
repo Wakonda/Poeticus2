@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\GenericFunction;
 
 use App\Entity\Poem;
 use App\Entity\Collection;
@@ -144,6 +145,15 @@ class ConvertImagesCommand extends Command
 		}
 		
 		$this->em->flush();
+		
+		// Slug poem
+		$conn = $this->em->getConnection();
+		
+		$entities = $this->em->getRepository(Poem::class)->findAll();
+		
+		foreach($entities as $entity) {
+			$conn->exec("UPDATE poem set slug = '".GenericFunction::slugify($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
 
 		return 0;
     }

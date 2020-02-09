@@ -54,6 +54,14 @@
 
                         break;
 
+                    case "pt":
+
+                        data.cookieText = data.cookieText || "Cookies nos ajudam a entregar nossos serviços. Ao usar nossos serviços, você concorda com o uso de cookies.";
+                        data.dismissText = data.dismissText || "OK";
+                        data.linkText = data.linkText || "Saber mais";
+
+                        break;
+
                     case "fr":
 
                         data.cookieText = data.cookieText || "Les cookies nous permettent de vous proposer nos services plus facilement. En utilisant nos services, vous nous donnez expressément votre accord pour exploiter ces cookies.";

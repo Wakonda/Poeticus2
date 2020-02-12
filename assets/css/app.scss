@@ -907,5 +907,18 @@ div.mce-edit-area {
 	}
 }
 
+/** Back to top **/
+a.back-to-top {
+	bottom: 60px;
+}
+
+/** TARTEAUCITRON **/
+#tarteaucitronRoot #tarteaucitronAlertBig {
+	background-color: rgba(238, 238, 238, 0.9) !important;
+}
+#tarteaucitronDisclaimerAlert {
+    color: #333 !important;
+}
+
 @import "~bootstrap/scss/bootstrap";
 /*@import '~datatables.net-bs4/css/dataTables.bootstrap4.css';*/

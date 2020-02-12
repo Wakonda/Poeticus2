@@ -14,6 +14,40 @@
 
 		<link rel="shortcut icon" href="{{ asset('photo/favicon.ico') }}">
 
+		<!-- test -->
+		<script src="{{ asset(minify_file('js/tarteaucitron.js/tarteaucitron.js')) }}"></script>
+        <script type="text/javascript">
+		tarteaucitronForceLanguage = "{{ app.request.locale }}";
+		
+        tarteaucitron.init({
+    	  "privacyUrl": "", /* Privacy policy url */
+
+    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+    	  "cookieName": "tarteaucitron", /* Cookie name */
+    
+    	  "orientation": "middle", /* Banner position (top - bottom) */
+    	  "showAlertSmall": true, /* Show the small banner on bottom right */
+    	  "cookieslist": true, /* Show the cookie list */
+
+    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
+    	  "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+    	  "highPrivacy": true, /* Disable auto consent */
+    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+    	  "removeCredit": false, /* Remove credit link */
+    	  "moreInfoLink": true, /* Show more info link */
+    	  "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+
+    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+                          
+    	  "readmoreLink": "/cookiespolicy" /* Change the default readmore link */
+        });
+        </script>
+        <script type="text/javascript">
+        (tarteaucitron.job = tarteaucitron.job || []).push('adsense');
+        </script>
+		<!-- end test -->
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -45,7 +79,7 @@
 						<h2 class="mt-2">{{ 'main.index.WonderfulWorldOfPoem'|trans|raw }}</h2>
 					</div>
 					<div class="col-lg-6 mt-2">
-						<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 						<!-- QPP - Right side -->
 						<ins class="adsbygoogle"
 							 style="display:block"
@@ -117,7 +151,7 @@
 
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.Publicity'|trans }}</h1>
-						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!--<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 						<!-- Poeticus_right_menu -->
 						<ins class="adsbygoogle"
 							 style="display:inline-block;width:250px;height:250px"
@@ -204,7 +238,7 @@
 					{% block main_content %}{% endblock %}
 					<div class="advert">
 					<p class="ad_title hidden_print">{{ 'menu.left.Publicity'|trans }}</p>
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!--<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 					<!-- poeticus_down -->
 					<ins class="adsbygoogle"
 						 style="display:block"
@@ -235,6 +269,7 @@
 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 			ga('create', 'UA-12307735-4', 'auto');
 			ga('send', 'pageview');
+			ga('set', 'anonymizeIp', true);
 			$(function() {
 				cookieChoices.showCookieBar({
 					linkHref: '{{ path("page_display", {"name" : "cookie"}) }}',
@@ -242,6 +277,7 @@
 				});
 			});
 		</script>
+
 		{% block script_additional %}
 		{% endblock %}
 	</body>

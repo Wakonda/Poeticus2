@@ -14,7 +14,7 @@
 
 		<link rel="shortcut icon" href="{{ asset('photo/favicon.ico') }}">
 
-		<!-- test -->
+		<!-- GDPR -->
 		<script src="{{ asset(minify_file('js/tarteaucitron.js/tarteaucitron.js')) }}"></script>
         <script type="text/javascript">
 		tarteaucitronForceLanguage = "{{ app.request.locale }}";
@@ -37,16 +37,13 @@
     	  "removeCredit": false, /* Remove credit link */
     	  "moreInfoLink": true, /* Show more info link */
     	  "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-
-    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-                          
     	  "readmoreLink": "/cookiespolicy" /* Change the default readmore link */
         });
         </script>
         <script type="text/javascript">
         (tarteaucitron.job = tarteaucitron.job || []).push('adsense');
         </script>
-		<!-- end test -->
+		<!-- end GDPR -->
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}

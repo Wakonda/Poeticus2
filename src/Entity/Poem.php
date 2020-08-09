@@ -81,11 +81,6 @@ class Poem
      */
     protected $state;
 	
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $photo;
-	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
      */
@@ -299,16 +294,6 @@ class Poem
     public function setState($state)
     {
         $this->state = $state;
-    }
-
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
     }
 
 	public function getLanguage()

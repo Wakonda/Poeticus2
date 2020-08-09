@@ -27,11 +27,6 @@ class Tag
      */
     protected $title;
 	
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $photo;
-	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
      */
@@ -76,16 +71,6 @@ class Tag
     {
         $this->title = $title;
 		$this->setSlug();
-    }
-
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
     }
 
 	public function getLanguage()

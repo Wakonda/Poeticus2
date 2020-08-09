@@ -65,11 +65,6 @@ class Biography
      */
     protected $yearDeath;
 	
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $photo;
-	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
      */
@@ -130,16 +125,6 @@ class Biography
     public function setText($text)
     {
         $this->text = $text;
-    }
-
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
     }
 
     public function getDayBirth()

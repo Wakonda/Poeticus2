@@ -39,11 +39,6 @@ class PoeticForm
      * @ORM\Column(type="string", length=255)
      */
     protected $typeContentPoem;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $image;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
@@ -108,16 +103,6 @@ class PoeticForm
     {
 		if(empty($this->slug))
 			$this->slug = GenericFunction::slugify($this->title);
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function setImage($image)
-    {
-        $this->image = $image;
     }
 
     public function getTypeContentPoem()

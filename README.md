@@ -1,6 +1,6 @@
 # Poeticus
 
-[Poeticus](https://poeticus.wakonda.guru) is a website written with the framework Symfony 4. Our goal is to bring together all poems in the whole world. The [first version](https://github.com/Wakonda/Poeticus) used Silex.
+[Poeticus](https://poeticus.wakonda.guru) is a website written with the framework Symfony 5. Our goal is to bring together all poems in the whole world. The [first version](https://github.com/Wakonda/Poeticus) used Silex.
 
 ## Requirements
 

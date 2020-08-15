@@ -103,6 +103,7 @@ store:
         MoreInformations: "Plus d'infos"
         UnknownAuthor: "Auteur inconnu"
         NoProductFound: "Aucun produit trouvé"
+        Buy: "Acheter"
     author:
         Title: "Titre"
         Action: "Action"

@@ -142,8 +142,10 @@ country_poem_datatables:
     controller: App\Controller\IndexController::countryDatatablesAction
 
 byimages:
-    path: /byimages
+    path: /byimages/{page}
     controller: App\Controller\IndexController::byImagesAction
+    defaults:
+        page: 1
 
 page_display:
     path: /page/{name}

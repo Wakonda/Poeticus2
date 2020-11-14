@@ -47,6 +47,14 @@ class IndexController extends AbstractController
 		return $this->render('Index/index.html.twig', ['form' => $form->createView(), 'random' => $random]);
 	}
 
+    public function randomAction(Request $request)
+    {
+		$entityManager = $this->getDoctrine()->getManager();
+		$random = $entityManager->getRepository(Poem::class)->getRandomPoem($request->getLocale());
+
+        return $this->render('Index/random.html.twig', array('random' => $random));
+    }
+
 	public function changeLanguageAction(Request $request, $locale)
 	{
 		$request->getSession()->set('_locale', $locale);

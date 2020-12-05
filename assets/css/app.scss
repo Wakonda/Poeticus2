@@ -816,6 +816,10 @@ div.social_network_container {
 	color: $github-color;
 }
 
+.social-media-icons a.linkedin {
+	color: $linkedin-color;
+}
+
 a.social-network:hover {
 	filter: brightness(85%);
 }
